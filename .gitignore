@@ -1,0 +1,8 @@
+data/raw/
+data/processed/
+.Rhistory
+.RData
+.Rproj.user/
+.DS_Store
+__pycache__/
+.venv/
