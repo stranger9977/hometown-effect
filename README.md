@@ -29,10 +29,9 @@ Python where it shines (geocoding, census joins). See `docs/` for the design.
 ## Layout
 
 ```
-R/               data pulls, cleaning, joins
-analysis/        Quarto notebooks (one question per notebook)
+R/               numbered pipeline scripts (data pulls, cleaning, joins)
 data/raw/        untouched downloads (gitignored)
 data/processed/  parquet/csv intermediates (gitignored)
-output/figures/  exported charts and maps
-docs/            design docs and specs
+output/figures/  working chart exports
+docs/            GitHub Pages root: index.html report, figures/, specs/
 ```
