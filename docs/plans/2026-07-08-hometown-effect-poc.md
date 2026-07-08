@@ -1021,13 +1021,226 @@ git commit -m "feat: birthplace effect replication + density gradient"
 
 ---
 
+### Task 10b: High-school geocoding + hometown table (HS-preferred, birthplace fallback)
+
+**Files:**
+- Create: `R/lib/schools.R`, `tests/testthat/test-schools.R`, `R/06b_hometown.R`
+
+**Interfaces:**
+- Consumes: `data/raw/sleeper_players.json` (NFL snapshot), `data/processed/birthplace_matched.parquet`, `data/processed/spine.parquet`, `data/processed/census_zcta.parquet`, `match_places()` + `normalize_city()` from `R/lib/places.R`.
+- Produces: `parse_sleeper_hs(x)` → tibble `hs_name (chr), hs_state (chr or NA)` from strings like `"Whitehouse (TX)"` / bare names / `"St. Patrick's (Ottawa, CAN)"`.
+- Produces: `match_schools(hs_df, nces_df)` → adds `nces_city, nces_state, nces_zip, nces_lat, nces_lon, school_match (lgl)`; match by normalized name within state (strip "high school"/"hs" suffixes, punctuation; require unique match, else unmatched).
+- Produces: `data/processed/hometown.parquet` — one row per spine player with: `hometown_source ("high_school"|"birthplace"|NA), hometown_city, hometown_state, hometown_geoid, hometown_lat, hometown_lon, hometown_zcta (chr or NA), pop/density/income columns from the place match, era`.
+- Produces: `data/processed/divergence.csv` — for players with BOTH geocoded HS and matched birthplace: `n_both, n_same_city, n_diff_city, divergence_rate` (same-city = normalized city+state equal).
+
+- [ ] **Step 1: Verify NCES EDGE geocode files (live check, then pin URLs)**
+
+Candidate URLs (verify with `curl -sI`, follow the pattern to the latest year if 404):
+```
+https://nces.ed.gov/programs/edge/data/EDGE_GEOCODE_PUBLICSCH_2324.zip
+https://nces.ed.gov/programs/edge/data/EDGE_GEOCODE_PRIVATESCH_2324.zip
+```
+Each zip contains a file (xlsx or txt/csv per year) with columns including
+`NCESSCH/PPIN, NAME, CITY, STATE, ZIP, LAT, LON`. If xlsx-only, convert with
+`Rscript -e 'openxlsx::read.xlsx(...)'` (install openxlsx if needed) or use the
+Excel-free CSV variant if present. Download both to `data/raw/nces/`, note the
+actual filenames and columns in a comment in `R/lib/schools.R`, and write the
+combined public+private lookup to `data/processed/nces_schools.parquet` with
+exactly the columns `name (chr), city (chr), state (chr USPS), zip (chr),
+lat (dbl), lon (dbl)` — that file is what `R/06b_hometown.R` reads.
+
+- [ ] **Step 2: Write failing tests for the parser and matcher**
+
+`tests/testthat/test-schools.R`:
+```r
+suppressMessages(library(dplyr))
+source(file.path(testthat::test_path(), "..", "..", "R", "lib", "schools.R"))
+
+test_that("parse_sleeper_hs handles paren-state, bare, and foreign formats", {
+  out <- parse_sleeper_hs(c("Whitehouse (TX)", "Central", "St. Patrick's (Ottawa, CAN)"))
+  expect_equal(out$hs_name, c("Whitehouse", "Central", "St. Patrick's"))
+  expect_equal(out$hs_state, c("TX", NA, NA))   # non-US-state parens -> NA state
+})
+
+test_that("match_schools finds unique in-state name matches", {
+  nces <- tibble(name = c("Whitehouse High School", "Central High School",
+                          "Central High School"),
+                 city = c("Whitehouse", "Springfield", "Shelbyville"),
+                 state = c("TX", "IL", "IL"),
+                 zip = c("75791", "62701", "62565"),
+                 lat = c(32.22, 39.8, 39.4), lon = c(-95.2, -89.6, -88.8))
+  hs <- tibble(hs_name = c("Whitehouse", "Central"), hs_state = c("TX", "IL"))
+  out <- match_schools(hs, nces)
+  expect_true(out$school_match[1])
+  expect_equal(out$nces_city[1], "Whitehouse")
+  expect_false(out$school_match[2])   # ambiguous within IL -> unmatched
+})
+```
+
+Run: `Rscript tests/run_tests.R` — expected FAIL (functions not found).
+
+- [ ] **Step 3: Implement `R/lib/schools.R`**
+
+```r
+suppressMessages({ library(dplyr); library(stringr) })
+
+parse_sleeper_hs <- function(x) {
+  paren <- str_match(x, "^(.*?)\\s*\\(([^)]+)\\)\\s*$")
+  name <- coalesce(paren[, 2], x)
+  st <- paren[, 3]
+  st <- if_else(!is.na(st) & st %in% c(state.abb, "DC"), st, NA_character_)
+  tibble::tibble(hs_name = str_squish(name), hs_state = st)
+}
+
+normalize_school <- function(x) {
+  x |>
+    str_to_lower() |>
+    str_replace_all("\\bst[.]?\\s", "saint ") |>
+    str_remove_all("\\b(senior|junior|jr|sr)\\b") |>
+    str_remove_all("\\b(high school|highschool|high|school|hs|academy|prep|preparatory)\\b") |>
+    str_replace_all("[^a-z ]", "") |>
+    str_squish()
+}
+
+match_schools <- function(hs_df, nces_df) {
+  lookup <- nces_df |>
+    mutate(school_norm = normalize_school(name)) |>
+    filter(school_norm != "")
+  hs_df |>
+    mutate(.row = dplyr::row_number(), school_norm = normalize_school(hs_name)) |>
+    left_join(lookup, by = c("school_norm", "hs_state" = "state"),
+              relationship = "many-to-many") |>
+    group_by(.row) |>
+    mutate(n_cand = sum(!is.na(name))) |>
+    slice(1) |>
+    ungroup() |>
+    mutate(school_match = n_cand == 1,
+           nces_city  = ifelse(school_match, city, NA_character_),
+           nces_state = ifelse(school_match, hs_state, NA_character_),
+           nces_zip   = ifelse(school_match, as.character(zip), NA_character_),
+           nces_lat   = ifelse(school_match, lat, NA_real_),
+           nces_lon   = ifelse(school_match, lon, NA_real_)) |>
+    select(hs_name, hs_state, nces_city, nces_state, nces_zip,
+           nces_lat, nces_lon, school_match)
+}
+```
+Note: ambiguous names (multiple NCES schools with the same normalized name in
+a state) are deliberately unmatched — precision over recall; those players
+fall back to birthplace.
+
+- [ ] **Step 4: Run tests to verify pass**
+
+Run: `Rscript tests/run_tests.R`
+Expected: PASS.
+
+- [ ] **Step 5: Write `R/06b_hometown.R`**
+
+```r
+suppressMessages({ library(dplyr); library(arrow); library(jsonlite); library(purrr) })
+source("R/lib/schools.R"); source("R/lib/places.R")
+`%||%` <- function(a, b) if (is.null(a)) b else a
+
+spine <- read_parquet("data/processed/spine.parquet")
+bp <- read_parquet("data/processed/birthplace_matched.parquet")
+
+# --- Sleeper HS for NFL, joined via sleeper_id (fallback: name+birth_date) ---
+sl <- fromJSON("data/raw/sleeper_players.json", simplifyVector = FALSE) |>
+  keep(is.list) |>
+  map_dfr(~ tibble(sleeper_id = as.character(.x$player_id %||% NA),
+                   full_name = .x$full_name %||% NA_character_,
+                   birth_date = .x$birth_date %||% NA_character_,
+                   position = .x$position %||% NA_character_,
+                   high_school = .x$high_school %||% NA_character_)) |>
+  filter(position != "DEF" | is.na(position), !is.na(high_school))
+
+hs <- bind_cols(sl, parse_sleeper_hs(sl$high_school))
+
+# --- NCES lookup (public + private, columns pinned in R/lib/schools.R) ---
+nces <- arrow::read_parquet("data/processed/nces_schools.parquet")  # built in Step 1 verification; name/city/state/zip/lat/lon
+
+hs_geo <- bind_cols(hs, match_schools(hs |> select(hs_name, hs_state), nces) |>
+                          select(-hs_name, -hs_state))
+
+# Join HS geography to spine. Prefer sleeper_id if spine has it; else name+DOB.
+use_sleeper_id <- mean(!is.na(spine$sleeper_id)) > 0.3
+if (use_sleeper_id) {
+  hs_join <- spine |> inner_join(hs_geo, by = "sleeper_id", suffix = c("", ".sl"))
+} else {
+  hs_join <- spine |>
+    mutate(bd = as.character(birth_date)) |>
+    inner_join(hs_geo |> mutate(bd = birth_date),
+               by = c("display_name" = "full_name", "bd"), suffix = c("", ".sl"))
+}
+hs_join <- hs_join |> filter(school_match)
+
+# HS city -> census place (for pop/density/income), HS zip -> ZCTA
+hs_matched <- match_places(
+  hs_join |> transmute(gsis_id, birth_city = nces_city, birth_state = nces_state),
+  read_parquet("data/processed/census_places.parquet")) |>
+  rename_with(~ paste0("hs_", .x), -gsis_id)
+
+hometown <- spine |>
+  left_join(hs_join |> select(gsis_id, nces_city, nces_state, nces_zip,
+                              nces_lat, nces_lon), by = "gsis_id") |>
+  left_join(hs_matched, by = "gsis_id") |>
+  left_join(bp |> select(gsis_id, birth_city, birth_state, geoid, lat, lon,
+                         matched_pop2000, matched_pop2010, matched_pop_now,
+                         matched_income1999, matched_income_now, aland_sqmi,
+                         match_tier), by = "gsis_id") |>
+  mutate(
+    hometown_source = case_when(
+      !is.na(nces_city)                              ~ "high_school",
+      !is.na(geoid) & match_tier != "unmatched"      ~ "birthplace",
+      TRUE                                           ~ NA_character_),
+    hometown_city  = if_else(hometown_source == "high_school", nces_city, birth_city),
+    hometown_state = if_else(hometown_source == "high_school", nces_state, birth_state),
+    hometown_geoid = if_else(hometown_source == "high_school", hs_geoid, geoid),
+    hometown_lat   = if_else(hometown_source == "high_school", nces_lat, lat),
+    hometown_lon   = if_else(hometown_source == "high_school", nces_lon, lon),
+    hometown_zcta  = if_else(hometown_source == "high_school",
+                             substr(nces_zip, 1, 5), NA_character_))
+
+write_parquet(hometown, "data/processed/hometown.parquet")
+
+both <- hometown |>
+  filter(!is.na(nces_city), !is.na(birth_city), match_tier != "unmatched")
+divergence <- tibble(
+  n_both = nrow(both),
+  n_same_city = sum(normalize_city(both$nces_city) == normalize_city(both$birth_city) &
+                    both$nces_state == both$birth_state),
+  n_diff_city = n_both - n_same_city,
+  divergence_rate = n_diff_city / n_both)
+write.csv(divergence, "data/processed/divergence.csv", row.names = FALSE)
+print(count(hometown, hometown_source))
+print(divergence)
+```
+(Exact column plumbing may need adjustment against the real intermediate
+files — the contract is the Produces block above; keep it.)
+
+- [ ] **Step 6: Run and record**
+
+Run: `Rscript R/06b_hometown.R`
+Expected: `hometown_source` counts printed (high_school should dominate 2020s,
+birthplace should dominate 1990s/2000s); divergence table with a plausible
+rate (literature suggests meaningful born≠raised divergence; if it's 0% or
+100%, the city normalization or join is broken).
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add R/lib/schools.R tests/testthat/test-schools.R R/06b_hometown.R
+git commit -m "feat: HS-preferred hometown table with birthplace fallback + divergence stat"
+```
+
+---
+
 ### Task 11: County per-capita heatmap
 
 **Files:**
 - Create: `R/09_county_map.R`
 
 **Interfaces:**
-- Consumes: `data/processed/birthplace_matched.parquet` (lat/lon per matched player), `data/raw/census/cb_2023_us_county_500k/`, `data/processed/census_counties.parquet`.
+- Consumes: `data/processed/hometown.parquet` (`hometown_lat/hometown_lon`, HS-preferred per the user decision), `data/raw/census/cb_2023_us_county_500k/`, `data/processed/census_counties.parquet`.
 - Produces: `docs/figures/county_map.png`, `data/processed/county_rates.csv` (`county_fips, players, pop2024, per_million`).
 
 - [ ] **Step 1: Write `R/09_county_map.R`**
@@ -1035,8 +1248,9 @@ git commit -m "feat: birthplace effect replication + density gradient"
 ```r
 suppressMessages({ library(dplyr); library(arrow); library(sf); library(usmap); library(ggplot2) })
 
-matched <- read_parquet("data/processed/birthplace_matched.parquet") |>
-  filter(match_tier != "unmatched", !is.na(lat), !is.na(lon))
+matched <- read_parquet("data/processed/hometown.parquet") |>
+  filter(!is.na(hometown_source), !is.na(hometown_lat), !is.na(hometown_lon)) |>
+  rename(lat = hometown_lat, lon = hometown_lon)
 
 counties_sf <- st_read(list.files("data/raw/census/cb_2023_us_county_500k",
                                   pattern = "[.]shp$", full.names = TRUE),
@@ -1064,9 +1278,9 @@ p <- plot_usmap(regions = "counties",
   scale_fill_viridis_c(option = "magma", direction = -1, trans = "sqrt",
                        na.value = "grey92",
                        name = "NFL players born\nper 1M residents") +
-  labs(title = "Where NFL players are born, per capita",
-       subtitle = "Players with rookie seasons 1990–2025, by birth county (place centroid)",
-       caption = "Data: nflverse + ESPN + US Census. Grey: no matched players.") +
+  labs(title = "Where NFL players are from, per capita",
+       subtitle = "Players with rookie seasons 1990–2025, by hometown county (high school where known, else birthplace)",
+       caption = "Data: nflverse + ESPN + Sleeper + NCES + US Census. Grey: no matched players.") +
   theme(plot.title = element_text(size = 20, face = "bold"),
         plot.subtitle = element_text(size = 14),
         legend.position = "right")
@@ -1195,7 +1409,9 @@ single scrolling story page, self-contained CSS (no CDNs), light+dark via
 
 1. Hook: the 2006 finding (11–21x small-town) and Michael's suburb critique.
 2. "What we did": nflverse spine → ESPN birthplace (n = actual row count) →
-   census match (match rate from `match_report.csv`, stated plainly).
+   census match (match rate from `match_report.csv`, stated plainly) →
+   HS-preferred hometown (source counts + the born-vs-raised divergence rate
+   from `divergence.csv` — a headline stat, present it prominently).
 3. Figure sections: `figures/cote_bins.png`, `figures/density_gradient.png`,
    `figures/income_gradient.png`, `figures/county_map.png`,
    `figures/rae_nfl.png` — each with a 2–3 sentence takeaway written from the
@@ -1248,7 +1464,9 @@ git add -A && git commit -m "chore: pages polish" --allow-empty && git push
 - Task 1 → 2 → 3 strictly in order (gate at 3).
 - Task 4 launches **in the background** immediately after 3 passes.
 - Tasks 5, 6, 7 run while 4 downloads (no dependency).
-- Task 8 waits on 4; then 9 → 10 → 11 → 11b → 12 in order.
+- Task 8 waits on 4; then 9 → 10 → 10b → 11 → 11b → 12 in order
+  (10b also needs Tasks 5 and 6; era-comparison figures in 10/11b stay
+  birthplace-based, headline map in 11 uses the hometown table).
 
 ## Out of scope (explicitly)
 

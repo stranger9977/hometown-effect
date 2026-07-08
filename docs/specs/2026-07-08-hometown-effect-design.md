@@ -134,6 +134,23 @@ fallback. **Report the match rate as a first-class number** before any
 conclusions; the 2006 paper's suburb blindness is exactly the kind of silent
 data artifact we're claiming to fix.
 
+## Hometown definition (user decision 2026-07-08)
+
+**High school location is the primary geography wherever Sleeper provides it;
+birthplace is the fallback.** Each player gets a `hometown_source` flag
+("high_school" | "birthplace"). Rules:
+
+- High schools geocode via the NCES EDGE school files (name + state →
+  city/ZIP/lat/lon), public + private. Fuzzy name matching; unmatched schools
+  fall back to birthplace.
+- **Era comparisons use birthplace-only** for proxy consistency — Sleeper HS
+  coverage is modern-era, and switching proxies mid-timeline would confound
+  the then-vs-now story. Headline modern-era maps and stats use the
+  HS-preferred hometown.
+- For players with both, report the divergence rate (born in X, raised in Y)
+  — a video-worthy stat and the empirical answer to "does birthplace even
+  measure the right thing?"
+
 ## Phase 2 — High-school supplement (see how the story changes)
 
 - **Modern era, cheap — and multi-sport:** Sleeper snapshots (all downloaded
