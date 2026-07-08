@@ -6,3 +6,4 @@ data/processed/
 .DS_Store
 __pycache__/
 .venv/
+.Renviron

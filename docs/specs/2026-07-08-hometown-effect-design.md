@@ -21,6 +21,29 @@ modern data, fixing its known flaws:
 4. **Relative age effect refresh** — birth-month distributions by sport,
    free once birthdates are loaded.
 
+### Context: Michael's correspondence with Côté (Feb 2025, paraphrased)
+
+Michael emailed Jean Côté (via a David Epstein referral) asking (1) whether the
+2006 study's "small towns" could really be suburbs — his own hometown,
+Wilsonville OR, is a "small town" 20 minutes from Portland — and (2) whether
+the study was ever revisited. Côté's reply, paraphrased:
+
+- International replications since 2006 are inconsistent, but **in North
+  American pro sports the effect keeps showing up**.
+- Population size/density should be read as a **proxy** for the sports
+  activities and social dynamics of a place, not a cause.
+- **Proximity to a bigger center has not been examined** — he agrees it should
+  be, considering physical/social infrastructure. (Our density + metro-context
+  approach is exactly this.)
+- Birthplace studies are inherently **lagged ~15–20 years** (they capture the
+  development environments of athletes now in their 20s), and youth sport has
+  professionalized dramatically in the interim — which is Michael's money
+  hypothesis in Côté's own framing.
+
+The Wilsonville-vs-Portland question is the story hook; "we ran the revisit
+Côté said hadn't happened" is the credibility beat. (Full email stays private;
+do not quote it verbatim or publish contact details.)
+
 Headline questions, in order of video appeal:
 
 - Is the small-town effect real once you measure it properly — and is it dying?
@@ -76,27 +99,31 @@ returns `birthPlace {city, state, country}` + `dateOfBirth`.
    the Côté bins **and** the density-based redo, split by rookie era
    (e.g. pre-2000 vs 2000–2012 vs 2013+, adjusted to where coverage supports).
 3. First US map heatmap: pros per million residents by county.
+4. Money hypothesis, first cut: share of players born in top/bottom-quartile
+   income places by era (era-matched income vintages, percentile-ranked).
 
 ## Phase 1 — Census join
 
-**Prerequisite (user action): free instant API key from
-`https://api.census.gov/data/key_signup.html`, exported as `CENSUS_API_KEY`.**
-Keyless api.census.gov is dead as of 2025 (302 → missing_key.html — verified).
+**Key status: DONE — user's key lives in `~/.Renviron` as `CENSUS_API_KEY`
+(auto-loaded by R). Never commit or print it; the repo gitignores `.Renviron`.**
 
-Keyless files that don't wait on the key:
+With the key, the primary population source is the API (covers CDPs, killing
+the incorporated-only bias): decennial 2000 SF1 `P001001` and 2010 SF1
+`P0010001` for all places per state, ACS5 2023 `B01003_001E` for current
+populations, plus **median household income** — ACS5 2023 `B19013_001E` (place
+and ZCTA) and 2000 SF3 `P053001` (era-appropriate income for older cohorts).
+Income comparisons across eras use within-vintage percentile ranks, which
+sidesteps inflation adjustment.
+
+Keyless files still used:
 
 - **Place Gazetteer 2023** (`2023_Gaz_place_national.zip`): 32,329 places
   (incl. 12,523 CDPs) — the canonical name-matching table (NAME, LSAD, GEOID).
 - **ZCTA Gazetteer 2023**: 33,791 ZCTAs with `ALAND_SQMI` → density
   denominators without shapefiles.
-- **Popest CSVs**: `sub-est2024.csv` (current, incorporated places only),
-  `sub-est00int.csv` (2000s), `su-99-10_{st}.txt` (1990s; fixed-width,
-  two stacked blocks, SUMLEV 157 county-parts must be summed; slow server —
-  download once, cache).
-
-With the key: ACS5 place populations incl. CDPs in one pass
-(`B01003_001E for=place:*`), and ZCTA median household income (`B19013_001E`)
-+ population for the money analysis.
+- **County popest** (`co-est2024-alldata.csv`) for county map denominators;
+  TIGER cartographic county shapefile for point-in-polygon and mapping.
+  (The place popest CSVs and 1990s fixed-width files are now fallback-only.)
 
 **City-name matcher** (birth city string → Census place): lowercase, strip
 punctuation, strip LSAD suffix (city/town/village/borough/CDP), join on
@@ -109,11 +136,14 @@ data artifact we're claiming to fix.
 
 ## Phase 2 — High-school supplement (see how the story changes)
 
-- **Modern era, cheap:** Sleeper snapshot (already downloaded). `high_school`
-  populated for 10,808 players (96.9% of actives) as school name + state —
-  no town. Join via nflverse `sleeper_id` (NOT Sleeper's own `gsis_id`: 32%
-  populated, 866 values whitespace-corrupted). Parse state with
-  `\(([A-Z]{2})\)$`; ~9% are bare names; filter out 32 team-DEF records.
+- **Modern era, cheap — and multi-sport:** Sleeper snapshots (all downloaded
+  to `data/raw/`, verified 2026-07-08). `high_school` (school name + state, no
+  town) is populated for **NFL 10,808, MLB 4,158, NBA 1,797 — NHL zero**
+  (`/v1/players/{nfl,mlb,nba,nhl}`). MLB's Sleeper dump also carries
+  `birth_city` for 5,875 players (cross-check against Lahman). NFL joins via
+  nflverse `sleeper_id` (NOT Sleeper's own `gsis_id`: 32% populated, 866
+  values whitespace-corrupted); NBA/MLB join by name + birth_date. Parse state
+  with `\(([A-Z]{2})\)$`; ~9% are bare names; filter out team-DEF records.
 - **Town-level and historical:** PFR player pages have birthplace + high school
   back to at least 1956 rookies, but live scraping is Cloudflare-403-blocked
   today. Later path: curl_cffi/Playwright at ≤20 req/min; the
@@ -162,7 +192,7 @@ output/figures/  working exports before they're promoted to docs/figures
 2. ESPN throttling mid-scrape → 5 req/s, disk cache, checkpointed resume.
 3. Birthplace→place match rate (CDPs, unincorporated, townships, collisions)
    → tiered matcher with county fallback; publish the match rate.
-4. No Census key yet → sign up tonight; keyless files unblock the POC.
+4. ~~No Census key yet~~ → resolved: key in `~/.Renviron` (never commit/print).
 5. Sports Reference Cloudflare (PFR 403 today) → curl_cffi/Playwright later,
    Wayback CDX fallback (filter statuscode:200).
 6. Pre-1990 era hole in ESPN join → PFR birthplaces.cgi backfill later;
