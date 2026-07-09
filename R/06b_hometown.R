@@ -23,6 +23,11 @@ bp <- read_parquet("data/processed/birthplace_matched.parquet")
 stopifnot(!any(duplicated(spine$gsis_id)), !any(duplicated(bp$gsis_id)))
 
 # --- Sleeper HS for NFL players ---------------------------------------------
+# Sleeper asks for at most one download of this file per day; keep the snapshot.
+if (!file.exists("data/raw/sleeper_players.json")) {
+  download.file("https://api.sleeper.app/v1/players/nfl",
+                "data/raw/sleeper_players.json", mode = "wb", quiet = TRUE)
+}
 sl <- fromJSON("data/raw/sleeper_players.json", simplifyVector = FALSE) |>
   keep(is.list) |>
   map_dfr(~ tibble(sleeper_id = as.character(.x$player_id %||% NA),

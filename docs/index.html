@@ -106,8 +106,8 @@
 
     <div class="tiles">
       <div class="tile"><div class="num">25,033</div><div class="lbl">NFL players in the nflverse spine (all-time)</div></div>
-      <div class="tile"><div class="num">14,832</div><div class="lbl">birthplaces recovered (ESPN API, rookie classes 1990–2025)</div></div>
-      <div class="tile"><div class="num">96–98%</div><div class="lbl">of US-born players matched to a Census place, per era</div></div>
+      <div class="tile"><div class="num">14,832</div><div class="lbl">birthplaces recovered from the ESPN API (mostly rookie classes 1990–2025)</div></div>
+      <div class="tile"><div class="num">96–97.5%</div><div class="lbl">of US-born players matched to a Census place, per era</div></div>
       <div class="tile"><div class="num">5,059</div><div class="lbl">hometowns upgraded to high-school location (Sleeper + NCES)</div></div>
     </div>
     <p style="font-size:14px; color:var(--ink-3);">Method in one line: player birthplaces (and, where available, high-school locations) matched to Census places, with population, land area, and density from the decennial census and ACS — era-appropriate vintages, boroughs and consolidated cities handled, match rates reported.</p>
@@ -140,13 +140,13 @@
   <div class="prose">
     <p>Just as interesting: the effect is <strong>flattening</strong>. In the 2020s, the mid-size peak decays to 1.35x and nearly every other bin drifts toward 1.0. The geography of the NFL is becoming less special — production is spreading out.</p>
 
-    <h2>Finding 2 — It's not density either</h2>
-    <p>Côté told Michael that population size is best read as a <em>proxy</em> for the sports environment of a place, and density is the sharper version of that proxy. Sorting every hometown into density deciles tells the same story from a different angle: the middle of the density distribution produces the most players per capita, and the pattern compresses over time.</p>
+    <h2>Finding 2 — The urban share is collapsing</h2>
+    <p>Côté told Michael that population size is best read as a <em>proxy</em> for the sports environment of a place, and density is the sharper version of that proxy. Sorting player hometowns by density shows where the change is happening: the most-urban tenth of hometowns supplied the 1990s' single biggest share of players, and that urban share has fallen era over era — recent cohorts come disproportionately from mid-density places instead.</p>
   </div>
 
   <figure>
-    <img src="figures/density_gradient.png" alt="Line chart: share of NFL players by birthplace population-density decile, by rookie era. The curve peaks in the middle deciles and flattens in recent eras.">
-    <figcaption>Share of players by decile of hometown population density (1 = most rural, 10 = most urban), deciles computed over matched Census places.</figcaption>
+    <img src="figures/density_gradient.png" alt="Line chart: share of NFL players by hometown population-density decile, by rookie era. The 1990s line peaks at the most-urban decile; later eras decline there and shift toward mid-density deciles.">
+    <figcaption>Share of each era's players by decile of hometown population density (1 = least dense, 10 = most dense); deciles computed over all matched players.</figcaption>
   </figure>
 
   <div class="prose">
@@ -170,7 +170,7 @@
 
   <div class="prose">
     <h2>A side quest — the relative age effect barely exists in football</h2>
-    <p>The other half of the 2006 paper was <em>when</em> you're born: in youth hockey, January birthdays dominate because age cutoffs make them the oldest kids in their cohort. The NFL shows almost none of this — the strongest month (October) is only about 13% above baseline. Football's school-based, size-sorted development seems to wash out the birthday advantage that club-cutoff sports amplify. That contrast is the point: <strong>where</strong> matters in football; <strong>when</strong> matters in hockey.</p>
+    <p>The other half of the 2006 paper was <em>when</em> you're born: in youth hockey, January birthdays dominate because age cutoffs make them the oldest kids in their cohort. The NFL shows almost none of this — no birth month runs more than about 15% above baseline in any era. Football's school-based, size-sorted development seems to wash out the birthday advantage that club-cutoff sports amplify. That contrast is the point: <strong>where</strong> matters in football; <strong>when</strong> matters in hockey.</p>
   </div>
 
   <figure>
@@ -188,7 +188,7 @@
 
     <h2>Honest limitations</h2>
     <ul>
-      <li>Birthplace coverage is ~90% of 1990+ rookies (96% for 2020s rookies, ~80% for the 2000s–2010s) — missingness is concentrated in shorter-career players, and we haven't measured whether it correlates with geography.</li>
+      <li>Birthplace coverage is ~90% of 1990+ rookies (97% for the 2020s, 92% for the 2000s, 82% for the 2010s) — missingness is concentrated in shorter-career players, and we haven't measured whether it correlates with geography.</li>
       <li>Census place populations currently cover incorporated places; census-designated places (some suburbs) join the denominator in the next data pass. Matched players in those places (~3–6% per era) are excluded from the size-bin chart and counted in its caption.</li>
       <li>Era comparisons use the nearest census vintage (2000 / 2010 / 2023), not the exact childhood year, and stick to birthplace only — high-school data exists mostly for recent players, and switching proxies mid-timeline would fake a trend.</li>
       <li>Township-form municipalities (New Jersey especially) aren't Census "places" and account for most of the ~3% of players we couldn't match.</li>

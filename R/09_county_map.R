@@ -29,7 +29,7 @@ p <- plot_usmap(regions = "counties",
                 values = "per_million", linewidth = 0) +
   scale_fill_viridis_c(option = "magma", direction = -1, trans = "sqrt",
                        na.value = "grey92",
-                       name = "NFL players born\nper 1M residents") +
+                       name = "NFL players\nper 1M residents") +
   labs(title = "Where NFL players are from, per capita",
        subtitle = "Players with rookie seasons 1990–2025, by hometown county (high school where known, else birthplace)",
        caption = "Data: nflverse + ESPN + Sleeper + NCES + US Census. Grey: no matched players.") +
