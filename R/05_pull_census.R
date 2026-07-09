@@ -77,7 +77,7 @@ pull_places <- function(base, vars, tag) {
 }
 
 dec2000 <- pull_places("https://api.census.gov/data/2000/dec/sf1", "P001001", "dec2000")
-dec2010 <- pull_places("https://api.census.gov/data/2010/dec/sf1", "P0010001", "dec2010")
+dec2010 <- pull_places("https://api.census.gov/data/2010/dec/sf1", "P001001", "dec2010")
 acs2023 <- pull_places("https://api.census.gov/data/2023/acs/acs5",
                        "B01003_001E,B19013_001E", "acs2023")
 sf3_2000 <- pull_places("https://api.census.gov/data/2000/dec/sf3", "P053001", "sf3_2000")
@@ -122,7 +122,7 @@ sub24 <- read_csv(dl("https://www2.census.gov/programs-surveys/popest/datasets/2
 
 places <- gaz |>
   left_join(keyed_col(dec2000, "P001001", "pop2000_k"), by = "geoid") |>
-  left_join(keyed_col(dec2010, "P0010001", "pop2010_k"), by = "geoid") |>
+  left_join(keyed_col(dec2010, "P001001", "pop2010_k"), by = "geoid") |>
   left_join(keyed_col(acs2023, "B01003_001E", "pop_now_k"), by = "geoid") |>
   left_join(keyed_col(acs2023, "B19013_001E", "income_now"), by = "geoid") |>
   left_join(keyed_col(sf3_2000, "P053001", "income1999"), by = "geoid") |>
