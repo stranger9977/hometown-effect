@@ -30,7 +30,8 @@ p <- rae |>
        x = NULL, y = "Observed / expected",
        caption = "Data: nflverse. Baseline: days-in-month adjusted uniform.") +
   theme_minimal(base_size = 16) +
-  theme(panel.grid.minor = element_blank())
+  theme(panel.grid.minor = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1, size = rel(0.65)))
 
 ggsave("docs/figures/rae_nfl.png", p, width = 12, height = 6.75, dpi = 320)
 cat("wrote docs/figures/rae_nfl.png\n")

@@ -34,9 +34,9 @@ normalize_school <- function(x) {
   x |>
     str_to_lower() |>
     str_replace_all("\\bst[.]?\\s", "saint ") |>
-    str_remove_all("\\b(senior|junior|jr|sr)\\b") |>
-    str_remove_all("\\b(high school|highschool|high|school|hs|academy|prep|preparatory)\\b") |>
     str_replace_all("[^a-z ]", "") |>
+    str_remove_all("\\b(senior|junior|jr|sr)\\b") |>
+    str_remove_all("\\b(high school|highschool|high|school|hs|h s|academy|prep|preparatory)\\b") |>
     str_squish()
 }
 

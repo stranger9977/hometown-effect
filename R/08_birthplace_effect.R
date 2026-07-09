@@ -50,11 +50,12 @@ p1 <- ggplot(effect, aes(bin, rep_ratio, fill = era)) +
        y = "Representation ratio (1 = proportional)",
        fill = "Rookie era",
        caption = sprintf(
-         "Data: nflverse + ESPN + US Census (decennial 2000/2010, ACS 2023 by era). %.0f%% of matched players lacked a vintage population and are excluded.",
+         "Data: nflverse + ESPN + US Census. Population vintages 2000/2010/2023 by era; %.0f%% of matched players lacked a vintage population and are excluded.",
          100 * no_vintage_pop)) +
   theme_minimal(base_size = 16) +
   theme(panel.grid.minor = element_blank(),
-        axis.text.x = element_text(angle = 30, hjust = 1))
+        axis.text.x = element_text(angle = 30, hjust = 1),
+        plot.caption = element_text(hjust = 0, size = rel(0.7)))
 ggsave("docs/figures/cote_bins.png", p1, width = 12, height = 6.75, dpi = 320)
 
 # Density gradient: deciles of place density (people/sq mi), share of players per decile

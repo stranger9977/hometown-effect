@@ -7,6 +7,11 @@ test_that("parse_sleeper_hs handles paren-state, bare, and foreign formats", {
   expect_equal(out$hs_state, c("TX", NA, NA))   # non-US-state parens -> NA state
 })
 
+test_that("normalize_school handles spaced and dotted H.S. abbreviations", {
+  expect_equal(normalize_school("Whitehouse H S"), normalize_school("Whitehouse High School"))
+  expect_equal(normalize_school("Mater Dei H.S."), normalize_school("Mater Dei High School"))
+})
+
 test_that("match_schools finds unique in-state name matches", {
   nces <- tibble(name = c("Whitehouse High School", "Central High School",
                           "Central High School"),
