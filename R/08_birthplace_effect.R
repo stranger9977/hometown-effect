@@ -8,13 +8,6 @@ places <- read_parquet("data/processed/census_places.parquet")
 pl_vintage  <- c("1990s" = "pop2000", "2000s" = "pop2000",
                  "2010s" = "pop2010", "2020s" = "pop_now")
 
-vintage_pop <- function(df) {
-  df |> mutate(pop = case_when(
-    era %in% c("1990s", "2000s") ~ matched_pop2000,
-    era == "2010s"               ~ matched_pop2010,
-    era == "2020s"               ~ matched_pop_now))
-}
-
 player_bins <- matched |>
   vintage_pop() |>
   filter(!is.na(pop)) |>

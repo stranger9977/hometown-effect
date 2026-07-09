@@ -16,3 +16,15 @@ cote_bin <- function(pop) {
                  "50k–100k", "100k–250k", "250k–500k", "500k+"),
       right = FALSE, ordered_result = TRUE)
 }
+
+# Era -> Census population vintage. Rookie/debut era determines which
+# decennial/ACS population column approximates "population when this player
+# grew up": 1990s/2000s rookies -> pop2000, 2010s -> pop2010, 2020s -> pop_now.
+# Expects matched_pop2000/matched_pop2010/matched_pop_now + era columns
+# (the shape match_places() produces); returns df with a `pop` column added.
+vintage_pop <- function(df) {
+  df |> dplyr::mutate(pop = dplyr::case_when(
+    era %in% c("1990s", "2000s") ~ matched_pop2000,
+    era == "2010s"               ~ matched_pop2010,
+    era == "2020s"               ~ matched_pop_now))
+}
