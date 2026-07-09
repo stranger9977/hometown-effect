@@ -1,4 +1,5 @@
 suppressMessages({ library(dplyr); library(arrow); library(sf); library(usmap); library(ggplot2) })
+source("R/lib/theme_hometown.R")
 
 matched <- read_parquet("data/processed/hometown.parquet") |>
   filter(!is.na(hometown_source), !is.na(hometown_lat), !is.na(hometown_lon)) |>
@@ -27,16 +28,22 @@ write.csv(rates, "data/processed/county_rates.csv", row.names = FALSE)
 p <- plot_usmap(regions = "counties",
                 data = rates |> select(fips = county_fips, per_million),
                 values = "per_million", linewidth = 0) +
-  scale_fill_viridis_c(option = "magma", direction = -1, trans = "sqrt",
+  scale_fill_viridis_c(option = "magma", direction = -1, transform = "sqrt",
                        na.value = "grey92",
-                       name = "NFL players\nper 1M residents") +
-  labs(title = "Where NFL players are from, per capita",
-       subtitle = "Players with rookie seasons 1990–2025, by hometown county (high school where known, else birthplace)",
-       caption = "Data: nflverse + ESPN + Sleeper + NCES + US Census. Grey: no matched players.") +
-  theme(plot.title = element_text(size = 20, face = "bold"),
-        plot.subtitle = element_text(size = 14),
-        legend.position = "right",
-        plot.background = element_rect(fill = "white", colour = NA))
-ggsave("docs/figures/county_map.png", p, width = 12, height = 8, dpi = 320, bg = "white")
+                       name = "NFL players\nper 1M residents",
+                       guide = guide_colourbar(barwidth = unit(0.45, "lines"),
+                                               barheight = unit(7, "lines"))) +
+  labs(title = "The Deep South produces NFL players at the highest per-capita rates",
+       subtitle = "NFL players per 1 million residents by hometown county (high school where known, else birthplace), rookie seasons 1990-2025",
+       caption = fig_caption("nflverse + ESPN + Sleeper + NCES + US Census",
+                             "US counties, players with rookie seasons 1990-2025.",
+                             "Grey: no matched players.")) +
+  theme_hometown_legend(grid = "none", position = "inside") +
+  theme(legend.position.inside = c(0.98, 0.06),
+        legend.justification.inside = c(1, 0),
+        panel.grid = element_blank(),
+        axis.text  = element_blank(),
+        axis.title = element_blank())
+save_fig("docs/figures/county_map.png", p, w = 12, h = 8)
 cat("top 10 counties by per-capita production (min 5 players):\n")
 rates |> filter(players >= 5) |> arrange(desc(per_million)) |> head(10) |> print()

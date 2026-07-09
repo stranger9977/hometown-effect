@@ -1,4 +1,5 @@
 suppressMessages({ library(dplyr); library(arrow); library(ggplot2); library(tidyr) })
+source("R/lib/theme_hometown.R")
 
 matched <- read_parquet("data/processed/birthplace_matched.parquet") |>
   filter(match_tier != "unmatched", !is.na(era))
@@ -48,23 +49,38 @@ if (any(income_tbl$share > 0.6)) {
   warning("A quartile share exceeds 0.6 -- inspect the weighted cutpoints before trusting this figure.")
 }
 
+# In-panel era key: label the four bars of the Q1 group once, in era hue
+# darkened to label ink (theme direct-label note), replacing the legend.
+era_ink <- setNames(
+  grDevices::rgb(t(grDevices::col2rgb(pal_era) * 0.72), maxColorValue = 255),
+  names(pal_era))
+era_key <- income_tbl |> filter(income_quartile == 1)
+
 p <- ggplot(income_tbl, aes(factor(income_quartile), share, fill = era)) +
-  geom_hline(yintercept = 0.25, linetype = "dashed", color = "grey40") +
+  geom_baseline(0.25) +
   geom_col(position = position_dodge(width = 0.8), width = 0.7) +
-  scale_fill_manual(values = c("1990s" = "#A6BDDB", "2000s" = "#74A9CF",
-                               "2010s" = "#2B8CBE", "2020s" = "#045A8D")) +
+  geom_text(data = era_key,
+            aes(label = era, colour = era, group = era),
+            position = position_dodge(width = 0.8),
+            vjust = -0.7, size = 3.1, fontface = "bold") +
+  scale_fill_manual(values = pal_era) +
+  scale_colour_manual(values = era_ink) +
   scale_x_discrete(labels = c("Q1 (poorest)", "Q2", "Q3", "Q4 (richest)")) +
-  labs(title = "Do NFL players increasingly come from richer hometowns?",
-       subtitle = "Share of players by hometown income quartile (population-weighted, era-matched vintages)\nDashed line = proportional (25%)",
-       x = "Hometown median household income quartile", y = "Share of players",
-       fill = "Rookie era",
-       caption = sprintf(
-         "Data: nflverse + ESPN + US Census (2000 SF3 income for 1990s/2000s cohorts, ACS 2023 for 2010s/2020s).\n%.0f%% of matched players lacked a vintage income value and are excluded.",
-         100 * no_income_share)) +
-  theme_minimal(base_size = 16) +
-  theme(panel.grid.minor = element_blank(),
-        plot.caption = element_text(hjust = 0, size = rel(0.7)))
-ggsave("docs/figures/income_gradient.png", p, width = 12, height = 6.75, dpi = 320)
+  scale_y_continuous(labels = scales::label_percent(accuracy = 1),
+                     expand = expansion(mult = c(0, 0.05))) +
+  coord_cartesian(clip = "off") +
+  labs(title = "The richest hometowns went from 10% of NFL players to 25%",
+       subtitle = paste0(
+         "Share of players by hometown median household income quartile, population-weighted with era-matched vintages.\n",
+         "Rookie eras 1990s to 2020s. Dashed line: proportional share, 25%."),
+       x = NULL, y = "Share of players",
+       caption = fig_caption(
+         source = "nflverse + ESPN + US Census (2000 SF3 income for 1990s/2000s cohorts, ACS 2023 for 2010s/2020s)",
+         universe = "NFL players matched to a US census place, by rookie era.",
+         note = sprintf("\n%.0f%% of matched players lack a vintage income value and are excluded.",
+                        100 * no_income_share))) +
+  theme_hometown()
+save_fig("docs/figures/income_gradient.png", p)
 
 print(income_tbl |> pivot_wider(names_from = era, values_from = share, id_cols = income_quartile))
 cat("\nwrote income_gradient.png + income_table.csv\n")

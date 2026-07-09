@@ -2,6 +2,7 @@ suppressMessages({
   library(dplyr); library(arrow); library(ggplot2); library(tidyr); library(tibble)
 })
 source("R/lib/places.R")
+source("R/lib/theme_hometown.R")
 
 dir.create("docs/figures", showWarnings = FALSE, recursive = TRUE)
 dir.create("data/processed", showWarnings = FALSE, recursive = TRUE)
@@ -26,11 +27,7 @@ cuts <- function(w) sapply(c(.25, .5, .75), function(q) w$income[which.max(w$cw 
 cut99  <- cuts(wq(places$income1999, places$pop2000))
 cutnow <- cuts(wq(places$income_now, places$pop_now))
 
-era_palette   <- c("1990s" = "#A6BDDB", "2000s" = "#74A9CF",
-                    "2010s" = "#2B8CBE", "2020s" = "#045A8D")
-sport_palette <- c(NFL = "#0072B2", MLB = "#D55E00", NHL = "#009E73", NBA = "#CC79A7")
-era_levels    <- c("1990s", "2000s", "2010s", "2020s")
-caption_theme <- theme(plot.caption = element_text(hjust = 0, size = rel(0.7)))
+era_levels <- c("1990s", "2000s", "2010s", "2020s")
 
 us_filter <- function(df) {
   df |> filter(birth_country == "USA", birth_state %in% c(state.abb, "DC"))
@@ -38,9 +35,13 @@ us_filter <- function(df) {
 
 sport_meta <- tribble(
   ~sport,  ~label, ~source_label,
+  ~income_title,
   "mlb",   "MLB",  "Lahman database",
+  "MLB's share of players from the richest hometowns has doubled since the 1990s",
   "nhl",   "NHL",  "NHL API",
-  "nba",   "NBA",  "Basketball-Reference"
+  "Nearly half of recent US-born NHL players grew up in the richest quartile",
+  "nba",   "NBA",  "Basketball-Reference",
+  "Most NBA players still come from below-median-income hometowns"
 )
 
 # ================= Per sport: match, income quartile table, figure =================
@@ -77,26 +78,39 @@ for (i in seq_len(nrow(sport_meta))) {
   min_cell <- min(income_tbl$n)
   thin_note <- ""
   if (min_cell < 30) {
-    thin_note <- sprintf(" %s's smallest era x quartile cell has only n=%d players -- read thin cells cautiously.",
+    thin_note <- sprintf("\n%s's smallest era x quartile cell has only n=%d players; read thin cells cautiously.",
                           lab, min_cell)
   }
+  # Spec rule 11: NHL always carries a small-n disclosure (one compact line
+  # replacing the generic thin-cell note, so the caption stays at 3 lines).
+  if (s == "nhl") {
+    era_n <- income_tbl |> group_by(era) |> summarise(n = sum(n), .groups = "drop")
+    thin_note <- sprintf("\nNHL is small: per-era n runs %d to %d players and quartile cells are dozens (smallest n=%d); read thin cells cautiously.",
+                         min(era_n$n), max(era_n$n), min_cell)
+  }
 
+  # 4-era dodge keeps the one-row bottom legend (spec rule 8 exception:
+  # in-panel labels over bars 0.2 x-units apart physically collide).
   p <- ggplot(income_tbl, aes(factor(income_quartile), share, fill = era)) +
-    geom_hline(yintercept = 0.25, linetype = "dashed", color = "grey40") +
+    geom_baseline(0.25) +
     geom_col(position = position_dodge(width = 0.8), width = 0.7) +
-    scale_fill_manual(values = era_palette) +
+    scale_fill_manual(values = pal_era) +
     scale_x_discrete(labels = c("Q1 (poorest)", "Q2", "Q3", "Q4 (richest)")) +
-    labs(title = sprintf("Do %s players increasingly come from richer hometowns?", lab),
-         subtitle = "Share of players by hometown income quartile (population-weighted, era-matched vintages)\nDashed line = proportional (25%)",
-         x = "Hometown median household income quartile", y = "Share of players",
-         fill = "Career-start era",
-         caption = sprintf(
-           "Data: %s + US Census (2000 SF3 income for 1990s/2000s cohorts, ACS 2023 for 2010s/2020s).\n%.0f%% of matched players lacked a vintage income value and are excluded.%s",
-           src, 100 * no_income_share, thin_note)) +
-    theme_minimal(base_size = 16) +
-    theme(panel.grid.minor = element_blank(),
-          plot.caption = element_text(hjust = 0, size = rel(0.7)))
-  ggsave(sprintf("docs/figures/income_gradient_%s.png", s), p, width = 12, height = 6.75, dpi = 320)
+    scale_y_continuous(labels = scales::label_percent(accuracy = 1),
+                       expand = expansion(mult = c(0, 0.05))) +
+    labs(title = sport_meta$income_title[i],
+         subtitle = "Share of players by hometown median household income quartile (population-weighted, era-matched vintages). Dashed line: proportional (25%).",
+         x = NULL, y = "Share of players",
+         caption = fig_caption(
+           paste0(src, " + US Census"),
+           "US-born players, career starts 1990-2025.",
+           sprintf("\nIncome vintages: 2000 SF3 for 1990s/2000s cohorts, ACS 2023 for 2010s/2020s. %.0f%% of matched players lacked a vintage income value and are excluded.%s",
+                   100 * no_income_share, thin_note))) +
+    theme_hometown() +
+    theme(legend.position = "bottom",
+          legend.title = element_blank(),
+          legend.key.size = unit(0.7, "lines"))
+  save_fig(sprintf("docs/figures/income_gradient_%s.png", s), p)
 
   cat(sprintf("wrote income_gradient_%s.png (min era x quartile cell n = %d)\n", s, min_cell))
 }
@@ -160,23 +174,37 @@ q4_cross <- income_by_sport |>
   mutate(sport = factor(sport, levels = c("NFL", "MLB", "NHL", "NBA")),
          era = factor(era, levels = era_levels))
 
-p_cross <- ggplot(q4_cross, aes(era, share, color = sport, group = sport)) +
-  geom_hline(yintercept = 0.25, linetype = "dashed", color = "grey40") +
-  geom_line(linewidth = 1.2) +
-  geom_point(size = 2.5) +
-  scale_color_manual(values = sport_palette) +
-  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
-  labs(title = "Richest-quartile hometown share, across four sports",
-       subtitle = "Share of players whose hometown is in the top income quartile (population-weighted, era-matched vintages)\nDashed line = proportional (25%)",
-       x = "Career-start era", y = "Share of players from a Q4 (richest-quartile) hometown",
-       color = "Sport",
-       caption = paste0(
-         "Data: nflverse+ESPN, Lahman, NHL API, Basketball-Reference + US Census. US-born players only.\n",
-         "Era-matched income vintages: 2000 SF3 for 1990s/2000s cohorts, ACS 2023 for 2010s/2020s.\n",
-         "Cohort edges differ by up to one season across sports (source conventions).\n",
-         "NHL's US-born sample is small (n~180-370/era, ~45-90/quartile-era after income match) -- read that line cautiously.")) +
-  theme_minimal(base_size = 16) +
-  theme(panel.grid.minor = element_blank()) +
-  caption_theme
-ggsave("docs/figures/crosssport_income.png", p_cross, width = 12, height = 6.75, dpi = 320)
-cat("\nwrote docs/figures/crosssport_income.png\n")
+# End-of-line labels ("NHL 48%" etc.) replace the legend. Final values are
+# at least 4.6 points apart on a 0-50% axis, so labels do not collide with
+# each other; NFL (24.9%) is nudged below the dashed 25% baseline so the
+# baseline does not strike through its label.
+# This PNG is also the static fallback for the interactive version.
+q4_lab <- q4_cross |>
+  filter(era == "2020s") |>
+  mutate(lab = sprintf("%s %.0f%%", sport, round(100 * share)),
+         label_y = share + if_else(sport == "NFL", -0.016, 0))
+
+p_cross <- ggplot(q4_cross, aes(era, share, colour = sport, group = sport)) +
+  geom_baseline(0.25) +
+  geom_line(aes(alpha = sport), linewidth = 1.2) +
+  geom_point(aes(alpha = sport), size = 2.5) +
+  scale_color_manual(values = pal_sport) +
+  scale_alpha_manual(values = c(NFL = 1, MLB = 1, NHL = 0.65, NBA = 1)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1),
+                     limits = c(0, NA), expand = expansion(mult = c(0, 0.06))) +
+  direct_label(q4_lab,
+               aes(x = era, y = label_y, label = lab, colour = sport),
+               nudge_x = 0.12, size = 3.4, inherit.aes = FALSE) +
+  coord_cartesian(clip = "off") +
+  labs(title = "Every sport now draws far more of its players from the richest hometowns",
+       subtitle = "Share of players whose hometown is in the top income quartile (population-weighted, era-matched vintages), by career-start era. Dashed line: proportional (25%).",
+       x = NULL, y = "Share from a Q4 (richest-quartile) hometown",
+       caption = fig_caption(
+         "nflverse+ESPN, Lahman, NHL API, Basketball-Reference + US Census",
+         "US-born players, career starts 1990-2025.",
+         paste0("\nIncome vintages: 2000 SF3 for 1990s/2000s cohorts, ACS 2023 for 2010s/2020s. ",
+                "Cohort edges differ by up to one season across sports.\n",
+                "NHL's US-born sample is small (about 180 to 370 players per era), so its line is drawn lighter: read it with caution."))) +
+  theme_hometown() +
+  theme(plot.margin = margin(10, 70, 8, 10))
+save_fig("docs/figures/crosssport_income.png", p_cross)

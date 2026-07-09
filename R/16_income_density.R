@@ -2,6 +2,7 @@ suppressMessages({
   library(dplyr); library(arrow); library(ggplot2); library(tidyr)
   library(flexplot)
 })
+source("R/lib/theme_hometown.R")
 cat(sprintf("flexplot %s loaded for exploration.\n", packageVersion("flexplot")))
 
 dir.create("output/figures", showWarnings = FALSE, recursive = TRUE)
@@ -14,9 +15,6 @@ stopifnot(all(places$income1999 >= 0, na.rm = TRUE))
 stopifnot(all(places$income_now  >= 0, na.rm = TRUE))
 
 era_levels <- c("1990s", "2000s", "2010s", "2020s")
-era_palette <- c("1990s" = "#A6BDDB", "2000s" = "#74A9CF",
-                  "2010s" = "#2B8CBE", "2020s" = "#045A8D")
-caption_theme <- theme(plot.caption = element_text(hjust = 0, size = rel(0.7)))
 
 # ---------------------------------------------------------------------------
 # Population-weighted quantile cutpoints (same machinery as R/10_income.R).
@@ -94,7 +92,7 @@ if (!is.null(fp1)) {
   fp1 <- fp1 +
     labs(title = "Exploration: hometown income vs. log(density), by era",
          caption = "flexplot exploration only -- no publication claim; raw income scale differs by vintage (1999 SF3 caps ~$200k, ACS 2023 caps ~$250k).")
-  ggsave("output/figures/income_density_flexplot_scatter.png", fp1, width = 14, height = 5, dpi = 200)
+  save_fig("output/figures/income_density_flexplot_scatter.png", fp1, w = 14, h = 5)
 }
 
 fp2 <- tryCatch(
@@ -105,7 +103,7 @@ if (!is.null(fp2)) {
   fp2 <- fp2 +
     labs(title = "Exploration: hometown income distribution by density tercile, by era", x = "Density tercile",
          caption = "flexplot exploration only -- raw player income by density band; no population baseline (see representation-ratio figure for that).")
-  ggsave("output/figures/income_density_flexplot_bands.png", fp2, width = 12, height = 6, dpi = 200)
+  save_fig("output/figures/income_density_flexplot_bands.png", fp2, w = 12, h = 6)
 }
 
 fp3 <- tryCatch(
@@ -113,7 +111,7 @@ fp3 <- tryCatch(
   error = function(e) { message("flexplot view 3 (main effects) failed: ", conditionMessage(e)); NULL }
 )
 if (!is.null(fp3)) {
-  ggsave("output/figures/income_density_flexplot_maineffects.png", fp3, width = 10, height = 6, dpi = 200)
+  save_fig("output/figures/income_density_flexplot_maineffects.png", fp3, w = 10, h = 6)
 }
 cat("wrote flexplot exploration PNGs to output/figures/\n")
 
@@ -195,24 +193,46 @@ print(interaction_tbl |> filter(income_q == 1) |>
 # density_gradient.png's era-colored line-chart convention), faceted by
 # income quartile so the full distribution (not just the extremes) is shown.
 # ---------------------------------------------------------------------------
-p <- ggplot(interaction_tbl, aes(density_band_lab, rep_ratio, color = era, group = era)) +
-  geom_hline(yintercept = 1, linetype = "dashed", color = "grey40") +
-  geom_line(linewidth = 1.1) +
-  geom_point(size = 2.5) +
-  facet_wrap(~income_q_lab, nrow = 1) +
-  scale_color_manual(values = era_palette) +
-  labs(title = "Does hometown income matter more in dense metros -- or has that flipped?",
-       subtitle = "Representation ratio: player share ÷ population share, same income quartile & density band\nFaceted by income quartile, x = density tercile of hometown place; dashed line = proportional",
-       x = "Hometown population-density tercile", y = "Representation ratio (player share ÷ population share)",
-       color = "Rookie era",
-       caption = sprintf(
-         "Data: nflverse + ESPN + US Census. Income vintages as in income_gradient.png (2000 SF3 for 1990s/2000s, ACS 2023 for 2010s/2020s);\ndensity vintages 2000/2010/2023 by era (matched_pop). Population baseline = all US Census places in the same era's density/income vintage regime.\n%.1f%% of matched players lack a vintage income or density value and are excluded. Compositional analysis -- no player-outcome variable, no causal claim.",
-         100 * no_data_share)) +
-  theme_minimal(base_size = 15) +
-  theme(panel.grid.minor = element_blank(),
-        axis.text.x = element_text(angle = 20, hjust = 1)) +
-  caption_theme
+# End-of-line era labels in the LAST facet only (Q4, at the High tercile),
+# replacing the legend. Deterministic vertical spread keeps labels apart;
+# ink = era hue darkened per the theme's direct-label note.
+era_ink <- setNames(
+  grDevices::rgb(t(grDevices::col2rgb(pal_era) * 0.72), maxColorValue = 255),
+  names(pal_era))
+spread_y <- function(y, gap) {
+  o <- order(y); ys <- y[o]
+  if (length(ys) > 1) for (i in 2:length(ys)) ys[i] <- max(ys[i], ys[i - 1] + gap)
+  ys <- ys - (mean(ys) - mean(y[o]))  # re-center so labels track their lines
+  y[o] <- ys
+  y
+}
+era_labels <- interaction_tbl |>
+  filter(income_q == 4, density_band == 3) |>
+  mutate(y_lab = spread_y(rep_ratio, gap = 0.07))
 
-ggsave("docs/figures/income_density_nfl.png", p, width = 13, height = 6.75, dpi = 320)
+p <- ggplot(interaction_tbl, aes(density_band_lab, rep_ratio, color = era, group = era)) +
+  geom_baseline(1) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  direct_label(era_labels, aes(y = y_lab, label = era), nudge_x = 0.16, size = 3.1,
+               colour = era_ink[as.character(era_labels$era)]) +
+  facet_wrap(~income_q_lab, nrow = 1) +
+  scale_color_manual(values = pal_era) +
+  scale_x_discrete(labels = c("Low", "Mid", "High")) +
+  coord_cartesian(clip = "off") +
+  labs(title = "The poor-hometown advantage is fading at every density level",
+       subtitle = paste0(
+         "Representation ratio: player share / population share in the same hometown income quartile and density band; dashed line: parity.\n",
+         "Facets: income quartile; x: hometown density tercile. Rookie eras 1990s to 2020s; ratio axis zoomed, not from 0."),
+       x = "Hometown population-density tercile", y = "Representation ratio",
+       caption = fig_caption(
+         source = "nflverse + ESPN + US Census; income vintages 2000 SF3 (1990s/2000s) and ACS 2023 (2010s/2020s), density vintages 2000/2010/2023 by era",
+         universe = "\nBaseline: all US census places in the same vintage regime.",
+         note = sprintf("%.1f%% of matched players lack income or density and are excluded; compositional analysis, no causal claim.",
+                        100 * no_data_share))) +
+  theme_hometown() +
+  theme(plot.margin = margin(10, 56, 8, 10))
+
+save_fig("docs/figures/income_density_nfl.png", p)
 cat("\nPattern is directionally consistent under both tercile and quintile density binning ",
     "(see data/processed/income_density_table.csv) -- promoted to docs/figures/income_density_nfl.png.\n", sep = "")

@@ -100,6 +100,41 @@
     .tabbar button[aria-selected="true"] { background: #0d5a8a; }
   }
   .tabpanel[hidden] { display: none; }
+  /* Interactive charts */
+  figure.ichart { background: var(--card); }
+  .chartwrap { position: relative; }
+  .chartwrap svg { width: 100%; height: auto; display: block; }
+  .chartwrap svg text { font-family: inherit; }
+  .ichart .ytick, .ichart .xtick { fill: var(--ink-3); font-size: 12px; }
+  .ichart .grid { stroke: var(--line); stroke-width: 1; }
+  .ichart .base { stroke: var(--ink-3); stroke-dasharray: 5 5; opacity: 0.65; stroke-width: 1; }
+  .ichart .baselbl { fill: var(--ink-3); font-size: 11px; }
+  .ichart .xhair { stroke: var(--ink-3); stroke-width: 1; opacity: 0; }
+  .ichart .endlbl { font-size: 13px; font-weight: 600; }
+  .ichart path.series { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  .ichart path.series:focus { outline: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    .ichart path.series, .ichart .pt, .ichart .endlbl {
+      transition: opacity 0.15s linear, stroke-width 0.15s linear;
+    }
+  }
+  .chartwrap .tip {
+    position: absolute; display: none; pointer-events: none;
+    background: var(--card); border: 1px solid var(--line); border-radius: 6px;
+    padding: 6px 9px; font-size: 12px; line-height: 1.5; color: var(--ink-2);
+    white-space: nowrap; z-index: 3;
+  }
+  .tip .sw { display: inline-block; width: 10px; height: 3px; margin-right: 6px; vertical-align: middle; }
+  .erarow { display: flex; gap: 6px; padding: 6px 4px 10px; }
+  .erarow button {
+    font: inherit; font-size: 14px; font-weight: 600; color: var(--ink-2);
+    background: var(--tile-bg); border: 1px solid var(--line); border-radius: 999px;
+    padding: 5px 14px; cursor: pointer;
+  }
+  .erarow button[aria-pressed="true"] { color: #fff; background: var(--accent-deep); border-color: transparent; }
+  @media (prefers-color-scheme: dark) {
+    .erarow button[aria-pressed="true"] { background: #0d5a8a; }
+  }
   footer {
     border-top: 1px solid var(--line); margin-top: 64px; padding-top: 20px;
     font-size: 13.5px; color: var(--ink-3); line-height: 1.7;
@@ -111,19 +146,19 @@
   <header>
     <div class="kicker">The Hometown Effect · NFL / MLB / NHL / NBA</div>
     <h1>Where pro athletes actually come from</h1>
-    <p class="dek">A famous 2006 study said pros come from small towns. Re-run with modern data — suburbs handled honestly, four leagues, hometown income included — the geography of making it looks very different.</p>
+    <p class="dek">A famous 2006 study said pros come from small towns. We re-ran it across four leagues with modern data, counted suburbs as suburbs, and attached hometown income to every player we could.</p>
     <p class="byline">Nick Gurol &amp; Michael MacKelvie · July 2026</p>
   </header>
 
   <div class="prose">
     <h2>The claim being tested</h2>
-    <p>In 2006, a widely cited study in the <em>Journal of Sports Sciences</em> reported that American professional athletes in hockey, basketball, baseball, and golf were <strong>11–21x more likely</strong> to come from towns of 50,000–100,000 people than from big cities, while cities over 500,000 dramatically underproduced. "Pros come from small towns" became sports-science folklore.</p>
-    <p>The study binned athletes by the raw population of their birthplace city — so a kid born in a 25,000-person suburb twenty minutes from a major downtown counted as a small-town kid. Suburbs were never controlled for (a limitation the study's lead author has acknowledged, along with the fact that proximity to larger metros has never been examined), and the analysis had not been systematically revisited for North American pro sports. This project is that revisit.</p>
+    <p>In 2006, a widely cited study in the <em>Journal of Sports Sciences</em> reported that American professional athletes in hockey, basketball, baseball, and golf were 11-21x more likely to come from towns of 50,000-100,000 people than from big cities, while cities over 500,000 dramatically underproduced. "Pros come from small towns" became sports-science folklore.</p>
+    <p>The study binned athletes by the raw population of their birthplace city, so a kid born in a 25,000-person suburb twenty minutes from a major downtown counted as a small-town kid. Suburbs were never controlled for, a limitation the study's lead author has acknowledged, along with the fact that proximity to larger metros has never been examined. No one had rerun the analysis for North American pro sports, so we did.</p>
 
     <div class="tiles">
       <div class="tile"><div class="num">4</div><div class="lbl">leagues: NFL, MLB, NHL, NBA</div></div>
-      <div class="tile"><div class="num">60,000+</div><div class="lbl">player records pulled; US-born players with career starts 1990–2025 form the era cohorts</div></div>
-      <div class="tile"><div class="num">96–98%</div><div class="lbl">matched to a Census place, rounded per era (NFL, MLB, NBA; NHL 87–92%)</div></div>
+      <div class="tile"><div class="num">60,000+</div><div class="lbl">player records pulled; US-born players with career starts 1990-2025 form the era cohorts</div></div>
+      <div class="tile"><div class="num">96-98%</div><div class="lbl">of players matched to a Census place in every era (NHL: 87-92%)</div></div>
       <div class="tile"><div class="num">35%</div><div class="lbl">of NFL players were raised in a different city than they were born in</div></div>
     </div>
     <p style="font-size:14px; color:var(--ink-3);">Method in one line: player birthplaces (and, for the NFL, high-school locations where available) matched to Census places; population, land area, density, and median household income joined from the decennial census and ACS at era-appropriate vintages; suburbs (census-designated places) included; boroughs and consolidated cities resolved; every join's match rate reported.</p>
@@ -140,32 +175,32 @@
   <!-- ============================== NFL ============================== -->
   <section class="tabpanel" id="panel-nfl" role="tabpanel" aria-labelledby="tab-nfl">
     <div class="prose">
-      <h2>Football: the small-town effect isn't there — money increasingly is</h2>
-      <p>For every rookie era, the share of NFL players born in places of each size is compared against the share of Americans living in places that size (a ratio of 1 = proportional). With suburbs counted properly, small towns don't overproduce — places under 2,500 people sit near <strong>0.7</strong> in every era. The engine is <strong>mid-size cities</strong>: 250k–500k places produced about <strong>2x</strong> their share from the 1990s through the 2010s, easing to 1.63 in the 2020s. True big cities slid from 1.21 to <strong>0.87</strong>.</p>
+      <h2>Football: the small-town effect disappears once suburbs count</h2>
+      <p>For every rookie era, we compare the share of NFL players born in places of each size against the share of Americans living in places that size. A ratio of 1 means proportional. With suburbs counted properly, small towns don't overproduce. Places under 2,500 people sit near 0.7 in every era, and mid-size cities do the producing: places of 250k-500k turned out about twice their share from the 1990s through the 2010s, easing to 1.63 in the 2020s. True big cities slid from 1.21 to 0.87.</p>
     </div>
     <figure>
       <img src="figures/cote_bins.png" alt="Bar chart: NFL player representation ratio by birthplace population size and rookie era. Places of 250k-500k peak near 2x; places over 500k decline from 1.21 to 0.87; places under 2.5k stay near 0.7 in every era.">
       <figcaption>Representation ratio = share of NFL players born in each place size ÷ share of US population living there. Census places including CDPs (suburbs); population vintages matched to era (2000 / 2010 / 2023).</figcaption>
     </figure>
-    <details class="prose"><summary>Data table — representation ratio by place size and era</summary>
+    <details class="prose"><summary>Data table: representation ratio by place size and era</summary>
       <div class="tablewrap"><table>
         <thead><tr><th>Birthplace size</th><th>1990s</th><th>2000s</th><th>2010s</th><th>2020s</th></tr></thead>
         <tbody>
           <tr><td>&lt;2.5k</td><td>0.69</td><td>0.62</td><td>0.71</td><td>0.74</td></tr>
-          <tr><td>2.5k–10k</td><td>0.74</td><td>0.67</td><td>0.76</td><td>0.87</td></tr>
-          <tr><td>10k–30k</td><td>0.74</td><td>0.82</td><td>0.85</td><td>0.96</td></tr>
-          <tr><td>30k–50k</td><td>0.69</td><td>0.79</td><td>0.94</td><td>1.03</td></tr>
-          <tr><td>50k–100k</td><td>0.97</td><td>0.97</td><td>0.97</td><td>0.94</td></tr>
-          <tr><td>100k–250k</td><td>1.26</td><td>1.28</td><td>1.19</td><td>1.14</td></tr>
-          <tr><td class="hi">250k–500k</td><td class="hi">1.97</td><td class="hi">2.15</td><td class="hi">2.10</td><td class="hi">1.63</td></tr>
+          <tr><td>2.5k-10k</td><td>0.74</td><td>0.67</td><td>0.76</td><td>0.87</td></tr>
+          <tr><td>10k-30k</td><td>0.74</td><td>0.82</td><td>0.85</td><td>0.96</td></tr>
+          <tr><td>30k-50k</td><td>0.69</td><td>0.79</td><td>0.94</td><td>1.03</td></tr>
+          <tr><td>50k-100k</td><td>0.97</td><td>0.97</td><td>0.97</td><td>0.94</td></tr>
+          <tr><td>100k-250k</td><td>1.26</td><td>1.28</td><td>1.19</td><td>1.14</td></tr>
+          <tr><td class="hi">250k-500k</td><td class="hi">1.97</td><td class="hi">2.15</td><td class="hi">2.10</td><td class="hi">1.63</td></tr>
           <tr><td>500k+</td><td>1.21</td><td>1.07</td><td>0.95</td><td>0.87</td></tr>
         </tbody>
       </table></div>
     </details>
 
     <div class="prose">
-      <h3>The urban share is collapsing</h3>
-      <p>Sorting hometowns by population density shows where the change concentrates: the most-urban tenth of hometowns supplied the 1990s' single biggest share of players, and that share has fallen era over era — the 2020s cohort's most-urban decile is its <em>smallest</em>. Recent players come disproportionately from mid-density places instead.</p>
+      <h3>The urban share is shrinking</h3>
+      <p>The change concentrates at the top of the density scale. The most-urban tenth of hometowns supplied the single biggest share of 1990s players. That share has fallen every era since, and in the 2020s cohort the most-urban decile is the smallest one. Recent players come disproportionately from mid-density places instead.</p>
     </div>
     <figure>
       <img src="figures/density_gradient.png" alt="Line chart: share of NFL players by hometown density decile and era. The 1990s line peaks at the most-urban decile; the 2020s line collapses there and is elevated in mid-density deciles.">
@@ -173,20 +208,20 @@
     </figure>
 
     <div class="prose">
-      <h3>The money shift is real — even in football</h3>
-      <p>Football's costs sit with institutions more than families: schools supply the pads, the fields, and the coaching, which has long made it the most accessible major sport for an individual kid — but not a free one. Those institutional costs are paid by communities, and well-funded programs live where the tax base does. With that in mind: ranking every hometown by median household income (population-weighted, era-matched vintages), the share of NFL players from the <strong>richest quarter of American places has gone from 10% to 25%</strong> across four rookie eras, while the share from the poorest quarter fell from 43% to 33%. The trend holds within each income vintage separately, so it isn't a data artifact.</p>
+      <h3>Football's hometowns are getting richer</h3>
+      <p>Football's costs sit with institutions more than families. Schools supply the equipment and the coaching, which has long made football the most accessible major sport for an individual kid. It isn't free, though. Communities pay those institutional costs, and well-funded programs live where the tax base does. Ranked by median household income (population-weighted, era-matched vintages), the richest quarter of American places produced 10% of NFL players in the 1990s and 25% in the 2020s. The share from the poorest quarter fell from 43% to 33%. The trend holds within each income vintage separately, so it isn't a data artifact.</p>
       <div class="tiles">
         <div class="tile hero"><div class="num">10% → 25%</div><div class="lbl">share of NFL players from the richest quarter of hometowns, 1990s → 2020s</div></div>
-        <div class="tile"><div class="num">43% → 33%</div><div class="lbl">share from the poorest quarter (still overrepresented — but shrinking fast)</div></div>
+        <div class="tile"><div class="num">43% → 33%</div><div class="lbl">share from the poorest quarter (still overrepresented, but shrinking)</div></div>
       </div>
-      <p>Both facts matter: the NFL <em>still</em> draws disproportionately from poor places — a 33% share against a proportional 25% — but the direction of travel is unmistakably toward affluence. What this data can't fully separate is the mechanism: families buying development directly (private position coaching and 7-on-7 circuits have grown fast), or richer communities buying better programs. The two imply different fixes — and the same analysis run on the other three leagues (see the Across sports tab) is the natural test.</p>
+      <p>The NFL still draws disproportionately from poor places; 33% is well above the proportional 25%. But the trend runs toward affluence. What this data can't separate is the mechanism. Families may be buying development directly (private position coaching and 7-on-7 circuits have grown fast), or richer communities may be buying better programs. Those imply different fixes, and running the same analysis on the other three leagues (see the Across sports tab) is the natural test.</p>
     </div>
     <figure>
       <img src="figures/income_gradient.png" alt="Bar chart: share of NFL players by hometown median-income quartile and rookie era. The richest-quartile share rises monotonically from about 10 percent to about 25 percent; the poorest-quartile share falls from about 43 to 33 percent.">
       <figcaption>Share of players by hometown income quartile. Quartiles are population-weighted within era-matched income vintages (2000 census income for 1990s/2000s cohorts, ACS 2023 for 2010s/2020s), so "Q4" always means the places where the richest quarter of Americans lived.</figcaption>
     </figure>
     <div class="prose">
-      <p>Where the money effect lives has also moved. In the 1990s, rich hometowns were underrepresented across the board — least severely in dense metros. By the 2020s the picture inverted: players from affluent low- and mid-density places now appear at or above their population share, while affluent urban cores don't. The rich-kid pipeline, to the extent one exists, runs through the suburbs.</p>
+      <p>The money effect has also moved. In the 1990s, rich hometowns were underrepresented across the board, least severely in dense metros. By the 2020s that picture had inverted. Players from affluent low- and mid-density places now appear at or above their population share, while affluent urban cores don't. Whatever rich-kid pipeline exists runs through the suburbs.</p>
     </div>
     <figure>
       <img src="figures/income_density_nfl.png" alt="Faceted chart: representation of richest-quartile hometowns within each density band, by era. Overrepresentation shifts from high-density areas in the 1990s to low- and mid-density areas by the 2020s.">
@@ -195,39 +230,39 @@
 
     <div class="prose">
       <h3>Born in X, raised in Y</h3>
-      <p>Birthplace studies measure where the hospital was, not where an athlete learned the game. For 4,548 modern NFL players with both a birthplace and a geocoded high school, <strong>35% went to high school in a different city than they were born in</strong>. Where the high school is known, it defines the hometown used here.</p>
+      <p>Birthplace studies measure where the hospital was, not where an athlete learned the game. For 4,548 modern NFL players with both a birthplace and a geocoded high school, 35% went to high school in a different city than they were born in. Where the high school is known, it defines the hometown used here.</p>
       <h3>The map</h3>
-      <p>Per capita, the South glows: Noxubee County, MS (611 players per million residents), Fairfax City, VA (494), Morris County, TX (492) — and New Orleans, which has sent 142 players to the NFL since 1990 (392 per million).</p>
+      <p>The per-capita leaders are Southern: Noxubee County, MS (611 players per million residents), Fairfax City, VA (494), and Morris County, TX (492). New Orleans has sent 142 players to the NFL since 1990, which works out to 392 per million.</p>
     </div>
     <figure>
       <img src="figures/county_map.png" alt="US county map: NFL players per million residents by hometown county. The Southeast, Gulf Coast, and east Texas glow hottest.">
-      <figcaption>NFL players (rookie classes 1990–2025) per million residents by hometown county — high-school county where known, else birth county. Grey: no matched players.</figcaption>
+      <figcaption>NFL players (rookie classes 1990-2025) per million residents by hometown county (high-school county where known, otherwise birth county). Grey: no matched players.</figcaption>
     </figure>
 
     <div class="prose">
       <h3>Birth month barely matters in football</h3>
-      <p>The other half of the 2006 study was <em>when</em> athletes are born. The NFL shows almost no relative age effect — no month runs more than ~15% above baseline in any era. Compare that with hockey (see the NHL tab), where the effect is unmistakable.</p>
+      <p>The other half of the 2006 study was about when athletes are born. The NFL shows almost no relative age effect; no month runs more than about 15% above baseline in any era. Hockey does (see the NHL tab).</p>
     </div>
     <figure>
-      <img src="figures/rae_nfl.png" alt="Bar chart: NFL births by month relative to a days-adjusted uniform baseline, faceted by era. Bars hover near 1.0 everywhere.">
-      <figcaption>NFL player births by month vs. a days-in-month-adjusted uniform baseline, by rookie era.</figcaption>
+      <img src="figures/rae_cal_nfl.png" alt="Calendar heatmap: NFL births by month (columns January through December) and rookie era (rows), cells colored by observed/expected ratio. Nearly every cell is near-blank, meaning ratios close to 1.">
+      <figcaption>NFL player births by month vs. a days-in-month-adjusted uniform baseline, by rookie era. Cells are shaded by observed / expected ratio; near-white cells sit close to expected, and ratios are printed only where a month departs from expected by more than 15%.</figcaption>
     </figure>
   </section>
 
   <!-- ============================== MLB ============================== -->
   <section class="tabpanel" id="panel-mlb" role="tabpanel" aria-labelledby="tab-mlb" hidden>
     <div class="prose">
-      <h2>Baseball: the most suburban sport in the set</h2>
-      <p>Baseball's geography is the sharpest rebuke of the small-town story: US-born MLB players from places under 2,500 people appear at <strong>0.16–0.35x</strong> their population share — the deepest rural deficit of any league. Everything from 50k up overproduces, with the familiar 250k–500k peak (2.06x in the 1990s, easing to 1.71 in the 2020s) and big cities right at proportional before slipping to 0.90.</p>
+      <h2>Baseball: the deepest rural deficit of the four leagues</h2>
+      <p>Baseball contradicts the small-town story more sharply than any other league. US-born MLB players from places under 2,500 people appear at 0.16-0.35x their population share, the lowest rural readings in the study. Every bin from 50k to 500k overproduces, peaking at 250k-500k (2.06x in the 1990s, easing to 1.71 in the 2020s). The 500k+ metros are the exception at the top: roughly proportional for three eras, then slipping to 0.90 in the 2020s.</p>
     </div>
     <figure>
       <img src="figures/cote_bins_mlb.png" alt="Bar chart: MLB representation ratio by birthplace population size and era. Rural places sit far below 1; the 250k-500k bin peaks around 2; 500k+ hovers near 1 then slips below.">
-      <figcaption>US-born MLB players (career starts 1990–2025), birthplace matched to Census places incl. CDPs; era-matched population vintages. Source: Lahman database.</figcaption>
+      <figcaption>US-born MLB players (career starts 1990-2025), birthplace matched to Census places incl. CDPs; era-matched population vintages. Source: Lahman database.</figcaption>
     </figure>
     <div class="prose">
-      <p>One reading: modern baseball is a backyard-scarce, facility-dependent sport — travel ball, showcases, year-round leagues — and those live where suburban density and money do.</p>
-      <h3>Money: richer than football at every point in time</h3>
-      <p>Baseball's hometown-income mix has been wealthier than football's in every era, with the same steep climb: the richest-quartile share rose from <strong>14% to 30%</strong> across the four eras while the poorest-quartile share fell from 34% to 24%, dipping just below its proportional share. That is what travel-ball economics predicts.</p>
+      <p>One reading is that modern baseball runs on facilities and organized play (travel ball, showcases, year-round leagues), and those live where suburban density and money do.</p>
+      <h3>Money: richer than football in every era</h3>
+      <p>Baseball's hometown-income mix has been wealthier than football's in every era, and it's climbing just as steeply. The richest-quartile share rose from 14% to 30% across the four eras while the poorest-quartile share fell from 34% to 24%, dipping just below proportional. That's roughly what travel-ball economics would predict.</p>
     </div>
     <figure>
       <img src="figures/income_gradient_mlb.png" alt="Bar chart: share of US-born MLB players by hometown income quartile and era. The richest-quartile share rises from about 14 percent to about 30 percent.">
@@ -235,28 +270,28 @@
     </figure>
     <div class="prose">
       <h3>The map</h3>
-      <p>Per capita since 1990: Fairfax City, VA (304 per million), Defiance County, OH, and the city of St. Louis (150 per million, 42 players — the highest raw count per capita of any sizable baseball county). California and the Sun Belt dominate raw volume.</p>
+      <p>The per-capita leaders since 1990 are Fairfax City, VA (304 per million), Defiance County, OH (155), and the city of St. Louis, which combines real volume (42 players) with a high rate (150 per million). California and the Sun Belt dominate raw volume.</p>
     </div>
     <figure>
       <img src="figures/county_map_mlb.png" alt="US county map: MLB players per million residents by birth county, 1990-2025 career starts.">
-      <figcaption>US-born MLB players (career starts 1990–2025) per million residents by birth county. Grey: no matched players.</figcaption>
+      <figcaption>US-born MLB players (career starts 1990-2025) per million residents by birth county. Grey: no matched players.</figcaption>
     </figure>
     <div class="prose">
       <h3>Birth month</h3>
-      <p>MLB's birth-month distribution is close to flat — September runs modestly hot in recent eras (≈1.13–1.15x, and August hit 1.19x in the 2010s, consistent with late-summer youth-baseball age cutoffs), but nothing approaching hockey's skew.</p>
+      <p>MLB's birth-month distribution is close to flat. September runs modestly hot in recent eras (about 1.13-1.15x), and August hit 1.19x in the 2010s, both consistent with late-summer youth-baseball age cutoffs but nowhere near the size of hockey's January skew.</p>
     </div>
     <figure>
-      <img src="figures/rae_mlb.png" alt="Bar chart: MLB births by month vs. baseline, faceted by era; mostly near 1.0 with a modest August elevation in recent eras.">
-      <figcaption>US MLB player births by month vs. days-adjusted uniform baseline, by era.</figcaption>
+      <img src="figures/rae_cal_mlb.png" alt="Calendar heatmap: MLB births by month (columns January through December) and era (rows), cells colored by observed/expected ratio. Mostly near-blank, with modest warm shading in late summer in recent eras.">
+      <figcaption>US MLB player births by month vs. days-adjusted uniform baseline, by era. Cells are shaded by observed / expected ratio; ratios are printed only where a month departs from expected by more than 15%.</figcaption>
     </figure>
   </section>
 
   <!-- ============================== NHL ============================== -->
   <section class="tabpanel" id="panel-nhl" role="tabpanel" aria-labelledby="tab-nhl" hidden>
     <div class="prose">
-      <h2>Hockey: where the 2006 story half-survives — and the birthday effect fully does</h2>
-      <p>Two caveats first: the geography here covers <strong>US-born players only</strong> (just under 1,000 matched across the four eras — hockey's talent pool is majority Canadian), and with roughly 200–400 players per era the size bins are noisy; the chart below pools eras in response. The census match rate is also lower than other sports (87–92%).</p>
-      <p>Within those limits: hockey shows the strongest <em>anti</em>-big-city pattern of the four sports — 500k+ metros never reach 0.8 in any era — while the 250k–500k band peaks above 2x, and the rural deficit, though real, is shallower than baseball's or basketball's. Hockey's geography is small-metro and northern: the per-capita map is a Minnesota–Michigan–New England story.</p>
+      <h2>Hockey: the closest thing to the 2006 story, birthday effect included</h2>
+      <p>Two caveats first. The geography here covers US-born players only, just under 1,000 matched across the four eras, because hockey's talent pool is majority Canadian. And with roughly 200-400 players per era the size bins are noisy, so the chart below pools eras. The census match rate is also lower than in the other sports (87-92%).</p>
+      <p>Within those limits, hockey shows the strongest anti-big-city pattern of the four sports. In the underlying per-era table, metros of 500k+ never reach 0.8 and the 250k-500k band peaks above 2x; the chart pools eras to keep those bars stable. The rural deficit is real but shallower than baseball's or basketball's. Hockey's geography is small-metro and northern; the per-capita map runs through Minnesota, Michigan, and New England.</p>
     </div>
     <figure>
       <img src="figures/cote_bins_nhl.png" alt="Bar chart: NHL representation ratio by birthplace population size, pooled eras due to small samples. Big cities sit well below 1; the 250k-500k bin exceeds 2.">
@@ -264,27 +299,27 @@
     </figure>
     <div class="prose">
       <h3>The map</h3>
-      <p>Per capita since 1990: Itasca County, MN (198 per million), Grand Forks County, ND, Clay County, MN — the northern hockey belt, exactly where rinks, winters, and youth hockey culture concentrate.</p>
+      <p>The per-capita leaders since 1990 are Itasca County, MN (198 per million), Grand Forks County, ND, and Clay County, MN. That's the northern hockey belt, where the rinks are and the winters last.</p>
     </div>
     <figure>
       <img src="figures/county_map_nhl.png" alt="US county map: NHL players per million residents by birth county; Minnesota, North Dakota, Michigan, and New England dominate.">
-      <figcaption>US-born NHL players (career starts 1990–2025) per million residents by birth county. Grey: no matched players.</figcaption>
+      <figcaption>US-born NHL players (career starts 1990-2025) per million residents by birth county. Grey: no matched players.</figcaption>
     </figure>
     <div class="prose">
-      <h3>Money: hockey is the rich-kid sport, and it's accelerating</h3>
-      <p>Hockey has the most expensive family bill in American youth sports — ice time, travel, equipment — and its hometowns show it. <strong>Nearly half (47.5%) of recent US-born NHL players come from the richest quarter of American places</strong>, up from 27.5% in the 1990s; the poorest quarter supplies just 11%, down from 31%. No other league is close. (Two grains of salt: NHL samples are small — some cells here hold only 20–30 players — and hockey's northern small-metro geography is itself affluent, so money and geography are tangled; see Across sports.)</p>
+      <h3>Money: hockey draws richest, and the gap is widening</h3>
+      <p>Hockey hands families the biggest bill in American youth sports, and its hometowns show it. Nearly half (47.5%) of recent US-born NHL players come from the richest quarter of American places, up from 27.5% in the 1990s, while the poorest quarter supplies just 11%, down from 31%; no other league approaches either number. NHL samples are small, with some cells here holding only 20-30 players, and hockey's northern small-metro geography is itself affluent, so wealth and location overlap here (more on that in Across sports).</p>
     </div>
     <figure>
       <img src="figures/income_gradient_nhl.png" alt="Bar chart: share of US-born NHL players by hometown income quartile and era. The richest-quartile share rises from about 27 percent to about 48 percent; the poorest falls to about 11 percent.">
-      <figcaption>Share of US-born NHL players by hometown income quartile. Small samples (roughly 180–370 players per era); read direction, not decimals.</figcaption>
+      <figcaption>Share of US-born NHL players by hometown income quartile. Small samples (roughly 180-370 players per era); trust the direction more than the decimals.</figcaption>
     </figure>
     <div class="prose">
-      <h3>The January effect is real, large, and stable</h3>
-      <p>Hockey is the sport that made the relative age effect famous, and the front half of the effect shows up here in every era: January and February births run <strong>1.2–1.5x</strong> expected. The matching late-year deficit is there too, though noisier at these sample sizes — December 2020s births bottom out at <strong>0.53x</strong>. A kid born just after the calendar-year age cutoff is the biggest, oldest kid on every youth team — and decades later, the NHL roster still remembers. (This chart includes all NHL players regardless of birth country; the pool is majority Canadian.)</p>
+      <h3>The January effect shows up in every era</h3>
+      <p>Hockey made the relative age effect famous, and the front half of it appears here in every era. January and February births run 1.2-1.5x expected. The matching late-year deficit exists too, though it's noisier at these sample sizes; December births in the 2020s bottom out at 0.53x. A kid born just after the calendar-year age cutoff spends every youth season as the biggest, oldest player on the ice, and that head start is still visible on NHL rosters decades later. (This chart includes all NHL players regardless of birth country; the pool is majority Canadian.)</p>
     </div>
     <figure>
-      <img src="figures/rae_nhl.png" alt="Bar chart: NHL births by month vs. baseline, faceted by era. January and February bars reach 1.2 to 1.5 in every era; late-year months mostly fall below baseline.">
-      <figcaption>NHL player births (all countries) by month vs. days-adjusted uniform baseline, by era. The January–February surplus appears in every era; the late-year deficit is noisier era to era.</figcaption>
+      <img src="figures/rae_cal_nhl.png" alt="Calendar heatmap: NHL births by month (columns January through December) and era (rows), cells colored by observed/expected ratio. January and February cells shade red at 1.2 to 1.5 in every era, with their ratios printed; several late-year cells shade blue, below expected.">
+      <figcaption>NHL player births (all countries) by month vs. days-adjusted uniform baseline, by era. Cells are shaded by observed / expected ratio, printed where a month departs from expected by more than 15%. The January and February surplus appears in every era; the late-year deficit is noisier era to era.</figcaption>
     </figure>
   </section>
 
@@ -292,23 +327,23 @@
   <section class="tabpanel" id="panel-nba" role="tabpanel" aria-labelledby="tab-nba" hidden>
     <div class="prose">
       <h2>Basketball: the urban exception</h2>
-      <p>Basketball breaks the pattern the other three sports share. Big cities (500k+) are the <strong>only</strong> place-size where the NBA overproduces heavily in every era — 1.84x in the 1990s, still 1.57x in the 2020s — and the 250k–500k band has <em>risen</em> from 1.94x to <strong>2.20x</strong>, the highest reading anywhere in this study. Small towns barely register (0.21–0.67x). Where football, baseball, and hockey are drifting away from the metropolis, basketball remains the city's game — increasingly concentrated in exactly the mid-size-to-large metros everyone else is leaving.</p>
+      <p>Basketball breaks the pattern the other three sports share. Big cities (500k+) are the only place size where the NBA overproduces consistently in every era, at 1.84x in the 1990s and still 1.57x in the 2020s. The 250k-500k band has risen from 1.94x to 2.20x, the highest reading anywhere in this study. Small towns barely register (0.21-0.67x). While football, baseball, and hockey drift away from the metropolis, basketball keeps concentrating in the same mid-size and large metros everyone else is leaving.</p>
     </div>
     <figure>
       <img src="figures/cote_bins_nba.png" alt="Bar chart: NBA representation ratio by birthplace population size and era. 500k+ cities overproduce in every era; the 250k-500k bin rises to 2.2 by the 2020s; small towns sit far below 1.">
-      <figcaption>US-born NBA players (career starts 1990–2025), birthplace matched to Census places incl. CDPs. Source: Basketball-Reference.</figcaption>
+      <figcaption>US-born NBA players (career starts 1990-2025), birthplace matched to Census places incl. CDPs. Source: Basketball-Reference.</figcaption>
     </figure>
     <div class="prose">
       <h3>The map</h3>
-      <p>Per capita since 1990: the city of St. Louis (72 per million), New Orleans (61), and Hinds County, MS — Jackson (57). Basketball's per-capita map is the most urban of the four: independent cities and urban-core counties, not small-county hotspots.</p>
+      <p>The per-capita leaders since 1990 are the city of St. Louis (72 per million), New Orleans (61), and Hinds County, MS, home of Jackson (57). Basketball's per-capita map is the most urban of the four, led by independent cities and urban-core counties rather than small-county hotspots.</p>
     </div>
     <figure>
       <img src="figures/county_map_nba.png" alt="US county map: NBA players per million residents by birth county; urban-core counties lead.">
-      <figcaption>US-born NBA players (career starts 1990–2025) per million residents by birth county. Grey: no matched players.</figcaption>
+      <figcaption>US-born NBA players (career starts 1990-2025) per million residents by birth county. Grey: no matched players.</figcaption>
     </figure>
     <div class="prose">
-      <h3>Money: the least gentrified pipeline in American sports</h3>
-      <p>Basketball is the counterweight to everything the other tabs show about money. Its richest-quartile hometown share is the lowest of the four leagues (<strong>15%</strong> in the 2020s, up from just 6%), its growth is the flattest, and the recent trend actually points down. A third of NBA players still come from the poorest quarter of American places — basketball remains the major sport where talent and money are least correlated, consistent with its urban, low-cost entry points. (One caveat: place-level median income averages over big-city neighborhoods, which can understate affluence differences inside metros.)</p>
+      <h3>Money: the flattest income trend of the four leagues</h3>
+      <p>Basketball is the counterweight to everything the other tabs show about money. Its richest-quartile hometown share is the lowest of the four leagues (15% in the 2020s, up from 6%), its growth is the flattest, and the recent trend actually points down. A third of NBA players still come from the poorest quarter of American places. Of the major sports, basketball is the one where talent and money are least correlated, which fits its urban, low-cost entry points. Worth knowing when reading this: place-level median income averages over big-city neighborhoods, which can understate affluence differences inside metros.</p>
     </div>
     <figure>
       <img src="figures/income_gradient_nba.png" alt="Bar chart: share of US-born NBA players by hometown income quartile and era. The poorest quartile stays largest; the richest-quartile share is the lowest of the four leagues.">
@@ -316,48 +351,56 @@
     </figure>
     <div class="prose">
       <h3>Birth month</h3>
-      <p>Like football and baseball, basketball shows no meaningful relative age effect — the birth-month chart is flat within noise in every era.</p>
+      <p>Like football and baseball, basketball shows no meaningful relative age effect. The birth-month chart is flat within noise in every era.</p>
     </div>
     <figure>
-      <img src="figures/rae_nba.png" alt="Bar chart: NBA births by month vs. baseline, faceted by era; flat within noise.">
-      <figcaption>US NBA player births by month vs. days-adjusted uniform baseline, by era.</figcaption>
+      <img src="figures/rae_cal_nba.png" alt="Calendar heatmap: NBA births by month (columns January through December) and era (rows), cells colored by observed/expected ratio; flat within noise, nearly all cells near-blank.">
+      <figcaption>US NBA player births by month vs. days-adjusted uniform baseline, by era. Cells are shaded by observed / expected ratio; ratios are printed only where a month departs from expected by more than 15%.</figcaption>
     </figure>
   </section>
 
   <!-- ============================== ACROSS ============================== -->
   <section class="tabpanel" id="panel-all" role="tabpanel" aria-labelledby="tab-all" hidden>
     <div class="prose">
-      <h2>Four sports, one engine, one exception</h2>
-      <p>Put the leagues side by side and the revision of the 2006 story writes itself. <strong>No American major league is powered by small towns.</strong> Every league's rural bins sit below proportional in both decades shown. Every league shares the same engine — <strong>mid-size cities of 250k–500k, at roughly 2x</strong> — which is where the "small-town" finding actually lived once suburbs are counted honestly: not Mayberry, but Des Moines, Baton Rouge, and Tulsa.</p>
-      <p>The divergence is at the top of the size scale. Football, baseball, and hockey all underproduce in 500k+ metros, and increasingly so. Basketball alone stays big-city — and its mid-size peak is still rising.</p>
+      <h2>The four leagues side by side</h2>
+      <p>Side by side, the four leagues force a revision of the 2006 story. No American major league is powered by small towns; every league's rural bins sit below proportional in both decades shown. The engine is the same everywhere, mid-size cities of 250k-500k at roughly twice their share. Once suburbs are counted, that band is where the "small-town" finding actually lived: places like Baton Rouge or Tulsa rather than actual small towns.</p>
+      <p>The divergence is at the top of the size scale. Football, baseball, and hockey all underproduce in 500k+ metros, and increasingly so. Basketball alone stays big-city, and its mid-size peak is still rising.</p>
     </div>
-    <figure>
-      <img src="figures/crosssport_bins.png" alt="Line chart, two panels (1990s and 2020s): representation ratio by birthplace size for NFL, MLB, NHL, NBA. All four peak at 250k-500k; in the 2020s panel the NBA stays high at 500k+ while the other three drop below 1.">
-      <figcaption>Representation ratio by birthplace population size, 1990s vs. 2020s career-start cohorts, US-born players. Cohort edges differ by up to one season across sports (source conventions); NHL cells are small — read that line with caution.</figcaption>
+    <figure class="ichart" id="fig-xbins">
+      <div class="chartwrap" id="xbins-chart"></div>
+      <noscript><img src="figures/crosssport_bins.png" alt="Line chart, two panels (1990s and 2020s): representation ratio by birthplace size for NFL, MLB, NHL, NBA. All four peak at 250k-500k; in the 2020s panel the NBA stays high at 500k+ while the other three drop below 1."></noscript>
+      <figcaption>Representation ratio by birthplace population size, 1990s vs. 2020s career-start cohorts, US-born players. Cohort edges differ by up to one season across sports (source conventions). NHL cells are small; the NHL line is drawn at reduced opacity and should be read with caution.</figcaption>
     </figure>
     <div class="prose">
       <h3>When you're born vs. where you're born</h3>
-      <p>The birthday half of the 2006 study survives only where the youth system creates it: hockey's calendar-cutoff club pyramid produces a large, stable January–February surplus, while football, baseball, and basketball — school-based or later-specializing — show essentially none. <em>Where</em> matters in every sport; <em>when</em> only matters where the development system makes age an advantage.</p>
-      <h3>The money question, answered by comparison</h3>
-      <p>The leagues differ in <em>who pays</em> for development: football's costs are carried mostly by schools and communities, while baseball and hockey run through club systems that bill families directly. Run the same hometown-income analysis on all four leagues and the ordering comes out exactly as the family-pay account predicts. <strong>Hockey — the most expensive family sport — draws richest and is accelerating fastest</strong> (richest-quartile share 27% → 48%). Baseball sits richer than football in every era (14% → 30% vs. 10% → 25%). And basketball — the cheapest entry point in American sports — is lowest and flattest (6% → 15%), still drawing a third of its players from the poorest quarter of places.</p>
+      <p>The birthday half of the 2006 study survives only where the youth system creates it. Hockey's calendar-cutoff club pyramid produces a large, stable surplus of January and February births. Football, baseball, and basketball, which run through schools or specialize later, show essentially none. Birth month, unlike geography, only matters where the development system turns age into an advantage.</p>
     </div>
     <figure>
-      <img src="figures/crosssport_income.png" alt="Line chart: richest-quartile hometown share across four eras for each league. NHL highest and rising to 48 percent; MLB above NFL throughout; NBA lowest and flattest around 15 percent; dashed line at the proportional 25 percent.">
+      <img src="figures/rae_cal_all.png" alt="Calendar heatmap: birth-month ratio for NFL, MLB, NHL, and NBA, one row per league, columns January through December, cells colored by observed/expected ratio. Only the NHL row shows strong color: red in January and February with ratios printed, blue late in the year. The other three rows are near-blank.">
+      <figcaption>Birth-month share vs. a days-adjusted uniform baseline, players with career starts 1990-2025, pooled eras; cells shaded by observed / expected ratio, printed where a month departs from expected by more than 15%. The NHL row includes all birth countries (majority Canadian-born) and its month cells hold only hundreds of players each.</figcaption>
+    </figure>
+    <div class="prose">
+      <h3>The income ordering matches who pays</h3>
+      <p>The leagues differ in who pays for development. Football's costs are carried mostly by schools and communities, while baseball and hockey run through club systems that bill families directly. The same hometown-income analysis, run on all four leagues, orders them the way the family-pay account predicts. Hockey, the most expensive family sport, draws richest and is moving fastest (richest-quartile share 27% → 48%). Baseball sits richer than football in every era (14% → 30% vs. 10% → 25%). Basketball, the cheapest entry point in American sports, is lowest and flattest (6% → 15%) and still draws a third of its players from the poorest quarter of places.</p>
+    </div>
+    <figure class="ichart" id="fig-xincome">
+      <div class="chartwrap" id="xincome-chart"></div>
+      <noscript><img src="figures/crosssport_income.png" alt="Line chart: richest-quartile hometown share across four eras for each league. NHL highest and rising to 48 percent; MLB above NFL throughout; NBA lowest and flattest around 15 percent; dashed line at the proportional 25 percent."></noscript>
       <figcaption>Share of each league's US-born players from the richest quarter of American hometowns (population-weighted, era-matched income vintages). Dashed line = proportional share. NHL samples are small; cohort edges differ by up to one season across sports.</figcaption>
     </figure>
     <div class="prose">
-      <p>One honest complication before treating this as proof: money and geography are entangled. Hockey's talent belt (small northern metros) is affluent as a matter of geography; basketball's urban cores read poor at place-level even where the metro is rich. Separating "rich families" from "rich places in the right location" needs the income-by-density interaction run per sport — the NFL version already shows the money effect migrating to the suburbs, and extending it across leagues is the next pass.</p>
-      <h3>Honest limitations</h3>
+      <p>Before treating this as proof, note that money and geography are entangled. Hockey's talent belt of small northern metros is affluent as a matter of geography; basketball's urban cores read poor at place level even where the metro is rich. Separating "rich families" from "rich places in the right location" needs the income-by-density interaction run per sport. The NFL version already shows the money effect migrating to the suburbs, and extending it across leagues is the next pass.</p>
+      <h3>Limitations</h3>
       <ul>
-        <li><strong>Coverage windows differ by source.</strong> NFL birthplaces come from ESPN records (~90% of 1990+ rookies; thinner for 2000s–2010s fringe players). MLB (Lahman) and NBA (Basketball-Reference) are near-complete; NHL geography is US-born only with small samples (200–400 per era) and an 87–92% match rate.</li>
-        <li><strong>Era cohorts are career-start decades</strong>, and cohort edges can differ by one season across sports because the sources report first seasons differently.</li>
-        <li><strong>Birthplace ≠ hometown.</strong> The NFL analysis substitutes high-school location where known (35% of players differ); other sports currently use birthplace only. Birthplace reporting also gravitates toward metro anchor cities, which flatters urban cores slightly.</li>
-        <li><strong>Population and income vintages</strong> are the nearest census (2000 / 2010 / 2023) rather than each player's exact childhood year, and the 2010s cohort has no true income vintage of its own.</li>
-        <li>Township-form municipalities (New Jersey especially) aren't Census "places" and account for most unmatched players (~3–4%).</li>
+        <li>Coverage windows differ by source. NFL birthplaces come from ESPN records (~90% of 1990+ rookies; thinner for 2000s-2010s fringe players). MLB (Lahman) and NBA (Basketball-Reference) are near-complete; NHL geography is US-born only with small samples (200-400 per era) and an 87-92% match rate.</li>
+        <li>Era cohorts are career-start decades, and cohort edges can differ by one season across sports because the sources report first seasons differently.</li>
+        <li>Birthplace is not hometown. The NFL analysis substitutes high-school location where known (35% of players differ); other sports currently use birthplace only. Birthplace reporting also gravitates toward metro anchor cities, which flatters urban cores slightly.</li>
+        <li>Population and income vintages are the nearest census (2000 / 2010 / 2023) rather than each player's exact childhood year, and the 2010s cohort has no true income vintage of its own.</li>
+        <li>Township-form municipalities (New Jersey especially) aren't Census "places" and account for most unmatched players (~3-4%).</li>
       </ul>
       <h3>What's next</h3>
       <ul>
-        <li>Income-by-density interaction for MLB, NHL, NBA — untangling rich families from rich geographies.</li>
+        <li>Income-by-density interaction for MLB, NHL, and NBA, to untangle rich families from rich geographies.</li>
         <li>High-school hometowns beyond the NFL (the source data exists for MLB and NBA).</li>
         <li>Extending the NFL era comparison to pre-1990 rookie classes.</li>
       </ul>
@@ -391,6 +434,360 @@
   var h = location.hash.replace('#', '');
   var initial = document.getElementById('tab-' + h);
   if (initial) activate(initial, false);
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+  var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NS = 'http://www.w3.org/2000/svg';
+  var SPORTS = ['NFL', 'MLB', 'NHL', 'NBA'];
+  var SPORT_COLOR = { NFL: '#0072B2', MLB: '#D55E00', NHL: '#009E73', NBA: '#CC79A7' };
+  var BASE_OPACITY = { NFL: 1, MLB: 1, NHL: 0.65, NBA: 1 };
+
+  /* Data transcribed from data/processed/income_by_sport.csv (Q4 share, percent) */
+  var ERAS = ['1990s', '2000s', '2010s', '2020s'];
+  var Q4_SHARE = {
+    NFL: [9.9, 12.7, 19.1, 24.9],
+    MLB: [14.1, 15.9, 25.5, 29.5],
+    NHL: [27.5, 36.9, 35.8, 47.5],
+    NBA: [6.3, 8.3, 15.8, 15.2]
+  };
+  /* Data transcribed from the crosssport table in data/processed/multisport_tables.rds
+     (also exported flat to data/processed/crosssport_bins.csv) */
+  var BIN_LABELS = ['<2.5k', '2.5k-10k', '10k-30k', '30k-50k', '50k-100k', '100k-250k', '250k-500k', '500k+'];
+  var BINS = {
+    '1990s': {
+      NFL: [0.6903, 0.7364, 0.7432, 0.6854, 0.9741, 1.2564, 1.9699, 1.2120],
+      MLB: [0.1601, 0.5851, 0.7886, 0.9353, 1.1659, 1.4251, 2.0602, 1.0165],
+      NHL: [0.3541, 0.6938, 0.9979, 0.9949, 1.2035, 1.1115, 2.1158, 0.7992],
+      NBA: [0.6669, 0.3197, 0.5660, 0.5163, 0.8582, 1.3521, 1.9371, 1.8433]
+    },
+    '2020s': {
+      NFL: [0.7420, 0.8679, 0.9605, 1.0339, 0.9396, 1.1407, 1.6254, 0.8737],
+      MLB: [0.3179, 0.6536, 0.7692, 1.0855, 1.2687, 1.2916, 1.7073, 0.8991],
+      NHL: [0.7512, 1.1673, 1.2337, 0.8921, 0.9368, 0.8228, 1.5805, 0.7454],
+      NBA: [0.2618, 0.3286, 0.5559, 0.9329, 0.8882, 1.2776, 2.2036, 1.5698]
+    }
+  };
+
+  var charts = [];
+
+  function el(name, attrs, parent) {
+    var n = document.createElementNS(NS, name);
+    for (var k in attrs) if (attrs.hasOwnProperty(k)) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function copyVals(o) {
+    var out = {};
+    SPORTS.forEach(function (s) { out[s] = o[s].slice(); });
+    return out;
+  }
+
+  /* Generic 4-series categorical line chart. cfg:
+     mount, ariaLabel, xLabels, xFont, yMax, yTicks, yFmt, baseY, baseLbl,
+     values, tipVal, endLbl(sport) -> text, pathLabel(sport) -> aria-label */
+  function buildChart(cfg) {
+    var W = 760, H = 400, m = cfg.margin;
+    var plotW = W - m.l - m.r, plotH = H - m.t - m.b;
+    var n = cfg.xLabels.length;
+    var xs = cfg.xLabels.map(function (_, i) { return m.l + i * plotW / (n - 1); });
+    function yS(v) { return m.t + (1 - v / cfg.yMax) * plotH; }
+
+    var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': cfg.ariaLabel }, null);
+    cfg.mount.appendChild(svg);
+
+    cfg.yTicks.forEach(function (t) {
+      el('line', { 'class': 'grid', x1: m.l, x2: W - m.r, y1: yS(t), y2: yS(t) }, svg);
+      var txt = el('text', { 'class': 'ytick', x: m.l - 8, y: yS(t) + 4, 'text-anchor': 'end' }, svg);
+      txt.textContent = cfg.yFmt(t);
+    });
+    cfg.xLabels.forEach(function (lbl, i) {
+      var txt = el('text', { 'class': 'xtick', x: xs[i], y: H - m.b + 20, 'text-anchor': 'middle' }, svg);
+      if (cfg.xFont) txt.setAttribute('font-size', cfg.xFont);
+      txt.textContent = lbl;
+    });
+    el('line', { 'class': 'base', x1: m.l, x2: W - m.r, y1: yS(cfg.baseY), y2: yS(cfg.baseY) }, svg);
+    var bl = el('text', { 'class': 'baselbl', x: m.l + 4, y: yS(cfg.baseY) + cfg.baseLblDy }, svg);
+    bl.textContent = cfg.baseLbl;
+
+    var paths = {}, dots = {}, ends = {};
+    SPORTS.forEach(function (s) {
+      var p = el('path', {
+        'class': 'series', stroke: SPORT_COLOR[s], opacity: BASE_OPACITY[s],
+        tabindex: '0', 'data-sport': s
+      }, svg);
+      paths[s] = p;
+      dots[s] = cfg.xLabels.map(function (_, i) {
+        return el('circle', { 'class': 'pt', r: 3, fill: SPORT_COLOR[s], opacity: BASE_OPACITY[s], 'pointer-events': 'none' }, svg);
+      });
+      var e = el('text', { 'class': 'endlbl', x: xs[n - 1] + 10, fill: SPORT_COLOR[s], opacity: BASE_OPACITY[s] }, svg);
+      e.textContent = cfg.endLbl(s);
+      ends[s] = e;
+    });
+    var xhair = el('line', { 'class': 'xhair', y1: m.t, y2: H - m.b, x1: 0, x2: 0 }, svg);
+    var overlay = el('rect', { x: m.l, y: m.t, width: plotW, height: plotH, fill: 'transparent', 'pointer-events': 'all' }, svg);
+
+    var tip = document.createElement('div');
+    tip.className = 'tip';
+    cfg.mount.appendChild(tip);
+
+    var state = { cur: copyVals(cfg.values), vals: cfg.values, hl: null, raf: null };
+
+    function redraw() {
+      SPORTS.forEach(function (s) {
+        var d = state.cur[s].map(function (v, i) {
+          return (i ? 'L' : 'M') + xs[i].toFixed(1) + ' ' + yS(v).toFixed(1);
+        }).join(' ');
+        paths[s].setAttribute('d', d);
+        state.cur[s].forEach(function (v, i) {
+          dots[s][i].setAttribute('cx', xs[i]);
+          dots[s][i].setAttribute('cy', yS(v));
+        });
+      });
+      var items = SPORTS.map(function (s) {
+        return { s: s, y: yS(state.cur[s][n - 1]) + 4 };
+      }).sort(function (a, b) { return a.y - b.y; });
+      for (var i = 1; i < items.length; i++) {
+        if (items[i].y < items[i - 1].y + 15) items[i].y = items[i - 1].y + 15;
+      }
+      items.forEach(function (it) { ends[it.s].setAttribute('y', it.y); });
+    }
+
+    function setHl(hl) {
+      state.hl = hl;
+      SPORTS.forEach(function (s) {
+        var op = hl ? (s === hl ? BASE_OPACITY[s] : 0.35) : BASE_OPACITY[s];
+        var wPx = hl && s === hl ? 3 : 2;
+        paths[s].setAttribute('opacity', op);
+        paths[s].setAttribute('stroke-width', wPx);
+        ends[s].setAttribute('opacity', op);
+        dots[s].forEach(function (c) { c.setAttribute('opacity', op); });
+      });
+    }
+
+    function hideTip() {
+      tip.style.display = 'none';
+      xhair.setAttribute('opacity', '0');
+    }
+
+    function showTip(idx) {
+      xhair.setAttribute('x1', xs[idx]);
+      xhair.setAttribute('x2', xs[idx]);
+      xhair.setAttribute('opacity', '0.6');
+      while (tip.firstChild) tip.removeChild(tip.firstChild);
+      var head = document.createElement('div');
+      head.style.fontWeight = '600';
+      head.textContent = cfg.tipHead(idx);
+      tip.appendChild(head);
+      SPORTS.map(function (s) { return { s: s, v: state.vals[s][idx] }; })
+        .sort(function (a, b) { return b.v - a.v; })
+        .forEach(function (r) {
+          var row = document.createElement('div');
+          var sw = document.createElement('span');
+          sw.className = 'sw';
+          sw.style.background = SPORT_COLOR[r.s];
+          row.appendChild(sw);
+          row.appendChild(document.createTextNode(cfg.tipVal(r.v) + ' ' + r.s));
+          tip.appendChild(row);
+        });
+      tip.style.display = 'block';
+      var rect = svg.getBoundingClientRect();
+      if (!rect.width) return;
+      var k = rect.width / W;
+      var w = tip.offsetWidth;
+      var left = Math.max(w / 2 + 2, Math.min(xs[idx] * k, rect.width - w / 2 - 2));
+      tip.style.left = left + 'px';
+      tip.style.top = (m.t * k + 6) + 'px';
+      tip.style.transform = 'translateX(-50%)';
+    }
+
+    function nearestLine(px, py) {
+      var cx = Math.max(xs[0], Math.min(px, xs[n - 1]));
+      var j = 0;
+      while (j < n - 2 && xs[j + 1] < cx) j++;
+      var f = (cx - xs[j]) / (xs[j + 1] - xs[j]);
+      var best = null, bestD = Infinity;
+      SPORTS.forEach(function (s) {
+        var y0 = yS(state.cur[s][j]), y1 = yS(state.cur[s][j + 1]);
+        var d = Math.abs(py - (y0 + (y1 - y0) * f));
+        if (d < bestD) { bestD = d; best = s; }
+      });
+      return bestD <= 12 ? best : null;
+    }
+
+    overlay.addEventListener('mousemove', function (e) {
+      var rect = svg.getBoundingClientRect();
+      if (!rect.width) return;
+      var px = (e.clientX - rect.left) * W / rect.width;
+      var py = (e.clientY - rect.top) * H / rect.height;
+      var idx = 0, bd = Infinity;
+      xs.forEach(function (x, i) {
+        var d = Math.abs(px - x);
+        if (d < bd) { bd = d; idx = i; }
+      });
+      showTip(idx);
+      setHl(nearestLine(px, py));
+    });
+    overlay.addEventListener('mouseleave', function () { hideTip(); setHl(null); });
+    SPORTS.forEach(function (s) {
+      paths[s].addEventListener('focus', function () { setHl(s); showTip(n - 1); });
+      paths[s].addEventListener('blur', function () { setHl(null); hideTip(); });
+      paths[s].setAttribute('aria-label', cfg.pathLabel(s));
+    });
+
+    redraw();
+    var chart = {
+      hideTip: hideTip, setHl: setHl, redraw: redraw, state: state,
+      paths: paths, cfg: cfg
+    };
+    charts.push(chart);
+    return chart;
+  }
+
+  /* 4a: cross-sport income chart */
+  var incomeMount = document.getElementById('xincome-chart');
+  if (incomeMount) {
+    buildChart({
+      mount: incomeMount,
+      margin: { l: 48, r: 88, t: 18, b: 34 },
+      ariaLabel: 'Interactive line chart: share of each league’s US-born players from the richest quarter of American hometowns, by career-start era. NHL rises to 48%, MLB to 30%, NFL to 25%, NBA stays lowest at 15%.',
+      xLabels: ERAS,
+      yMax: 52,
+      yTicks: [0, 10, 20, 30, 40, 50],
+      yFmt: function (t) { return t + '%'; },
+      baseY: 25,
+      baseLbl: 'proportional share, 25%',
+      baseLblDy: 15,
+      values: Q4_SHARE,
+      tipHead: function (idx) { return ERAS[idx]; },
+      tipVal: function (v) { return v.toFixed(1) + '%'; },
+      endLbl: function (s) { return s + ' ' + Math.round(Q4_SHARE[s][3]) + '%'; },
+      pathLabel: function (s) {
+        return s + ': richest-quartile hometown share ' + Q4_SHARE[s].map(function (v, i) {
+          return v.toFixed(1) + '% in the ' + ERAS[i];
+        }).join(', ');
+      }
+    });
+  }
+
+  /* 4b: cross-sport bins chart with era toggle */
+  var binsMount = document.getElementById('xbins-chart');
+  if (binsMount) {
+    var startEra = '2020s';
+    var binPathLabel = function (s, era) {
+      return s + ' representation ratio by place size, ' + era + ' cohort: ' +
+        BINS[era][s].map(function (v, i) { return BIN_LABELS[i] + ' ' + v.toFixed(2); }).join(', ');
+    };
+    var binChart = buildChart({
+      mount: binsMount,
+      margin: { l: 40, r: 62, t: 18, b: 38 },
+      ariaLabel: 'Interactive line chart: representation ratio by birthplace population size for NFL, MLB, NHL, and NBA, with a toggle between the 1990s and 2020s cohorts.',
+      xLabels: BIN_LABELS,
+      xFont: 10.5,
+      yMax: 2.4,
+      yTicks: [0, 0.5, 1, 1.5, 2],
+      yFmt: function (t) { return t.toFixed(1); },
+      baseY: 1,
+      baseLbl: '1.0 = proportional',
+      baseLblDy: -5,
+      values: BINS[startEra],
+      tipHead: function (idx) { return BIN_LABELS[idx] + ' · ' + binState.era; },
+      tipVal: function (v) { return v.toFixed(2); },
+      endLbl: function (s) { return s; },
+      pathLabel: function (s) { return binPathLabel(s, startEra); }
+    });
+    var binState = { era: startEra, raf: null };
+
+    var row = document.createElement('div');
+    row.className = 'erarow';
+    var figure = document.getElementById('fig-xbins');
+    figure.insertBefore(row, binsMount);
+    var eraButtons = {};
+    ['1990s', '2020s'].forEach(function (era) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = era;
+      b.setAttribute('aria-pressed', era === startEra ? 'true' : 'false');
+      b.addEventListener('click', function () { setEra(era); });
+      row.appendChild(b);
+      eraButtons[era] = b;
+    });
+
+    function setEra(era) {
+      if (era === binState.era) return;
+      binState.era = era;
+      ['1990s', '2020s'].forEach(function (e2) {
+        eraButtons[e2].setAttribute('aria-pressed', e2 === era ? 'true' : 'false');
+      });
+      binChart.hideTip();
+      binChart.setHl(null);
+      binChart.state.vals = BINS[era];
+      SPORTS.forEach(function (s) {
+        binChart.paths[s].setAttribute('aria-label', binPathLabel(s, era));
+      });
+      if (binState.raf) cancelAnimationFrame(binState.raf);
+      var target = BINS[era];
+      if (REDUCED) {
+        binChart.state.cur = copyVals(target);
+        binChart.redraw();
+        return;
+      }
+      var from = copyVals(binChart.state.cur);
+      var t0 = performance.now(), D = 250;
+      function step(now) {
+        var t = Math.min(1, (now - t0) / D);
+        SPORTS.forEach(function (s) {
+          binChart.state.cur[s] = from[s].map(function (v, i) {
+            return v + (target[s][i] - v) * t;
+          });
+        });
+        binChart.redraw();
+        if (t < 1) binState.raf = requestAnimationFrame(step);
+      }
+      binState.raf = requestAnimationFrame(step);
+    }
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      charts.forEach(function (c) { c.hideTip(); c.setHl(null); });
+    }
+  });
+
+  /* 4c: stat tile count-up */
+  if (!REDUCED && 'IntersectionObserver' in window) {
+    var nums = Array.prototype.slice.call(document.querySelectorAll('.tile .num'));
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        io.unobserve(en.target);
+        animateNum(en.target);
+      });
+    }, { threshold: 0.5 });
+    nums.forEach(function (n2) {
+      if (/\d/.test(n2.textContent)) io.observe(n2);
+    });
+  }
+  function animateNum(elm) {
+    var orig = elm.textContent;
+    var parts = orig.split(/(\d[\d,]*)/);
+    if (parts.join('') !== orig) return;
+    var t0 = performance.now(), D = 700;
+    function frame(now) {
+      var t = Math.min(1, (now - t0) / D);
+      var ease = 1 - Math.pow(1 - t, 3);
+      if (t >= 1) { elm.textContent = orig; return; }
+      elm.textContent = parts.map(function (p, i) {
+        if (i % 2 === 0) return p;
+        var v = Math.round(parseInt(p.replace(/,/g, ''), 10) * ease);
+        return p.indexOf(',') >= 0 ? v.toLocaleString('en-US') : String(v);
+      }).join('');
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
 })();
 </script>
 </body>

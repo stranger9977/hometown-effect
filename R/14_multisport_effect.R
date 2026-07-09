@@ -4,6 +4,7 @@ suppressMessages({
 })
 source("R/lib/bins.R")
 source("R/lib/places.R")
+source("R/lib/theme_hometown.R")
 
 dir.create("docs/figures", showWarnings = FALSE, recursive = TRUE)
 dir.create("data/processed", showWarnings = FALSE, recursive = TRUE)
@@ -14,16 +15,27 @@ counties_sf <- st_read(list.files("data/raw/census/cb_2023_us_county_500k",
                                   pattern = "[.]shp$", full.names = TRUE),
                        quiet = TRUE)
 
-era_palette   <- c("1990s" = "#A6BDDB", "2000s" = "#74A9CF",
-                    "2010s" = "#2B8CBE", "2020s" = "#045A8D")
-sport_palette <- c(NFL = "#0072B2", MLB = "#D55E00", NHL = "#009E73", NBA = "#CC79A7")
+# Legacy theme kept ONLY for the superseded rae_{sport}.png loop below
+# (replaced on the page by R/17 calendar heatmaps; code left as is).
 caption_theme <- theme(plot.caption = element_text(hjust = 0, size = rel(0.7)))
+
+# Axis labels: bin names carry en dashes in the data; render them as hyphens
+# on the axes without touching the underlying tables.
+label_bins <- function(x) gsub("–", "-", x)
 
 sport_meta <- tribble(
   ~sport,  ~label, ~source_label,
+  ~bins_title,
+  ~map_title,
   "mlb",   "MLB",  "Lahman database",
+  "MLB players come disproportionately from mid-size cities in every era",
+  "Per capita, MLB talent flows from the South and California",
   "nhl",   "NHL",  "NHL API",
-  "nba",   "NBA",  "Basketball-Reference"
+  "US-born NHL players cluster in mid-size cities",
+  "US hockey is northern: Minnesota towers over the rest per capita",
+  "nba",   "NBA",  "Basketball-Reference",
+  "The NBA is the big-city league: places over 250k produce twice their share",
+  "NBA talent per capita peaks in big cities like DC, Baltimore, and New Orleans"
 )
 
 us_filter <- function(df) {
@@ -80,23 +92,36 @@ for (i in seq_len(nrow(sport_meta))) {
     mutate(rep_ratio = player_share / pop_share, sport = lab)
   effect_list[[s]] <- effect
 
+  # In-panel era labels were tried first (spec rule 8): four 5-char labels over
+  # dodged bars 0.2 x-units apart physically collide, so this keeps the
+  # sanctioned one-row bottom legend for the 4-era dodge.
+  n_thin_bins <- sum(effect$players < 30)
+  thin_bins_note <- if (n_thin_bins > 0) {
+    sprintf(" %d era x bin cells have under 30 players; read thin bars cautiously.",
+            n_thin_bins)
+  } else ""
+
   p1 <- ggplot(effect, aes(bin, rep_ratio, fill = era)) +
-    geom_hline(yintercept = 1, linetype = "dashed", color = "grey40") +
+    geom_baseline(1) +
     geom_col(position = position_dodge(width = 0.8), width = 0.7) +
-    scale_fill_manual(values = era_palette) +
-    labs(title = sprintf("Where %s players come from, relative to where people live", lab),
-         subtitle = "Representation ratio: share of players born in each place size ÷ share of population living there",
+    scale_fill_manual(values = pal_era) +
+    scale_x_discrete(labels = label_bins) +
+    scale_y_continuous(expand = expansion(mult = c(0, 0.05))) +
+    labs(title = sport_meta$bins_title[i],
+         subtitle = "Representation ratio: share of players born in each place size / share of population living there. US-born players, career starts 1990-2025.",
          x = "Birthplace population (Census places incl. CDPs)",
          y = "Representation ratio (1 = proportional)",
-         fill = "Career-start era",
-         caption = sprintf(
-           "Data: %s + US Census (US-born players only). Population vintages 2000/2010/2023 by era.\n%.0f%% of matched players lacked a vintage population and are excluded. Places incl. incorporated cities/towns and CDPs.",
-           src, 100 * no_vintage_pop)) +
-    theme_minimal(base_size = 16) +
-    theme(panel.grid.minor = element_blank(),
-          axis.text.x = element_text(angle = 30, hjust = 1)) +
-    caption_theme
-  ggsave(sprintf("docs/figures/cote_bins_%s.png", s), p1, width = 12, height = 6.75, dpi = 320)
+         caption = fig_caption(
+           paste0(src, " + US Census"),
+           "US-born players, career starts 1990-2025; population vintages 2000/2010/2023 by era.",
+           sprintf("\n%.0f%% of matched players lacked a vintage population and are excluded. Places include incorporated cities, towns, and CDPs.%s",
+                   100 * no_vintage_pop, thin_bins_note))) +
+    theme_hometown() +
+    theme(axis.text.x = element_text(angle = 30, hjust = 1),
+          legend.position = "bottom",
+          legend.title = element_blank(),
+          legend.key.size = unit(0.7, "lines"))
+  save_fig(sprintf("docs/figures/cote_bins_%s.png", s), p1)
 
   # County map: hometown = birthplace for these sports (no HS data available).
   # Era filter keeps the per-capita denominator (2024 county pop) honest and
@@ -120,17 +145,21 @@ for (i in seq_len(nrow(sport_meta))) {
     scale_fill_viridis_c(option = "magma", direction = -1, trans = "sqrt",
                          na.value = "grey92",
                          name = paste0(lab, " players\nper 1M residents")) +
-    labs(title = sprintf("Where %s players are from, per capita", lab),
-         subtitle = "US-born players with career-start seasons 1990–2025, by birthplace county",
-         caption = sprintf("Data: %s + US Census. Grey: no matched players.", src)) +
-    theme(plot.title = element_text(size = 20, face = "bold"),
-          plot.subtitle = element_text(size = 14),
-          legend.position = "right",
-          plot.background = element_rect(fill = "white", colour = NA)) +
-    caption_theme
-  ggsave(sprintf("docs/figures/county_map_%s.png", s), p_map, width = 12, height = 8, dpi = 320, bg = "white")
-
-  cat(sprintf("wrote cote_bins_%s.png + county_map_%s.png\n", s, s))
+    labs(title = sport_meta$map_title[i],
+         subtitle = "US-born players with career-start seasons 1990-2025, by birthplace county",
+         caption = fig_caption(paste0(src, " + US Census"),
+                               "US-born players, career starts 1990-2025.",
+                               "Grey: no matched players.")) +
+    theme_hometown_legend(grid = "none", position = "inside") +
+    # coord_sf draws graticules with the parent panel.grid element, which the
+    # theme's .x/.y blanks do not reach; erase it outright (spec: no map grid).
+    theme(panel.grid = element_blank(),
+          axis.text = element_blank(),
+          axis.title = element_blank(),
+          legend.position.inside = c(0.9, 0.3),
+          legend.key.height = unit(0.9, "lines"),
+          legend.key.width = unit(0.45, "lines"))
+  save_fig(sprintf("docs/figures/county_map_%s.png", s), p_map, w = 12, h = 8)
 }
 
 # ================= NHL bins chart: pooled eras (small-sample call) =================
@@ -149,7 +178,7 @@ nhl_matched_ok <- match_places(
   vintage_pop()
 
 nhl_super <- nhl_matched_ok |>
-  mutate(super_era = if_else(era %in% c("1990s", "2000s"), "1990s–2000s", "2010s–2020s"))
+  mutate(super_era = if_else(era %in% c("1990s", "2000s"), "1990s-2000s", "2010s-2020s"))
 
 nhl_player_bins <- nhl_super |>
   filter(!is.na(pop)) |>
@@ -158,7 +187,7 @@ nhl_player_bins <- nhl_super |>
   group_by(super_era) |> mutate(player_share = players / sum(players)) |> ungroup()
 
 nhl_pop_bins <- pop_bins |>
-  mutate(super_era = if_else(era %in% c("1990s", "2000s"), "1990s–2000s", "2010s–2020s")) |>
+  mutate(super_era = if_else(era %in% c("1990s", "2000s"), "1990s-2000s", "2010s-2020s")) |>
   group_by(super_era, bin) |>
   summarise(pop_share = mean(pop_share), .groups = "drop")
 
@@ -166,22 +195,39 @@ nhl_super_effect <- nhl_player_bins |>
   left_join(nhl_pop_bins, by = c("super_era", "bin")) |>
   mutate(rep_ratio = player_share / pop_share)
 
+# Two series only, so the era key lives in the panel (spec rule 8): each pooled
+# era labeled above its own bar in the tallest (250k-500k) group, staggered
+# vertically so the long labels cannot collide. Text inks: pooled light hue
+# darkened for contrast (#74A9CF -> #517690), dark hue used as is.
+n_thin_pooled <- sum(nhl_super_effect$players < 30)
+nhl_pool_lab <- nhl_super_effect |>
+  filter(grepl("^250k", bin)) |>
+  mutate(x = as.integer(bin) + if_else(super_era == "1990s-2000s", -0.2, 0.2),
+         ink = if_else(super_era == "1990s-2000s", "#517690", "#045A8D"))
+
 p_nhl_pooled <- ggplot(nhl_super_effect, aes(bin, rep_ratio, fill = super_era)) +
-  geom_hline(yintercept = 1, linetype = "dashed", color = "grey40") +
+  geom_baseline(1) +
   geom_col(position = position_dodge(width = 0.8), width = 0.7) +
-  scale_fill_manual(values = c("1990s–2000s" = "#74A9CF", "2010s–2020s" = "#045A8D")) +
-  labs(title = "Where NHL players come from, relative to where people live",
-       subtitle = "Representation ratio: share of players born in each place size ÷ share of population living there",
+  scale_fill_manual(values = pal_era_pooled) +
+  scale_x_discrete(labels = label_bins) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
+  geom_text(data = nhl_pool_lab,
+            aes(x = x, y = rep_ratio + 0.05, label = super_era, colour = ink),
+            inherit.aes = FALSE, vjust = 0, size = 3, fontface = "bold") +
+  scale_colour_identity() +
+  labs(title = "US-born NHL players cluster in mid-size cities; the smallest towns are catching up",
+       subtitle = "Representation ratio: share of players born in each place size / share of population living there. US-born players, career starts 1990-2025, eras pooled.",
        x = "Birthplace population (Census places incl. CDPs)",
        y = "Representation ratio (1 = proportional)",
-       fill = "Career-start era",
-       caption = "Data: NHL API + US Census (US-born players only). Eras pooled: 1990s+2000s, 2010s+2020s.\nNHL's small US-born sample (n≈1.5k) left most single-era×bin cells under 30 players; pooling stabilizes them. Places incl. incorporated cities/towns and CDPs.") +
-  theme_minimal(base_size = 16) +
-  theme(panel.grid.minor = element_blank(),
-        axis.text.x = element_text(angle = 30, hjust = 1)) +
-  caption_theme
-ggsave("docs/figures/cote_bins_nhl.png", p_nhl_pooled, width = 12, height = 6.75, dpi = 320)
-cat("wrote cote_bins_nhl.png (pooled eras, overwrites the per-era version above)\n")
+       caption = fig_caption(
+         "NHL API + US Census",
+         "US-born players, career starts 1990-2025; population vintages 2000/2010/2023 by era.",
+         sprintf("\nEras pooled (1990s+2000s, 2010s+2020s): the small US-born sample (about 1.5k players) left most single-era cells under 30 players.\n%d pooled era x bin cells still have under 30 players. Places include incorporated cities, towns, and CDPs.",
+                 n_thin_pooled))) +
+  theme_hometown() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+save_fig("docs/figures/cote_bins_nhl.png", p_nhl_pooled)
+cat("cote_bins_nhl.png is the pooled-era version (overwrites the per-era one above)\n")
 
 # ================= Cross-sport match table =================
 nfl_match <- read.csv("data/processed/match_report.csv", stringsAsFactors = FALSE) |>
@@ -260,24 +306,45 @@ cross_effect <- bind_rows(
   filter(era %in% c("1990s", "2020s")) |>
   mutate(sport = factor(sport, levels = c("NFL", "MLB", "NHL", "NBA")))
 
-p_cross <- ggplot(cross_effect, aes(bin, rep_ratio, color = sport, group = sport)) +
-  geom_hline(yintercept = 1, linetype = "dashed", color = "grey40") +
-  geom_line(linewidth = 1.2) +
-  geom_point(size = 2.5) +
-  scale_color_manual(values = sport_palette) +
+# End-of-line sport labels in each facet, legend erased. Deterministic nudges:
+# in the 2020s facet MLB (0.90) and NFL (0.87) end 0.03 apart and NHL (0.75)
+# sits just below, so they fan apart; MLB's 1990s end (1.02) moves up so the
+# dashed baseline at 1 does not strike through its label.
+cross_lab <- cross_effect |>
+  filter(bin == "500k+") |>
+  mutate(label_y = rep_ratio + case_when(
+    era == "1990s" & sport == "MLB" ~ 0.05,
+    era == "2020s" & sport == "MLB" ~ 0.04,
+    era == "2020s" & sport == "NFL" ~ -0.045,
+    era == "2020s" & sport == "NHL" ~ -0.085,
+    TRUE ~ 0))
+
+p_cross <- ggplot(cross_effect, aes(bin, rep_ratio, colour = sport, group = sport)) +
+  geom_baseline(1) +
+  geom_line(aes(alpha = sport), linewidth = 1) +
+  geom_point(aes(alpha = sport), size = 2) +
+  scale_color_manual(values = pal_sport) +
+  scale_alpha_manual(values = c(NFL = 1, MLB = 1, NHL = 0.65, NBA = 1)) +
+  scale_x_discrete(labels = label_bins) +
+  scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0, 0.05))) +
   facet_wrap(~era) +
-  labs(title = "The small-town effect across four sports",
-       subtitle = "Representation ratio by birthplace population size: 1990s vs. 2020s career-start cohorts",
+  direct_label(cross_lab,
+               aes(x = bin, y = label_y, label = sport, colour = sport),
+               nudge_x = 0.18, size = 3.2, inherit.aes = FALSE) +
+  coord_cartesian(clip = "off") +
+  labs(title = "Mid-size cities overproduce players in all four sports; basketball is the most urban",
+       subtitle = "Representation ratio: share of players born in each place size / share of population living there. US-born players, 1990s vs 2020s career-start cohorts.",
        x = "Birthplace population (Census places incl. CDPs)",
        y = "Representation ratio (1 = proportional)",
-       color = "Sport",
-       caption = "Data: nflverse+ESPN, Lahman, NHL API, Basketball-Reference + US Census (US-born players only).\nCohort edges differ by up to one season across sports (source conventions).\nNHL's sample is small (n≈1.5k); most NHL cells here have under 30 players — read that line with caution.") +
-  theme_minimal(base_size = 16) +
-  theme(panel.grid.minor = element_blank(),
-        axis.text.x = element_text(angle = 30, hjust = 1)) +
-  caption_theme
-ggsave("docs/figures/crosssport_bins.png", p_cross, width = 12, height = 6.75, dpi = 320)
-cat("wrote crosssport_bins.png\n")
+       caption = fig_caption(
+         "nflverse+ESPN, Lahman, NHL API, Basketball-Reference + US Census",
+         "US-born players only; cohort edges differ by up to one season across sports (source conventions).",
+         "\nNHL's US-born sample is small (about 1.5k; most era x bin cells under 30 players), so its line is drawn lighter: read it with caution.")) +
+  theme_hometown() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1),
+        panel.spacing = unit(2.4, "lines"),
+        plot.margin = margin(10, 46, 8, 10))
+save_fig("docs/figures/crosssport_bins.png", p_cross)
 
 # ================= Save all tables =================
 saveRDS(list(
