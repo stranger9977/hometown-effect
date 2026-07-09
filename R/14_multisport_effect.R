@@ -99,7 +99,10 @@ for (i in seq_len(nrow(sport_meta))) {
   ggsave(sprintf("docs/figures/cote_bins_%s.png", s), p1, width = 12, height = 6.75, dpi = 320)
 
   # County map: hometown = birthplace for these sports (no HS data available).
-  pts_df <- matched |> filter(match_tier != "unmatched", !is.na(lat), !is.na(lon))
+  # Era filter keeps the per-capita denominator (2024 county pop) honest and
+  # matches the NFL map's 1990+ window.
+  pts_df <- matched |>
+    filter(match_tier != "unmatched", !is.na(era), !is.na(lat), !is.na(lon))
   pts <- st_as_sf(pts_df, coords = c("lon", "lat"), crs = st_crs(counties_sf))
   hit <- st_join(pts, counties_sf["GEOID"], join = st_within)
   county_counts <- hit |>
