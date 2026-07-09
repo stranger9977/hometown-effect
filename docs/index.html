@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where NFL Players Actually Come From</title>
+<style>
+  :root {
+    --bg: #fbfbfa;
+    --ink: #1e2126;
+    --ink-2: #4a5058;
+    --ink-3: #778089;
+    --accent: #2B8CBE;
+    --accent-deep: #045A8D;
+    --card: #ffffff;
+    --line: #e3e5e8;
+    --tile-bg: #f1f4f7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16181c;
+      --ink: #e8eaed;
+      --ink-2: #b3b9c0;
+      --ink-3: #848b94;
+      --accent: #62aed4;
+      --accent-deep: #8fc6e2;
+      --card: #1e2126;
+      --line: #2e3238;
+      --tile-bg: #23262c;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.65; font-size: 17px;
+  }
+  main { max-width: 1060px; margin: 0 auto; padding: 0 20px 80px; }
+  .prose { max-width: 720px; margin-left: auto; margin-right: auto; }
+  header { padding: 72px 0 8px; text-align: center; }
+  .kicker {
+    font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600;
+  }
+  h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.15; margin: 12px auto 14px; max-width: 800px; letter-spacing: -0.01em; }
+  .dek { font-size: clamp(17px, 2.2vw, 21px); color: var(--ink-2); max-width: 680px; margin: 0 auto 8px; }
+  .byline { font-size: 14px; color: var(--ink-3); margin-top: 14px; }
+  h2 { font-size: 26px; margin: 56px 0 14px; letter-spacing: -0.01em; }
+  p { margin: 0 0 16px; color: var(--ink-2); }
+  p strong, h2, h1 { color: var(--ink); }
+  a { color: var(--accent); }
+  .tiles {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px; margin: 36px 0 8px;
+  }
+  .tile {
+    background: var(--tile-bg); border: 1px solid var(--line);
+    border-radius: 10px; padding: 18px 16px;
+  }
+  .tile .num { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); line-height: 1.1; }
+  .tile .lbl { font-size: 13px; color: var(--ink-3); margin-top: 6px; line-height: 1.4; }
+  .tile.hero { background: var(--accent-deep); border-color: transparent; }
+  @media (prefers-color-scheme: dark) { .tile.hero { background: #0d3a57; } }
+  .tile.hero .num { color: #ffffff; }
+  .tile.hero .lbl { color: rgba(255,255,255,0.75); }
+  figure {
+    margin: 28px 0 40px; background: #ffffff; border: 1px solid var(--line);
+    border-radius: 12px; padding: 10px; overflow: hidden;
+  }
+  figure img { width: 100%; height: auto; display: block; border-radius: 6px; }
+  figcaption { font-size: 13.5px; color: var(--ink-3); padding: 10px 8px 4px; line-height: 1.5; }
+  details { margin: -22px 0 40px; }
+  summary { cursor: pointer; font-size: 14px; color: var(--ink-3); }
+  .tablewrap { overflow-x: auto; margin-top: 10px; }
+  table { border-collapse: collapse; font-size: 14px; min-width: 480px; }
+  th, td { padding: 6px 12px; text-align: right; border-bottom: 1px solid var(--line); color: var(--ink-2); }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { color: var(--ink); font-weight: 600; }
+  td.hi { color: var(--accent-deep); font-weight: 600; }
+  .note {
+    border-left: 3px solid var(--accent); background: var(--tile-bg);
+    padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 24px 0;
+    font-size: 15px; color: var(--ink-2);
+  }
+  ul { margin: 0 0 16px 22px; color: var(--ink-2); }
+  li { margin-bottom: 8px; }
+  footer {
+    border-top: 1px solid var(--line); margin-top: 64px; padding-top: 20px;
+    font-size: 13.5px; color: var(--ink-3); line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="kicker">The Hometown Effect · NFL Proof of Concept</div>
+    <h1>Where NFL players actually come from</h1>
+    <p class="dek">A famous 2006 study said pro athletes come from small towns. We re-ran it with modern data, fixed its suburb problem, and found a different story.</p>
+    <p class="byline">Nick Gurol &amp; Michael MacKelvie · July 2026 · working draft</p>
+  </header>
+
+  <div class="prose">
+    <h2>The claim we're testing</h2>
+    <p>In 2006, Jean Côté and colleagues published a striking result: American pros in hockey, basketball, baseball, and golf were <strong>11–21x more likely</strong> to come from towns of 50,000–100,000 people than from big cities, and cities over 500,000 dramatically underproduced. "Pros come from small towns" became sports-science folklore.</p>
+    <p>But the study binned athletes by the raw population of their birthplace city. A kid born in a 25,000-person suburb twenty minutes from a major downtown counts as a small-town kid. When Michael asked Côté about this directly, he confirmed: suburbs were never controlled for, proximity to a bigger city was never examined — and the revisit he'd want to see hadn't been done. So we did it.</p>
+
+    <div class="tiles">
+      <div class="tile"><div class="num">25,033</div><div class="lbl">NFL players in the nflverse spine (all-time)</div></div>
+      <div class="tile"><div class="num">14,832</div><div class="lbl">birthplaces recovered (ESPN API, rookie classes 1990–2025)</div></div>
+      <div class="tile"><div class="num">96–98%</div><div class="lbl">of US-born players matched to a Census place, per era</div></div>
+      <div class="tile"><div class="num">5,059</div><div class="lbl">hometowns upgraded to high-school location (Sleeper + NCES)</div></div>
+    </div>
+    <p style="font-size:14px; color:var(--ink-3);">Method in one line: player birthplaces (and, where available, high-school locations) matched to Census places, with population, land area, and density from the decennial census and ACS — era-appropriate vintages, boroughs and consolidated cities handled, match rates reported.</p>
+
+    <h2>Finding 1 — The small-town effect doesn't survive the suburb fix</h2>
+    <p>For every rookie era, we compared the share of NFL players born in places of each size against the share of Americans who lived in places that size. A ratio of 1 means a place size produces exactly its share of players.</p>
+    <p>Small towns don't overproduce. Places under 2,500 people underproduce in <strong>every era</strong>. The real engine of the NFL is <strong>mid-size cities</strong> — places of 250,000–500,000 produced nearly <strong>2x</strong> their share of players through the 1990s–2010s. And true big cities have slid from roughly proportional (1.07) in the 1990s to <strong>0.82</strong> today.</p>
+  </div>
+
+  <figure>
+    <img src="figures/cote_bins.png" alt="Bar chart: NFL player representation ratio by birthplace population size, by rookie era. Mid-size cities of 250k-500k peak near 1.9x in the 1990s-2010s and fall to 1.35x in the 2020s; places over 500k decline steadily to 0.82; places under 2.5k are below 1 in every era.">
+    <figcaption>Representation ratio = share of NFL players born in each place size ÷ share of US population living there. Population vintages matched to era (2000 / 2010 / 2023). Incorporated places; ~5% of matched players lacked a vintage population.</figcaption>
+  </figure>
+  <details class="prose"><summary>Data table — representation ratio by place size and era</summary>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Birthplace size</th><th>1990s</th><th>2000s</th><th>2010s</th><th>2020s</th></tr></thead>
+      <tbody>
+        <tr><td>&lt;2.5k</td><td>0.71</td><td>0.65</td><td>0.81</td><td>0.98</td></tr>
+        <tr><td>2.5k–10k</td><td>0.87</td><td>0.77</td><td>0.92</td><td>1.10</td></tr>
+        <tr><td>10k–30k</td><td>0.84</td><td>0.91</td><td>0.94</td><td>1.08</td></tr>
+        <tr><td>30k–50k</td><td>0.67</td><td>0.80</td><td>0.91</td><td>1.00</td></tr>
+        <tr><td>50k–100k</td><td>0.87</td><td>0.89</td><td>0.93</td><td>0.86</td></tr>
+        <tr><td>100k–250k</td><td>1.21</td><td>1.22</td><td>1.09</td><td>1.05</td></tr>
+        <tr><td class="hi">250k–500k</td><td class="hi">1.82</td><td class="hi">1.95</td><td class="hi">1.90</td><td class="hi">1.35</td></tr>
+        <tr><td>500k+</td><td>1.07</td><td>0.96</td><td>0.83</td><td>0.82</td></tr>
+      </tbody>
+    </table></div>
+  </details>
+
+  <div class="prose">
+    <p>Just as interesting: the effect is <strong>flattening</strong>. In the 2020s, the mid-size peak decays to 1.35x and nearly every other bin drifts toward 1.0. The geography of the NFL is becoming less special — production is spreading out.</p>
+
+    <h2>Finding 2 — It's not density either</h2>
+    <p>Côté told Michael that population size is best read as a <em>proxy</em> for the sports environment of a place, and density is the sharper version of that proxy. Sorting every hometown into density deciles tells the same story from a different angle: the middle of the density distribution produces the most players per capita, and the pattern compresses over time.</p>
+  </div>
+
+  <figure>
+    <img src="figures/density_gradient.png" alt="Line chart: share of NFL players by birthplace population-density decile, by rookie era. The curve peaks in the middle deciles and flattens in recent eras.">
+    <figcaption>Share of players by decile of hometown population density (1 = most rural, 10 = most urban), deciles computed over matched Census places.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h2>Finding 3 — Born in X, raised in Y</h2>
+    <p>The 2006 study — and every replication since — used <em>birthplace</em>. But a birthplace is where the hospital was, not where a player learned football. For 4,548 modern players we have both a birthplace and a geocoded high school, and:</p>
+
+    <div class="tiles">
+      <div class="tile hero"><div class="num">35%</div><div class="lbl">of players went to high school in a different city than the one they were born in</div></div>
+      <div class="tile"><div class="num">4,548</div><div class="lbl">players with both birthplace and high-school city on record</div></div>
+    </div>
+    <p>More than a third of the "birthplace effect" literature's raw material points at the wrong city. Where we have the high school, we use it — that's the hometown standard for everything below.</p>
+
+    <h2>The map — pros per million, by hometown county</h2>
+    <p>Per capita, the South glows. The top-producing counties are small Southern counties and one famous city: <strong>Noxubee County, MS</strong> (611 players per million residents), <strong>Fairfax City, VA</strong> (494), <strong>Morris County, TX</strong> (492), and <strong>Orleans Parish, LA</strong> — New Orleans — which has sent <strong>142 players</strong> to the NFL, 392 per million.</p>
+  </div>
+
+  <figure>
+    <img src="figures/county_map.png" alt="US county choropleth: NFL players per million residents by hometown county. The Southeast, Gulf Coast, and east Texas show the highest per-capita production; Alaska and Hawaii shown as insets.">
+    <figcaption>NFL players (rookie classes 1990–2025) per million residents by hometown county — high-school county where known, else birth county. Grey: no matched players.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h2>A side quest — the relative age effect barely exists in football</h2>
+    <p>The other half of the 2006 paper was <em>when</em> you're born: in youth hockey, January birthdays dominate because age cutoffs make them the oldest kids in their cohort. The NFL shows almost none of this — the strongest month (October) is only about 13% above baseline. Football's school-based, size-sorted development seems to wash out the birthday advantage that club-cutoff sports amplify. That contrast is the point: <strong>where</strong> matters in football; <strong>when</strong> matters in hockey.</p>
+  </div>
+
+  <figure>
+    <img src="figures/rae_nfl.png" alt="Bar chart: NFL births by month relative to a days-adjusted uniform baseline, faceted by rookie era. Bars hover near 1.0 in all eras, indicating a weak relative age effect.">
+    <figcaption>NFL player births by month vs. a days-in-month-adjusted uniform baseline, by rookie era. Ratios near 1.0 = no relative age effect.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h2>What this doesn't show (yet)</h2>
+    <ul>
+      <li><strong>Money.</strong> The pay-to-play hypothesis — are pros increasingly coming from richer zip codes? — needs the census income join we're finishing next, and it's where football (school-based, cheap) versus baseball and hockey (club-based, expensive) should diverge sharply.</li>
+      <li><strong>Other sports.</strong> This page is NFL-only. The 2006 paper's headline sports (hockey, baseball, basketball) come next; the data sources are already verified.</li>
+      <li><strong>Pre-1990 rookies.</strong> ESPN's records thin out before 1990, so the era comparison starts there. A Pro-Football-Reference backfill can extend it to the 1960s.</li>
+    </ul>
+
+    <h2>Honest limitations</h2>
+    <ul>
+      <li>Birthplace coverage is ~90% of 1990+ rookies (96% for 2020s rookies, ~80% for the 2000s–2010s) — missingness is concentrated in shorter-career players, and we haven't measured whether it correlates with geography.</li>
+      <li>Census place populations currently cover incorporated places; census-designated places (some suburbs) join the denominator in the next data pass. Matched players in those places (~3–6% per era) are excluded from the size-bin chart and counted in its caption.</li>
+      <li>Era comparisons use the nearest census vintage (2000 / 2010 / 2023), not the exact childhood year, and stick to birthplace only — high-school data exists mostly for recent players, and switching proxies mid-timeline would fake a trend.</li>
+      <li>Township-form municipalities (New Jersey especially) aren't Census "places" and account for most of the ~3% of players we couldn't match.</li>
+    </ul>
+  </div>
+
+  <footer class="prose">
+    <p><strong>Sources.</strong> Player data: nflverse, ESPN, Sleeper. School locations: NCES EDGE geocodes (public + private). Population, land area: US Census Bureau (decennial 2000/2010, ACS 2023, popest, Gazetteer). Original study: Côté, Macdonald, Baker &amp; Abernethy (2006), <em>Journal of Sports Sciences</em> 24(10).</p>
+    <p>Analysis code: <a href="https://github.com/stranger9977/hometown-effect">github.com/stranger9977/hometown-effect</a>. Every join in the pipeline reports its match rate; numbers on this page come straight from the generated tables.</p>
+  </footer>
+</main>
+</body>
+</html>
