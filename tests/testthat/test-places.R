@@ -1,11 +1,13 @@
 suppressMessages(library(dplyr))
 source(file.path(testthat::test_path(), "..", "..", "R", "lib", "places.R"))
 
-test_that("normalize_city handles saint and punctuation", {
-  expect_equal(normalize_city("St. Louis"), "saint louis")
-  expect_equal(normalize_city("Winston-Salem"), "winston salem")
+test_that("normalize_city handles saint, punctuation, and spacing variants", {
+  expect_equal(normalize_city("St. Louis"), "saintlouis")
+  expect_equal(normalize_city("Winston-Salem"), "winstonsalem")
   expect_equal(normalize_city("O'Fallon"), "ofallon")
   expect_equal(normalize_city("  Tyler "), "tyler")
+  # spacing variants must collide: ESPN "La Grange" vs Census "LaGrange city"
+  expect_equal(normalize_city("La Grange"), normalize_city("LaGrange"))
 })
 
 test_that("strip_lsad removes census suffixes and (balance)", {
@@ -36,4 +38,37 @@ test_that("match_places: unique match, lsad preference, unmatched", {
   out <- match_places(players, places)
   expect_equal(out$geoid, c("4874144", "0101", NA))
   expect_equal(out$match_tier, c("unique", "lsad_pref", "unmatched"))
+})
+
+consolidated_places <- function() {
+  tibble(
+    state = c("TN", "NY", "HI", "NC"),
+    geoid = c("4752006", "3651000", "1571550", "3775000"),
+    name_raw = c("Nashville-Davidson metropolitan government (balance)",
+                 "New York city", "Urban Honolulu CDP", "Winston-Salem city"),
+    lsad = c("00", "25", "57", "25"),
+    aland_sqmi = c(475.9, 300.4, 60.5, 132.4),
+    lat = c(36.17, 40.66, 21.32, 36.10),
+    lon = c(-86.78, -73.94, -157.80, -80.26),
+    pop2000 = c(545524L, 8008278L, 371657L, 185776L),
+    pop2010 = c(601222L, 8175133L, 337256L, 229617L),
+    pop_now = c(689447L, 8258035L, 343421L, 249545L),
+    income1999 = c(39232L, 38293L, 45112L, 37380L),
+    income_now = c(62000L, 76000L, 78000L, 55000L))
+}
+
+test_that("consolidated governments match their common city name", {
+  players <- tibble(birth_city = c("Nashville", "Winston-Salem"),
+                    birth_state = c("TN", "NC"))
+  out <- match_places(players, consolidated_places())
+  expect_equal(out$geoid, c("4752006", "3775000"))
+  expect_false(any(out$match_tier == "unmatched"))
+})
+
+test_that("borough and known-alias cities map to their census place", {
+  players <- tibble(
+    birth_city = c("Brooklyn", "Staten Island", "Honolulu"),
+    birth_state = c("NY", "NY", "HI"))
+  out <- match_places(players, consolidated_places())
+  expect_equal(out$geoid, c("3651000", "3651000", "1571550"))
 })
