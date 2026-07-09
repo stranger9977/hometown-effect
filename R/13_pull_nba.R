@@ -103,23 +103,34 @@ if (length(ok_states) == 0) {
 }
 
 # Parse one cached state page: player name (strip trailing "*" HOF marker),
-# From (rookie season -> era), birth city. birth_state is the state we
-# queried (bbref filters the page to it); birth_country is always USA
-# (the friv/birthplaces.fcgi?country=US endpoint). No birth_date on this
-# page format's exposed fields we're using -- NBA RAE is skipped downstream.
+# From (rookie season -> era), birth city, birth date. birth_state is the
+# state we queried (bbref filters the page to it); birth_country is always
+# USA (the friv/birthplaces.fcgi?country=US endpoint).
+#
+# birth_date comes from the birth_date cell's csk sort-key attribute, which
+# is already machine-readable YYYY-MM-DD (the visible text is "Jan 21, 1983"
+# style). A handful of early ABA/NBA players have a genuinely blank
+# birth_date cell (no csk, no text) -- verified 5 such rows across all 51
+# cached pages -- and get NA. Any csk value that is present but NOT
+# YYYY-MM-DD is also forced to NA rather than passed through malformed.
 parse_state <- function(state) {
   page <- read_html(cache_path(state))
   rows <- html_elements(page, "table#stats tbody tr:not(.thead)")
   if (length(rows) == 0) {
-    return(tibble::tibble(player_name = character(), birth_city = character(), from_year = integer()))
+    return(tibble::tibble(player_name = character(), birth_city = character(),
+                          from_year = integer(), birth_date = character()))
   }
   player <- html_element(rows, "td[data-stat='player']") |> html_text2()
   from   <- html_element(rows, "td[data-stat='season_min']") |> html_text2()
   city   <- html_element(rows, "td[data-stat='birth_city']") |> html_text2()
+  bdate  <- html_element(rows, "td[data-stat='birth_date']") |> html_attr("csk")
+  bdate  <- ifelse(!is.na(bdate) & grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}$", bdate),
+                   bdate, NA_character_)
   tibble::tibble(
     player_name = sub("[*]$", "", player),
     birth_city  = city,
-    from_year   = suppressWarnings(as.integer(from))
+    from_year   = suppressWarnings(as.integer(from)),
+    birth_date  = bdate
   )
 }
 
@@ -144,7 +155,7 @@ nba <- bind_rows(state_tables) |>
     birth_city,
     birth_state,
     birth_country = "USA",
-    birth_date    = NA_character_,
+    birth_date,
     era           = era_cohort(from_year)
   )
 
@@ -157,6 +168,10 @@ cat("US-born rows:", sum(nba$birth_country == "USA", na.rm = TRUE), "\n")
 cat("era distribution:\n")
 print(count(nba, era))
 cat("birth_date coverage:", sprintf("%.1f%%", 100 * mean(!is.na(nba$birth_date))), "\n")
+if (any(is.na(nba$birth_date))) {
+  cat("rows without a parseable birth_date (blank in source):\n")
+  print(nba |> filter(is.na(birth_date)) |> select(player_name, birth_city, birth_state))
+}
 n_failed <- sum(method_used == "failed", na.rm = TRUE)
 if (n_failed > 0) {
   cat("states with no usable page (excluded):", paste(states[method_used == "failed"], collapse = ", "), "\n")
