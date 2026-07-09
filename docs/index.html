@@ -179,7 +179,7 @@
         <div class="tile hero"><div class="num">10% → 25%</div><div class="lbl">share of NFL players from the richest quarter of hometowns, 1990s → 2020s</div></div>
         <div class="tile"><div class="num">43% → 33%</div><div class="lbl">share from the poorest quarter (still overrepresented — but shrinking fast)</div></div>
       </div>
-      <p>Both facts matter: the NFL <em>still</em> draws disproportionately from poor places — a 33% share against a proportional 25% — but the direction of travel is unmistakably toward affluence. What this data can't yet separate is the mechanism: families buying development directly (private position coaching and 7-on-7 circuits have grown fast), or richer communities buying better programs. The two imply different fixes, and the cross-sport comparison below is the natural test.</p>
+      <p>Both facts matter: the NFL <em>still</em> draws disproportionately from poor places — a 33% share against a proportional 25% — but the direction of travel is unmistakably toward affluence. What this data can't fully separate is the mechanism: families buying development directly (private position coaching and 7-on-7 circuits have grown fast), or richer communities buying better programs. The two imply different fixes — and the same analysis run on the other three leagues (see the Across sports tab) is the natural test.</p>
     </div>
     <figure>
       <img src="figures/income_gradient.png" alt="Bar chart: share of NFL players by hometown median-income quartile and rookie era. The richest-quartile share rises monotonically from about 10 percent to about 25 percent; the poorest-quartile share falls from about 43 to 33 percent.">
@@ -225,7 +225,15 @@
       <figcaption>US-born MLB players (career starts 1990–2025), birthplace matched to Census places incl. CDPs; era-matched population vintages. Source: Lahman database.</figcaption>
     </figure>
     <div class="prose">
-      <p>One reading: modern baseball is a backyard-scarce, facility-dependent sport — travel ball, showcases, year-round leagues — and those live where suburban density and money do. The income join for MLB (and the club-sport comparison it enables) is the next analysis pass.</p>
+      <p>One reading: modern baseball is a backyard-scarce, facility-dependent sport — travel ball, showcases, year-round leagues — and those live where suburban density and money do.</p>
+      <h3>Money: richer than football at every point in time</h3>
+      <p>Baseball's hometown-income mix has been wealthier than football's in every era, with the same steep climb: the richest-quartile share rose from <strong>14% to 30%</strong> across the four eras while the poorest-quartile share fell from 34% to 24%, dipping just below its proportional share. That is what travel-ball economics predicts.</p>
+    </div>
+    <figure>
+      <img src="figures/income_gradient_mlb.png" alt="Bar chart: share of US-born MLB players by hometown income quartile and era. The richest-quartile share rises from about 14 percent to about 30 percent.">
+      <figcaption>Share of US-born MLB players by hometown income quartile. Population-weighted quartiles within era-matched income vintages.</figcaption>
+    </figure>
+    <div class="prose">
       <h3>The map</h3>
       <p>Per capita since 1990: Fairfax City, VA (304 per million), Defiance County, OH, and the city of St. Louis (150 per million, 42 players — the highest raw count per capita of any sizable baseball county). California and the Sun Belt dominate raw volume.</p>
     </div>
@@ -263,6 +271,14 @@
       <figcaption>US-born NHL players (career starts 1990–2025) per million residents by birth county. Grey: no matched players.</figcaption>
     </figure>
     <div class="prose">
+      <h3>Money: hockey is the rich-kid sport, and it's accelerating</h3>
+      <p>Hockey has the most expensive family bill in American youth sports — ice time, travel, equipment — and its hometowns show it. <strong>Nearly half (47.5%) of recent US-born NHL players come from the richest quarter of American places</strong>, up from 27.5% in the 1990s; the poorest quarter supplies just 11%, down from 31%. No other league is close. (Two grains of salt: NHL samples are small — some cells here hold only 20–30 players — and hockey's northern small-metro geography is itself affluent, so money and geography are tangled; see Across sports.)</p>
+    </div>
+    <figure>
+      <img src="figures/income_gradient_nhl.png" alt="Bar chart: share of US-born NHL players by hometown income quartile and era. The richest-quartile share rises from about 27 percent to about 48 percent; the poorest falls to about 11 percent.">
+      <figcaption>Share of US-born NHL players by hometown income quartile. Small samples (roughly 180–370 players per era); read direction, not decimals.</figcaption>
+    </figure>
+    <div class="prose">
       <h3>The January effect is real, large, and stable</h3>
       <p>Hockey is the sport that made the relative age effect famous, and the front half of the effect shows up here in every era: January and February births run <strong>1.2–1.5x</strong> expected. The matching late-year deficit is there too, though noisier at these sample sizes — December 2020s births bottom out at <strong>0.53x</strong>. A kid born just after the calendar-year age cutoff is the biggest, oldest kid on every youth team — and decades later, the NHL roster still remembers. (This chart includes all NHL players regardless of birth country; the pool is majority Canadian.)</p>
     </div>
@@ -291,6 +307,14 @@
       <figcaption>US-born NBA players (career starts 1990–2025) per million residents by birth county. Grey: no matched players.</figcaption>
     </figure>
     <div class="prose">
+      <h3>Money: the least gentrified pipeline in American sports</h3>
+      <p>Basketball is the counterweight to everything the other tabs show about money. Its richest-quartile hometown share is the lowest of the four leagues (<strong>15%</strong> in the 2020s, up from just 6%), its growth is the flattest, and the recent trend actually points down. A third of NBA players still come from the poorest quarter of American places — basketball remains the major sport where talent and money are least correlated, consistent with its urban, low-cost entry points. (One caveat: place-level median income averages over big-city neighborhoods, which can understate affluence differences inside metros.)</p>
+    </div>
+    <figure>
+      <img src="figures/income_gradient_nba.png" alt="Bar chart: share of US-born NBA players by hometown income quartile and era. The poorest quartile stays largest; the richest-quartile share is the lowest of the four leagues.">
+      <figcaption>Share of US-born NBA players by hometown income quartile. Population-weighted quartiles within era-matched income vintages.</figcaption>
+    </figure>
+    <div class="prose">
       <h3>Birth month</h3>
       <p>Like football and baseball, basketball shows no meaningful relative age effect — the birth-month chart is flat within noise in every era.</p>
     </div>
@@ -314,8 +338,15 @@
     <div class="prose">
       <h3>When you're born vs. where you're born</h3>
       <p>The birthday half of the 2006 study survives only where the youth system creates it: hockey's calendar-cutoff club pyramid produces a large, stable January–February surplus, while football, baseball, and basketball — school-based or later-specializing — show essentially none. <em>Where</em> matters in every sport; <em>when</em> only matters where the development system makes age an advantage.</p>
-      <h3>The money question</h3>
-      <p>The leagues differ in <em>who pays</em> for development: football's costs are carried mostly by schools and communities, while baseball and hockey run through club systems that bill families directly. For the NFL, the shift toward affluent hometowns is already unambiguous — the richest quarter of American places went from producing 10% of players to 25% in three decades (see the NFL tab). The club-sport comparison is the natural next test: if baseball and hockey show steeper income gradients still, the family-pay account of American talent production gets much stronger; if football matches them, the story is more about community wealth than parents' checkbooks. That join is queued next.</p>
+      <h3>The money question, answered by comparison</h3>
+      <p>The leagues differ in <em>who pays</em> for development: football's costs are carried mostly by schools and communities, while baseball and hockey run through club systems that bill families directly. Run the same hometown-income analysis on all four leagues and the ordering comes out exactly as the family-pay account predicts. <strong>Hockey — the most expensive family sport — draws richest and is accelerating fastest</strong> (richest-quartile share 27% → 48%). Baseball sits richer than football in every era (14% → 30% vs. 10% → 25%). And basketball — the cheapest entry point in American sports — is lowest and flattest (6% → 15%), still drawing a third of its players from the poorest quarter of places.</p>
+    </div>
+    <figure>
+      <img src="figures/crosssport_income.png" alt="Line chart: richest-quartile hometown share across four eras for each league. NHL highest and rising to 48 percent; MLB above NFL throughout; NBA lowest and flattest around 15 percent; dashed line at the proportional 25 percent.">
+      <figcaption>Share of each league's US-born players from the richest quarter of American hometowns (population-weighted, era-matched income vintages). Dashed line = proportional share. NHL samples are small; cohort edges differ by up to one season across sports.</figcaption>
+    </figure>
+    <div class="prose">
+      <p>One honest complication before treating this as proof: money and geography are entangled. Hockey's talent belt (small northern metros) is affluent as a matter of geography; basketball's urban cores read poor at place-level even where the metro is rich. Separating "rich families" from "rich places in the right location" needs the income-by-density interaction run per sport — the NFL version already shows the money effect migrating to the suburbs, and extending it across leagues is the next pass.</p>
       <h3>Honest limitations</h3>
       <ul>
         <li><strong>Coverage windows differ by source.</strong> NFL birthplaces come from ESPN records (~90% of 1990+ rookies; thinner for 2000s–2010s fringe players). MLB (Lahman) and NBA (Basketball-Reference) are near-complete; NHL geography is US-born only with small samples (200–400 per era) and an 87–92% match rate.</li>
@@ -326,7 +357,7 @@
       </ul>
       <h3>What's next</h3>
       <ul>
-        <li>Income gradients for MLB, NHL, NBA — the pay-to-play cross-sport test.</li>
+        <li>Income-by-density interaction for MLB, NHL, NBA — untangling rich families from rich geographies.</li>
         <li>High-school hometowns beyond the NFL (the source data exists for MLB and NBA).</li>
         <li>Extending the NFL era comparison to pre-1990 rookie classes.</li>
       </ul>
