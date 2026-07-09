@@ -123,7 +123,7 @@
     <div class="tiles">
       <div class="tile"><div class="num">4</div><div class="lbl">leagues: NFL, MLB, NHL, NBA</div></div>
       <div class="tile"><div class="num">60,000+</div><div class="lbl">player records pulled; US-born players with career starts 1990–2025 form the era cohorts</div></div>
-      <div class="tile"><div class="num">96–98%</div><div class="lbl">matched to a Census place (NFL, MLB, NBA; NHL 87–92%)</div></div>
+      <div class="tile"><div class="num">96–98%</div><div class="lbl">matched to a Census place, rounded per era (NFL, MLB, NBA; NHL 87–92%)</div></div>
       <div class="tile"><div class="num">35%</div><div class="lbl">of NFL players were raised in a different city than they were born in</div></div>
     </div>
     <p style="font-size:14px; color:var(--ink-3);">Method in one line: player birthplaces (and, for the NFL, high-school locations where available) matched to Census places; population, land area, density, and median household income joined from the decennial census and ACS at era-appropriate vintages; suburbs (census-designated places) included; boroughs and consolidated cities resolved; every join's match rate reported.</p>
@@ -235,7 +235,7 @@
     </figure>
     <div class="prose">
       <h3>Birth month</h3>
-      <p>MLB's birth-month distribution is close to flat — August and September run modestly hot in recent eras (1.1–1.2x, consistent with late-summer youth-baseball age cutoffs), but nothing approaching hockey's skew.</p>
+      <p>MLB's birth-month distribution is close to flat — September runs modestly hot in recent eras (≈1.13–1.15x, and August hit 1.19x in the 2010s, consistent with late-summer youth-baseball age cutoffs), but nothing approaching hockey's skew.</p>
     </div>
     <figure>
       <img src="figures/rae_mlb.png" alt="Bar chart: MLB births by month vs. baseline, faceted by era; mostly near 1.0 with a modest August elevation in recent eras.">
@@ -248,7 +248,7 @@
     <div class="prose">
       <h2>Hockey: where the 2006 story half-survives — and the birthday effect fully does</h2>
       <p>Two caveats first: the geography here covers <strong>US-born players only</strong> (just under 1,000 matched across the four eras — hockey's talent pool is majority Canadian), and with roughly 200–400 players per era the size bins are noisy; the chart below pools eras in response. The census match rate is also lower than other sports (87–92%).</p>
-      <p>Within those limits: hockey shows the strongest <em>anti</em>-big-city pattern of the four sports — 500k+ metros never reach 0.8 in any era — while the 250k–500k band peaks above 2x, and the rural deficit that exists everywhere else is mildest here. Hockey's geography is small-metro and northern: the per-capita map is a Minnesota–Michigan–New England story.</p>
+      <p>Within those limits: hockey shows the strongest <em>anti</em>-big-city pattern of the four sports — 500k+ metros never reach 0.8 in any era — while the 250k–500k band peaks above 2x, and the rural deficit, though real, is shallower than baseball's or basketball's. Hockey's geography is small-metro and northern: the per-capita map is a Minnesota–Michigan–New England story.</p>
     </div>
     <figure>
       <img src="figures/cote_bins_nhl.png" alt="Bar chart: NHL representation ratio by birthplace population size, pooled eras due to small samples. Big cities sit well below 1; the 250k-500k bin exceeds 2.">
@@ -264,11 +264,11 @@
     </figure>
     <div class="prose">
       <h3>The January effect is real, large, and stable</h3>
-      <p>Hockey is the sport that made the relative age effect famous, and it shows up here exactly as the literature predicts — in every era. January and February births run <strong>1.2–1.5x</strong> expected; November and December births run <strong>0.63–0.75x</strong>. A kid born just after the calendar-year age cutoff is the biggest, oldest kid on every youth team — and decades later, the NHL roster still remembers. (This chart includes all NHL players regardless of birth country; the pool is majority Canadian.)</p>
+      <p>Hockey is the sport that made the relative age effect famous, and the front half of the effect shows up here in every era: January and February births run <strong>1.2–1.5x</strong> expected. The matching late-year deficit is there too, though noisier at these sample sizes — December 2020s births bottom out at <strong>0.53x</strong>. A kid born just after the calendar-year age cutoff is the biggest, oldest kid on every youth team — and decades later, the NHL roster still remembers. (This chart includes all NHL players regardless of birth country; the pool is majority Canadian.)</p>
     </div>
     <figure>
-      <img src="figures/rae_nhl.png" alt="Bar chart: NHL births by month vs. baseline, faceted by era. January and February bars reach 1.2 to 1.5; November and December fall to 0.6-0.75, in every era.">
-      <figcaption>NHL player births (all countries) by month vs. days-adjusted uniform baseline, by era. The classic relative age effect, stable across four decades.</figcaption>
+      <img src="figures/rae_nhl.png" alt="Bar chart: NHL births by month vs. baseline, faceted by era. January and February bars reach 1.2 to 1.5 in every era; late-year months mostly fall below baseline.">
+      <figcaption>NHL player births (all countries) by month vs. days-adjusted uniform baseline, by era. The January–February surplus appears in every era; the late-year deficit is noisier era to era.</figcaption>
     </figure>
   </section>
 
