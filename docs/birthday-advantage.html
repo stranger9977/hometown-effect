@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Birthday Advantage (rough draft)</title>
+<title>The Birthday Advantage</title>
 <style>
   :root {
     --bg: #fbfbfa; --ink: #1e2126; --ink-2: #4a5058; --ink-3: #778089;
@@ -44,7 +44,7 @@
   a { color: var(--accent); }
   .actdivider { border: none; border-top: 1px solid var(--line); margin: 72px auto 40px; max-width: 700px; }
   .actintro { text-align: center; max-width: 720px; margin: 0 auto; }
-  figure { margin: 34px 0 40px; background: #ffffff; border: 1px solid var(--line); border-radius: 12px; padding: 10px; overflow: hidden; }
+  figure { margin: 34px 0 20px; background: #ffffff; border: 1px solid var(--line); border-radius: 12px; padding: 10px; overflow: hidden; }
   figure img { width: 100%; height: auto; display: block; border-radius: 6px; }
   figcaption { font-size: 13.5px; color: var(--ink-3); padding: 12px 8px 4px; line-height: 1.5; }
   .measure {
@@ -55,30 +55,25 @@
   .measure .tag { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
   .measure p { font-size: 15.5px; margin: 6px 0 0; color: var(--ink-2); }
   .pull { max-width: 720px; margin: 30px auto; font-size: 25px; line-height: 1.35; color: var(--ink); font-weight: 600; letter-spacing: -0.01em; }
-  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 30px auto; max-width: 700px; }
-  .tile { background: var(--tile-bg); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
-  .tile .num { font-size: 27px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); line-height: 1.1; }
-  .tile .lbl { font-size: 12.5px; color: var(--ink-3); margin-top: 6px; line-height: 1.4; }
   footer { border-top: 1px solid var(--line); margin-top: 70px; padding-top: 22px; font-size: 14px; color: var(--ink-3); line-height: 1.7; max-width: 700px; margin-left: auto; margin-right: auto; }
 </style>
 </head>
 <body>
-<div class="draftbar">Rough draft. Story spine and questions are set; most of the numbers below are what we are about to go measure, not final. Companion to <a href="index.html">Where Pro Athletes Actually Come From</a>.</div>
+<div class="draftbar">Working draft. The charts here are real; a few ideas are still being reported out and are marked as such. Companion to <a href="index.html">Where Pro Athletes Actually Come From</a>.</div>
 <main>
   <header>
     <div class="kicker">A companion to The Hometown Effect</div>
     <h1>The Birthday Advantage</h1>
     <p class="dek">The other site asked where the best athletes come from. This one asks when they were born, and what people have started doing about it.</p>
-    <p class="byline">Nick Gurol &amp; Michael MacKelvie · draft, July 2026</p>
+    <p class="byline">Nick Gurol &amp; Michael MacKelvie · July 2026</p>
   </header>
 
   <div class="prose">
     <p class="lede">Here is a thing that should not be true, and is.</p>
     <p>Take the best youth hockey players in America, line them up by birthday, and the calendar is lopsided. Way more of them were born in January and February than in November and December. Not a little more. A lot more. These are kids. Nobody was better at hockey because of the month a doctor happened to write on a form.</p>
-    <p>Except they were. In almost every youth league, the age cutoff falls near the start of the year, so a kid born in January is nearly a full year older than a kid born in December in the same age group. At seven years old, that year is enormous. The bigger kid scores more, makes the better team, gets the better coaching, gets told he is good, and starts believing it. The younger kid gets the opposite. By the time anyone is old enough for the age gap to stop mattering, the sorting has already happened. We built a whole system that rewards the accident of a due date, and then we call the result talent.</p>
-    <p>That accident has a name. Researchers call it the relative age effect. We already found it hiding in our four big American leagues on the other site, and hockey wore it like a jersey. This piece is about what happens next, because the story got a lot more interesting once people figured out that if being old for your grade is an advantage, you can just go get one.</p>
-
-    <p>We are going to tell it in three parts. First, the accident nobody chooses. Then the strategy people invented to beat it. Then the part that should make you a little uncomfortable, which is what the whole thing does to the rest of a life, long after the last whistle.</p>
+    <p>Except they were. In almost every youth league the age cutoff falls near the start of the year, so a kid born in January is nearly a full year older than a kid born in December in the same age group. At seven years old, that year is enormous. The bigger kid scores more, makes the better team, gets the better coaching, gets told he is good, and starts believing it. The younger kid gets the opposite. By the time anyone is old enough for the gap to stop mattering, the sorting has already happened. We built a system that rewards the accident of a due date and then called the result talent.</p>
+    <p>That accident has a name. Researchers call it the relative age effect, and we already caught it hiding in our four big American leagues on the other site. This piece is about what happens next, because the story got a lot more interesting once people figured out that if being old for your grade is an advantage, you can just go get one.</p>
+    <p>Three parts. First, the accident nobody chooses. Then the strategy people invented to beat it. Then the part that should make you a little uncomfortable, which is what the whole thing does to the rest of a life, long after the last whistle.</p>
   </div>
 
   <hr class="actdivider">
@@ -89,88 +84,110 @@
   </div>
 
   <div class="prose">
-    <p>Start with what we already know is real, because we measured it. Across the NFL, MLB, NHL, and NBA, we lined up every player by birth month and compared it to how births actually spread across the calendar. Three of the four leagues barely flinched. Hockey lit up like a scoreboard.</p>
+    <p>Start with what we measured. Line up every player in the NFL, MLB, NHL, and NBA by the quarter of the year they were born, and compare it to how births actually land on the calendar. Three of the four leagues barely move. Hockey is a staircase.</p>
   </div>
   <figure>
-    <img src="figures/rae_cal_all.png" alt="Calendar heatmap of birth months for four leagues. Only the NHL row shows strong color, red in January and February, blue late in the year. NFL, MLB, and NBA rows are nearly blank.">
-    <figcaption>Birth month vs. an expected baseline, one row per league. Red means more players than expected, blue means fewer. Only hockey shows the pattern, and it shows it hard. From the companion site.</figcaption>
+    <img src="figures/ba_rae_quarter.png" alt="Four small charts, one per league, showing how over- or under-represented each birth quarter is. Hockey steps down from a tall first quarter to a short fourth quarter. Football, baseball, and basketball stay flat near the line.">
+    <figcaption>How over- or under-represented each birth quarter is, one panel per league, all eras pooled. A bar at 1 means proportional. Q1 is January to March, Q4 is October to December.</figcaption>
   </figure>
   <div class="prose">
-    <p>Look at that hockey row. January and February run about one and a half times what you would expect. November and December sink well below. That is the relative age effect in one picture, and it holds in every era we checked, going back decades. American hockey has been quietly handing out advantages by birthday for a very long time.</p>
+    <p>Players born in the first quarter of the year make the NHL at <strong>1.30 times</strong> the rate you would expect from the calendar. Players born in the last quarter come in at <strong>0.74</strong>. Football, baseball, and basketball sit flat between about 0.98 and 1.05, no meaningful tilt at all. Hockey is doing something the others are not, and it is doing it to children.</p>
+    <p>Zoom into hockey month by month and the staircase gets even cleaner.</p>
+  </div>
+  <figure>
+    <img src="figures/ba_hockey_months.png" alt="Twelve bars, one per birth month, for NHL players. They step down almost evenly from a January and February peak to a November and December trough.">
+    <figcaption>NHL players by birth month, all countries, all eras, against an expected baseline. The near-monotonic slide from January to December is the textbook relative age effect.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>January and February births show up at about <strong>1.33 times</strong> expected. November and December land near <strong>0.70</strong>. Same country, same sport, same league, and the only thing that changed is which end of the age-cutoff year a kid was born on. That is the whole effect in one picture, and it holds in every era we checked going back decades. American hockey has been handing out advantages by birthday for a very long time.</p>
 
     <p class="pull">Football, on the other hand, does not care what month you were born. That turns out to be the useful part.</p>
 
-    <p>The reason football is flat is that it caps eligibility at three years out of high school, so almost everyone shows up in the same tight window. Our data has NFL rookies clustering hard at 22, 23, and 24, with a thin tail of 20 and 21 year olds. Tremaine Edmunds and Braelon Allen got there at 20. It happens. It is just rare. The important thing is that the average has not budged in 35 years. Football is a flat line, which makes it the perfect control for the rest of this story. When we go looking for age doing something strange, football is the ruler we measure against.</p>
-
-    <p>Now, Michael made a good point, and he is right. If the relative age effect is strongest anywhere, the research says it is in soccer and in swimming, sports built around hard age-group cutoffs that funnel kids for years. We never looked. That is the first thing to fix. Soccer especially, because the cutoff moves country to country, which gives us a natural experiment. Move the cutoff, and the birth-month bump should move with it. If it does, that is close to a smoking gun that the calendar, not the kid, is doing the sorting.</p>
+    <p>The reason football stays flat is that it caps eligibility at three years out of high school, so almost everyone arrives inside the same tight window. Our NFL rookies pile up at 22, 23, and 24, with only a sliver at 20 or 21.</p>
   </div>
-  <div class="measure">
-    <div class="tag">What we will measure</div>
-    <p>MLS and US national team rosters by birth month, plus USA Swimming and Olympic team birthdays where we can get them. Then reframe every sport not by calendar month but by quarter relative to its own cutoff, so hockey's January and a soccer country's September line up on the same axis. Prediction: soccer and swimming out-skew hockey.</p>
+  <figure>
+    <img src="figures/ba_nfl_agedist.png" alt="A tight bell-shaped bar chart of NFL rookie ages, almost all between 22 and 24, with tiny bars at 20 and 21 and a short tail past 25.">
+    <figcaption>Age of every NFL player in his rookie season, 1990 to 2025. The cluster at 22 to 24 is the point: college's three-season rule works as a built-in age floor.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Only four players in 35 years reached the NFL at 20: Braelon Allen, Tremaine Edmunds, Amobi Okoye, and Kevin Jefferson. It happens. It is just rare. The reason to care is that football is a flat line, which makes it the perfect control for the rest of this story. When we go looking for age doing something strange, football is the ruler we measure against.</p>
+    <p>Hockey is not alone. The research says the relative age effect runs strongest in soccer and swimming, two sports built on hard age-group cutoffs that funnel kids for years, and our leagues do not include either one. So we went and got the birthdates. Pulling every US soccer player and swimmer with a recorded birth date out of Wikidata, more than 5,600 footballers and 750 swimmers, the same January tilt shows up in both.</p>
+  </div>
+  <figure>
+    <img src="figures/ba_soccer_swim.png" alt="Three bar charts of birth-month representation. Soccer players born before the 2016 cutoff change lean slightly toward early months. Soccer players young enough for the new cutoff lean hard toward January. Swimmers also peak in January.">
+    <figcaption>Birth-month representation for US soccer players and swimmers from Wikidata, against an expected baseline. Soccer is split by birth cohort around the 2016 US Soccer cutoff change. Our-computed data.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Swimmers peak in January at <strong>1.34 times</strong> expected. Soccer does something even more pointed: the newest cohort, the kids young enough to have grown up under the current calendar-year cutoff, are born in January at <strong>1.72 times</strong> the expected rate and in December at barely half.</p>
+    <p>Now, we wanted this to be a clean experiment. US Soccer moved its youth cutoff from an August basis to a January calendar-year basis around 2016, so in theory the birth-month peak should have picked up and slid across the calendar with it. It did not. The January skew was already there in players who grew up under the old August cutoff, and it got stronger, not different, in the newer group. Two honest reasons that could be true. The newer cohort is small and fresh to Wikipedia, so some of that spike may be the earliest bloomers being the only ones famous enough to have a page yet. And the calendar-year sorting kids feel is not only the soccer federation's cutoff. It is the school year, the travel-league brackets, and every other age fence stacked on top. The clean flip we were hoping for is not in this data. The effect itself very much is.</p>
   </div>
 
   <hr class="actdivider">
   <div class="actintro">
     <div class="actnum">Act Two</div>
     <h2>The loophole</h2>
-    <p class="prose" style="text-align:left;">If being old for your grade is an edge, and everybody now knows it is, the obvious move is to go manufacture one.</p>
+    <p class="prose" style="text-align:left;">If being old for your grade is an edge, and everybody knows it now, the obvious move is to go manufacture one.</p>
   </div>
 
   <div class="prose">
-    <p>Here is where it stops being an accident. Parents read the same studies we did. Travel coaches read them too. And the response, especially in basketball, has been to simply hold kids back a year. Reclassify them. An eighth grader becomes a seventh grader on paper, does the grade again, and shows up to high school a year older and a year bigger than the kids he is now ranked against. It is legal, it is spreading, and it has a nice clean upside if your goal is a scholarship.</p>
-
-    <p>Michael did a quick version of this two years ago and the result stuck with him. He pulled the top 20 recruits in a class and checked their real ages, and a striking share of them were a full year old for their grade. Not born in the lucky month. Made old on purpose. That is the difference between Act One and Act Two. Act One is the calendar doing it to you. Act Two is families doing it to the calendar.</p>
-
-    <p class="pull">The relative age effect used to be something that happened to kids. Now it is something people buy.</p>
-
-    <p>So the first real job of this act is to take Michael's quick look and make it a real one. Pull the recruiting rankings back as far as they go, get every top prospect's grade and birthday, and measure two things. What share of the best young players are old for their class, and is that share climbing? If the line goes up and to the right, we have documented a strategy quietly taking over the sport.</p>
+    <p>Here is where it stops being an accident. Parents read the same studies we did. Travel coaches read them too. And the response, especially in youth basketball and football, has been to hold kids back a year on purpose. An eighth grader repeats a grade, shows up to high school a year older and a year bigger than the kids he is now ranked against, and the birthday advantage that used to be luck becomes a decision. It is legal, it is spreading, and it has a clean upside if the goal is a scholarship.</p>
+    <p>How common is it? The honest answer is that nobody has measured it well. The best prevalence estimate we could find puts academic redshirting above <strong>20 percent</strong> of kids overall and near <strong>40 percent</strong> at private schools, but that is a single regional estimate with no year-over-year trend behind it. The tidy version everyone wants, the share of top-100 recruits who are old for their grade and whether it is climbing, does not exist in any public dataset. Recruiting sites publish rank, position, and height, but not birthdates. So this is the number we most want and cannot yet get, and we are saying so rather than drawing a line through data that is not there.</p>
+    <p>There is even a wrinkle in the word itself. In recruiting, "reclassify" usually means a phenom jumping a grade forward to get to college sooner, which makes him younger, the opposite of the hold-back move. Cooper Flagg, born in December 2006, reclassified up. The manufactured-age story is real, but you have to keep the two directions straight, and the clean data to size it up is still locked behind paywalls and one-player-at-a-time lookups.</p>
   </div>
   <div class="measure">
-    <div class="tag">What we will measure</div>
-    <p>Top recruit classes from the 247, On3, and Rivals composites, matched to birthdates, for every year we can reach. The headline number: percent of top-100 recruits who are old for their grade, by class year. The named version: which of the famous prospects reclassified, and how it worked out.</p>
+    <div class="tag">Open thread, data not yet obtainable at scale</div>
+    <p>Share of top recruits who are old for their grade, by class year. Blocked because recruiting rankings do not publish birthdates in bulk. Minimum viable version: one or two recent classes cross-referenced by hand against public birthdates, reported as a labeled subsample, not a full census.</p>
   </div>
 
   <div class="prose">
-    <h3>Meanwhile, the players who already made it are aging in place</h3>
-    <p>The second half of this act is the grown-up version of the same thing, and it is happening in college right now. For years the trend ran one direction: get to the NBA as fast as possible, one and done, gone at 19. That era is ending, and money is the reason. NIL deals and the transfer portal changed the math. A good-but-not-great college player can now make real money staying in school, and a projected late second-round pick has every reason to run it back for another year of development and another year of paychecks rather than ride the bench in the pros.</p>
-    <p>Nick's read on it is the sharp one. The portal and NIL created an inflection point in who stays and who goes. The lottery talent still leaves early. But the entire tier below that, the players who used to declare and hope, are now incentivized to stay, get older, get better, and enter the pros as more finished, and more importantly for us, more grown, athletes. College rosters are aging. We should be able to see it.</p>
-    <p>And here is the beautiful part. Remember that football is a flat line, capped at three years out of high school. Basketball has no such cap. So if we chart the age players enter the pros over time, football should stay pinned at 23 while basketball climbs. That contrast is the whole point. It is not that athletes in general are getting older. It is that the sports without an age cap are inflating, and the ones with a cap are not, which tells you the aging is a strategy responding to incentives, not some vague trend in the water.</p>
+    <p class="pull">The players who already made it, meanwhile, are aging in place, and there we do have the data.</p>
+    <p>Track the age at which players turn pro over time and the leagues split apart in a way that lines up exactly with their rules.</p>
   </div>
-  <div class="measure">
-    <div class="tag">What we will measure</div>
-    <p>Age at pro debut over time for the NBA (Basketball-Reference), against the flat NFL baseline we already have. Average college roster age by year where the data reaches it (the free CollegeFootballData API for football, best-available for hoops). The NIL era should show up as a bend in the line around 2021.</p>
+  <figure>
+    <img src="figures/ba_entry_age.png" alt="Three lines showing average age at pro entry from 1990 to 2025. Baseball climbs to about 25.4, football holds flat near 23, and basketball dips through the 2000s then ticks back up recently to about 23.2.">
+    <figcaption>Mean age at first pro season, 3-year rolling average. NFL rookie seasons, MLB debuts, and NBA first seasons, from their respective sources.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Baseball, which has no eligibility cap, has drifted older for 35 years, from about <strong>24.4 to 25.4</strong>. Football, capped at three years out of high school, holds flat near <strong>23</strong> the entire time. Basketball is the interesting one. Its entry age fell through the prep-to-pro and one-and-done years, bottoming out around 22.3, and has ticked back up over the last few seasons. The likely reason is the same money that is reshaping everything else in college sports. When name-image-likeness deals and the transfer portal make staying in school pay, the fringe pro prospect who used to declare early now runs it back for another year of development and another year of paychecks. The players do not get younger anymore. They age in place, on purpose, because the incentives finally reward it.</p>
+    <p>And this is why football being flat matters. It is not that athletes in general are getting older. It is that the sports without an age cap are inflating and the one with a cap is not, which tells you the aging is a response to incentives, not something in the water.</p>
   </div>
 
   <hr class="actdivider">
   <div class="actintro">
     <div class="actnum">Act Three</div>
     <h2>It does not stop at the buzzer</h2>
-    <p class="prose" style="text-align:left;">This is the part Michael kept pushing toward, and he is right to. If a birthday can bend a sports career, why would it stop there.</p>
+    <p class="prose" style="text-align:left;">If a birthday can bend a sports career, the fair question is why it would stop there.</p>
   </div>
 
   <div class="prose">
-    <p>Take the whole idea out of the gym for a second. The sorting that starts on a youth field starts in a kindergarten classroom too, and with a bigger cutoff to hide behind. In school the age gap inside a single grade can be almost a full year, and the older kids are, on average, the bigger, more coordinated, more verbal, more confident ones in the room. Teachers, being human, tend to read that as smarter. The research has been finding for years that relatively older kids get better grades, score higher on tests, get flagged for gifted programs more, get held back less, and are more likely to land at selective colleges. Same effect, different field.</p>
-
-    <p>We probably cannot get a spreadsheet of every kid's grades by birthday, that data is locked up for good reasons. So this act is part reporting and part measuring. We lay out what the education research actually found, in plain language and clean visuals rather than academic hedging, and then we run the one version of it we can run ourselves.</p>
-
-    <p class="pull">Because the effect does not just get you into a good college. There is evidence it follows you all the way to the top of a company.</p>
-
-    <p>This is the thread we are most excited to pull. There is a striking finding floating around that chief executives are underrepresented among summer birthdays, the exact birthdays that would have made them the youngest, smallest kids in their grade. If that holds, it is the relative age effect showing up in the corner office, forty years after the youth soccer cutoff that started it. And it is measurable. CEO birthdays are public. We can take the same birth-month method we already built for hockey players and point it straight at the people running the biggest companies in America.</p>
+    <p>Take the idea out of the gym. The sorting that starts on a youth field starts in a kindergarten classroom too, and with a bigger cutoff to hide behind. Inside a single grade the age gap can run almost a full year, and the older kids are, on average, the bigger, more coordinated, more verbal, more confident ones in the room. Teachers, being human, tend to read that as smarter. The research has been finding for years that relatively older kids get better grades, score higher on tests, get flagged for gifted programs more, and are more likely to land at selective colleges. Same effect, different field.</p>
+    <p>We cannot pull a spreadsheet of every kid's grades by birthday, and we should not pretend to. But economists have, and they have been finding the same shape for twenty years. The chart below is theirs, not ours, and it is worth sitting with.</p>
   </div>
-  <div class="measure">
-    <div class="tag">What we will measure</div>
-    <p>Birth months of S&amp;P 500 or Fortune 500 chief executives, run through the identical method we used on athletes, tested against an expected baseline. If the summer-birthday dip is real, the corner office has a relative age effect too. Alongside it, a clean visual retelling of the classroom research on grades, test scores, and college admission.</p>
+  <figure>
+    <img src="figures/ba_classroom.png" alt="Bar charts of published estimates. The relatively oldest kids in a grade score several percentile points higher on math and science tests, and are several percentage points more likely to take the SAT, enroll in a four-year college, and hold a leadership role.">
+    <figcaption>Published estimates of the gap between the relatively oldest and youngest students in the same school cohort. From Bedard and Dhuey (2006) and Dhuey and Lipscomb (2008). From published research, not this project's data.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>The oldest kids in a grade outscore the youngest by <strong>4 to 12 percentile points</strong> on fourth-grade math and science, across nineteen countries. That alone would be a fine footnote. It does not stay a footnote. The relatively youngest kids end up about <strong>7.7 points</strong> less likely to take the SAT or ACT and <strong>11.6 points</strong> less likely to enroll in a four-year college. A gap that started with who could sit still in first grade is still visible at the college gate. Same effect, different field, higher stakes.</p>
+    <p>Which raises the question we most wanted to answer. Does it ever stop? So we took the same birth-month method we pointed at hockey players and pointed it at the people running public companies.</p>
+  </div>
+  <figure>
+    <img src="figures/ba_ceo_months.png" alt="Bar chart of CEO birth months. July is the lowest bar at about 0.7 of expected, with June also below the line. The summer months, when a child would be youngest in the grade, are underrepresented.">
+    <figcaption>Birth months of US chief executives of publicly traded companies, from Wikidata, against an expected baseline. Our-computed data, small sample.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>In our sample, July is the single rarest month to be a chief executive, at about <strong>0.69</strong> of what the calendar would predict, with June also below the line. July and June are exactly the birthdays that, under a September school cutoff, make a kid the youngest in the room. It is the relative age effect showing up in the corner office, forty years after the youth sport cutoff that may have started it.</p>
+    <p>Be careful with this one, though. Our sample is only 187 CEOs, small enough that a single quiet month can be noise, and a broader pull with looser criteria washed the dip out. The reason to trust the direction anyway is that the careful studies, run on the full S&amp;P 500, find the sharper version of exactly this: something like 6 percent of CEOs born in June and July each, against 12.5 percent in March. Our little replication points the same way the big ones do. Treat it as a nod, not a proof.</p>
   </div>
 
   <div class="prose">
     <h3>The through line</h3>
-    <p>Put the three acts next to each other and you get one argument. A birthday you did not choose gives some kids an early edge. The edge is real enough that families have started manufacturing it on purpose. And the whole time, quietly, the same advantage may be compounding in classrooms and careers far away from any field. The kid who was a little older in first grade was a little better at soccer, got a little more praise, tried a little harder, got a little further, and the gap never fully closed. That is either a fascinating quirk of the calendar or a small unfairness we have baked into everything and stopped noticing. Probably both.</p>
-    <p>That is the piece. Next step is to go get the numbers that turn the questions above into answers, starting with the two we are least sure exist and most want to be true: the reclassification data and the CEO birthdays. Everything on this page marked as something we will measure is exactly that. A promise, not a result. Yet.</p>
+    <p>Put the three acts next to each other and you get one argument. A birthday you did not choose gives some kids an early edge. The edge is real enough that families have started manufacturing it on purpose. And the whole time, quietly, the same advantage may be compounding in classrooms and careers far from any field. The kid who was a little older in first grade was a little better at soccer, got a little more praise, tried a little harder, got a little further, and the gap never fully closed. That is either a fascinating quirk of the calendar or a small unfairness we baked into everything and stopped noticing. Probably both.</p>
   </div>
 
   <footer>
-    <p>Rough draft, subject to heavy revision once the data lands. Confirmed findings so far (hockey's birth-month skew, football's flat rookie age) come from the companion analysis at <a href="index.html">Where Pro Athletes Actually Come From</a>. Everything labeled "what we will measure" is planned, not final.</p>
-    <p>Method and code will live alongside the main project at <a href="https://github.com/stranger9977/hometown-effect">github.com/stranger9977/hometown-effect</a>.</p>
+    <p>Working draft. Charts labeled as our data are computed here: the league birth-month and entry-age charts from nflverse and ESPN, the Lahman database, the NHL API, and Basketball-Reference; the soccer, swimming, and CEO birthdates from Wikidata. The classroom chart is from published research (Bedard and Dhuey, 2006, Quarterly Journal of Economics; Dhuey and Lipscomb, 2008, Economics of Education Review) and is labeled as such, not presented as our own. One thread stays open: the share of top recruits held back a grade, because recruiting sites do not publish birthdates in bulk.</p>
+    <p>Method and code live with the main project at <a href="https://github.com/stranger9977/hometown-effect">github.com/stranger9977/hometown-effect</a>. Companion analysis: <a href="index.html">Where Pro Athletes Actually Come From</a>.</p>
   </footer>
 </main>
 </body>
