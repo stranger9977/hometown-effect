@@ -139,7 +139,7 @@ p_class <- ggplot(classroom, aes(y = metric, x = mid)) +
       "Test scores: TIMSS math/science, oldest vs youngest quartile in the school cohort. Outcomes: SAT/ACT-taking, 4-year college enrollment,\n",
       "a pre-university track (US/British Columbia), and high school leadership roles. Oldest vs youngest defined by each country's own\n",
       "school-entry cutoff date. The two panels use different units (percentile points vs percentage points); each has its own x-axis.\n",
-      "These figures are pooled across boys and girls. The effect is documented for both sexes; broader research finds it runs somewhat deeper for boys."
+      "These figures are pooled across boys and girls. The effect is documented for both sexes; the gender gap shows up in longer-run outcomes, not test scores."
     )
   ) +
   theme_hometown(grid = "none") +
