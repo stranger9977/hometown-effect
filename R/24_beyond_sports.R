@@ -84,6 +84,7 @@ p_ceo <- ggplot(ceo_months, aes(month_lab, ratio)) +
     caption = paste0(
       "Data: Wikidata SPARQL (query.wikidata.org/sparql); query saved at data/processed/ceo_birthdates_query.sparql.\n",
       "Ours, not published research. US-citizen CEOs (P169) of stock-exchange-listed companies (P414), day-precision birth dates, n = 187, pulled 2026-07-24.\n",
+      "Sample is 173 men and 14 women (92% male), so this is effectively a male sample; it is not split by sex.\n",
       "June ratio ", jun_ratio, ", July ratio ", jul_ratio, ", April also low at ", apr_ratio, " (likely noise, about 15-20 people per month).\n",
       "A broader pull with no public-company filter (n = 476) showed no dip at all (both near 1.0); see ceo_birthdates_broad.csv.\n",
       "Published S&P 500 studies find a larger dip (6.1% June, 5.9% July vs 12.5% March); our n is much smaller, so treat this as suggestive."
@@ -137,7 +138,8 @@ p_class <- ggplot(classroom, aes(y = metric, x = mid)) +
       "From published research, not this project's data: no microdata here, these are the summary numbers stated in each paper.\n",
       "Test scores: TIMSS math/science, oldest vs youngest quartile in the school cohort. Outcomes: SAT/ACT-taking, 4-year college enrollment,\n",
       "a pre-university track (US/British Columbia), and high school leadership roles. Oldest vs youngest defined by each country's own\n",
-      "school-entry cutoff date. The two panels use different units (percentile points vs percentage points); each has its own x-axis."
+      "school-entry cutoff date. The two panels use different units (percentile points vs percentage points); each has its own x-axis.\n",
+      "These figures are pooled across boys and girls. The effect is documented for both sexes; broader research finds it runs somewhat deeper for boys."
     )
   ) +
   theme_hometown(grid = "none") +
