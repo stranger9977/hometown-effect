@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Birthday Advantage (rough draft)</title>
+<style>
+  :root {
+    --bg: #fbfbfa; --ink: #1e2126; --ink-2: #4a5058; --ink-3: #778089;
+    --accent: #2B8CBE; --accent-deep: #045A8D; --card: #ffffff;
+    --line: #e3e5e8; --tile-bg: #f1f4f7; --draft: #b26a00; --draft-bg: #fdf3e3;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16181c; --ink: #e8eaed; --ink-2: #b3b9c0; --ink-3: #848b94;
+      --accent: #62aed4; --accent-deep: #8fc6e2; --card: #1e2126;
+      --line: #2e3238; --tile-bg: #23262c; --draft: #e0a458; --draft-bg: #2a2114;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.68; font-size: 18px;
+  }
+  main { max-width: 1060px; margin: 0 auto; padding: 0 20px 90px; }
+  .prose { max-width: 700px; margin-left: auto; margin-right: auto; }
+  .draftbar {
+    background: var(--draft-bg); color: var(--draft); border-bottom: 1px solid var(--line);
+    font-size: 13.5px; text-align: center; padding: 9px 16px; letter-spacing: 0.01em;
+  }
+  .draftbar a { color: var(--draft); }
+  header { padding: 66px 0 8px; text-align: center; }
+  .kicker { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  h1 { font-size: clamp(32px, 6vw, 54px); line-height: 1.1; margin: 14px auto 16px; max-width: 820px; letter-spacing: -0.02em; }
+  .dek { font-size: clamp(18px, 2.3vw, 22px); color: var(--ink-2); max-width: 680px; margin: 0 auto 8px; }
+  .byline { font-size: 14px; color: var(--ink-3); margin-top: 16px; }
+  .actnum { font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-top: 12px; }
+  h2 { font-size: clamp(26px, 3.6vw, 34px); margin: 6px 0 16px; letter-spacing: -0.01em; line-height: 1.15; }
+  h3 { font-size: 21px; margin: 40px 0 10px; }
+  p { margin: 0 0 20px; color: var(--ink-2); }
+  p strong, h1, h2, h3, .lede { color: var(--ink); }
+  .lede { font-size: 21px; line-height: 1.6; }
+  a { color: var(--accent); }
+  .actdivider { border: none; border-top: 1px solid var(--line); margin: 72px auto 40px; max-width: 700px; }
+  .actintro { text-align: center; max-width: 720px; margin: 0 auto; }
+  figure { margin: 34px 0 40px; background: #ffffff; border: 1px solid var(--line); border-radius: 12px; padding: 10px; overflow: hidden; }
+  figure img { width: 100%; height: auto; display: block; border-radius: 6px; }
+  figcaption { font-size: 13.5px; color: var(--ink-3); padding: 12px 8px 4px; line-height: 1.5; }
+  .measure {
+    max-width: 700px; margin: 8px auto 30px; background: var(--tile-bg);
+    border: 1px solid var(--line); border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0; padding: 16px 20px;
+  }
+  .measure .tag { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+  .measure p { font-size: 15.5px; margin: 6px 0 0; color: var(--ink-2); }
+  .pull { max-width: 720px; margin: 30px auto; font-size: 25px; line-height: 1.35; color: var(--ink); font-weight: 600; letter-spacing: -0.01em; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 30px auto; max-width: 700px; }
+  .tile { background: var(--tile-bg); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+  .tile .num { font-size: 27px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); line-height: 1.1; }
+  .tile .lbl { font-size: 12.5px; color: var(--ink-3); margin-top: 6px; line-height: 1.4; }
+  footer { border-top: 1px solid var(--line); margin-top: 70px; padding-top: 22px; font-size: 14px; color: var(--ink-3); line-height: 1.7; max-width: 700px; margin-left: auto; margin-right: auto; }
+</style>
+</head>
+<body>
+<div class="draftbar">Rough draft. Story spine and questions are set; most of the numbers below are what we are about to go measure, not final. Companion to <a href="index.html">Where Pro Athletes Actually Come From</a>.</div>
+<main>
+  <header>
+    <div class="kicker">A companion to The Hometown Effect</div>
+    <h1>The Birthday Advantage</h1>
+    <p class="dek">The other site asked where the best athletes come from. This one asks when they were born, and what people have started doing about it.</p>
+    <p class="byline">Nick Gurol &amp; Michael MacKelvie · draft, July 2026</p>
+  </header>
+
+  <div class="prose">
+    <p class="lede">Here is a thing that should not be true, and is.</p>
+    <p>Take the best youth hockey players in America, line them up by birthday, and the calendar is lopsided. Way more of them were born in January and February than in November and December. Not a little more. A lot more. These are kids. Nobody was better at hockey because of the month a doctor happened to write on a form.</p>
+    <p>Except they were. In almost every youth league, the age cutoff falls near the start of the year, so a kid born in January is nearly a full year older than a kid born in December in the same age group. At seven years old, that year is enormous. The bigger kid scores more, makes the better team, gets the better coaching, gets told he is good, and starts believing it. The younger kid gets the opposite. By the time anyone is old enough for the age gap to stop mattering, the sorting has already happened. We built a whole system that rewards the accident of a due date, and then we call the result talent.</p>
+    <p>That accident has a name. Researchers call it the relative age effect. We already found it hiding in our four big American leagues on the other site, and hockey wore it like a jersey. This piece is about what happens next, because the story got a lot more interesting once people figured out that if being old for your grade is an advantage, you can just go get one.</p>
+
+    <p>We are going to tell it in three parts. First, the accident nobody chooses. Then the strategy people invented to beat it. Then the part that should make you a little uncomfortable, which is what the whole thing does to the rest of a life, long after the last whistle.</p>
+  </div>
+
+  <hr class="actdivider">
+  <div class="actintro">
+    <div class="actnum">Act One</div>
+    <h2>The accident</h2>
+    <p class="prose" style="text-align:left;">You did not pick your birthday. It picked a lot of things for you anyway.</p>
+  </div>
+
+  <div class="prose">
+    <p>Start with what we already know is real, because we measured it. Across the NFL, MLB, NHL, and NBA, we lined up every player by birth month and compared it to how births actually spread across the calendar. Three of the four leagues barely flinched. Hockey lit up like a scoreboard.</p>
+  </div>
+  <figure>
+    <img src="figures/rae_cal_all.png" alt="Calendar heatmap of birth months for four leagues. Only the NHL row shows strong color, red in January and February, blue late in the year. NFL, MLB, and NBA rows are nearly blank.">
+    <figcaption>Birth month vs. an expected baseline, one row per league. Red means more players than expected, blue means fewer. Only hockey shows the pattern, and it shows it hard. From the companion site.</figcaption>
+  </figure>
+  <div class="prose">
+    <p>Look at that hockey row. January and February run about one and a half times what you would expect. November and December sink well below. That is the relative age effect in one picture, and it holds in every era we checked, going back decades. American hockey has been quietly handing out advantages by birthday for a very long time.</p>
+
+    <p class="pull">Football, on the other hand, does not care what month you were born. That turns out to be the useful part.</p>
+
+    <p>The reason football is flat is that it caps eligibility at three years out of high school, so almost everyone shows up in the same tight window. Our data has NFL rookies clustering hard at 22, 23, and 24, with a thin tail of 20 and 21 year olds. Tremaine Edmunds and Braelon Allen got there at 20. It happens. It is just rare. The important thing is that the average has not budged in 35 years. Football is a flat line, which makes it the perfect control for the rest of this story. When we go looking for age doing something strange, football is the ruler we measure against.</p>
+
+    <p>Now, Michael made a good point, and he is right. If the relative age effect is strongest anywhere, the research says it is in soccer and in swimming, sports built around hard age-group cutoffs that funnel kids for years. We never looked. That is the first thing to fix. Soccer especially, because the cutoff moves country to country, which gives us a natural experiment. Move the cutoff, and the birth-month bump should move with it. If it does, that is close to a smoking gun that the calendar, not the kid, is doing the sorting.</p>
+  </div>
+  <div class="measure">
+    <div class="tag">What we will measure</div>
+    <p>MLS and US national team rosters by birth month, plus USA Swimming and Olympic team birthdays where we can get them. Then reframe every sport not by calendar month but by quarter relative to its own cutoff, so hockey's January and a soccer country's September line up on the same axis. Prediction: soccer and swimming out-skew hockey.</p>
+  </div>
+
+  <hr class="actdivider">
+  <div class="actintro">
+    <div class="actnum">Act Two</div>
+    <h2>The loophole</h2>
+    <p class="prose" style="text-align:left;">If being old for your grade is an edge, and everybody now knows it is, the obvious move is to go manufacture one.</p>
+  </div>
+
+  <div class="prose">
+    <p>Here is where it stops being an accident. Parents read the same studies we did. Travel coaches read them too. And the response, especially in basketball, has been to simply hold kids back a year. Reclassify them. An eighth grader becomes a seventh grader on paper, does the grade again, and shows up to high school a year older and a year bigger than the kids he is now ranked against. It is legal, it is spreading, and it has a nice clean upside if your goal is a scholarship.</p>
+
+    <p>Michael did a quick version of this two years ago and the result stuck with him. He pulled the top 20 recruits in a class and checked their real ages, and a striking share of them were a full year old for their grade. Not born in the lucky month. Made old on purpose. That is the difference between Act One and Act Two. Act One is the calendar doing it to you. Act Two is families doing it to the calendar.</p>
+
+    <p class="pull">The relative age effect used to be something that happened to kids. Now it is something people buy.</p>
+
+    <p>So the first real job of this act is to take Michael's quick look and make it a real one. Pull the recruiting rankings back as far as they go, get every top prospect's grade and birthday, and measure two things. What share of the best young players are old for their class, and is that share climbing? If the line goes up and to the right, we have documented a strategy quietly taking over the sport.</p>
+  </div>
+  <div class="measure">
+    <div class="tag">What we will measure</div>
+    <p>Top recruit classes from the 247, On3, and Rivals composites, matched to birthdates, for every year we can reach. The headline number: percent of top-100 recruits who are old for their grade, by class year. The named version: which of the famous prospects reclassified, and how it worked out.</p>
+  </div>
+
+  <div class="prose">
+    <h3>Meanwhile, the players who already made it are aging in place</h3>
+    <p>The second half of this act is the grown-up version of the same thing, and it is happening in college right now. For years the trend ran one direction: get to the NBA as fast as possible, one and done, gone at 19. That era is ending, and money is the reason. NIL deals and the transfer portal changed the math. A good-but-not-great college player can now make real money staying in school, and a projected late second-round pick has every reason to run it back for another year of development and another year of paychecks rather than ride the bench in the pros.</p>
+    <p>Nick's read on it is the sharp one. The portal and NIL created an inflection point in who stays and who goes. The lottery talent still leaves early. But the entire tier below that, the players who used to declare and hope, are now incentivized to stay, get older, get better, and enter the pros as more finished, and more importantly for us, more grown, athletes. College rosters are aging. We should be able to see it.</p>
+    <p>And here is the beautiful part. Remember that football is a flat line, capped at three years out of high school. Basketball has no such cap. So if we chart the age players enter the pros over time, football should stay pinned at 23 while basketball climbs. That contrast is the whole point. It is not that athletes in general are getting older. It is that the sports without an age cap are inflating, and the ones with a cap are not, which tells you the aging is a strategy responding to incentives, not some vague trend in the water.</p>
+  </div>
+  <div class="measure">
+    <div class="tag">What we will measure</div>
+    <p>Age at pro debut over time for the NBA (Basketball-Reference), against the flat NFL baseline we already have. Average college roster age by year where the data reaches it (the free CollegeFootballData API for football, best-available for hoops). The NIL era should show up as a bend in the line around 2021.</p>
+  </div>
+
+  <hr class="actdivider">
+  <div class="actintro">
+    <div class="actnum">Act Three</div>
+    <h2>It does not stop at the buzzer</h2>
+    <p class="prose" style="text-align:left;">This is the part Michael kept pushing toward, and he is right to. If a birthday can bend a sports career, why would it stop there.</p>
+  </div>
+
+  <div class="prose">
+    <p>Take the whole idea out of the gym for a second. The sorting that starts on a youth field starts in a kindergarten classroom too, and with a bigger cutoff to hide behind. In school the age gap inside a single grade can be almost a full year, and the older kids are, on average, the bigger, more coordinated, more verbal, more confident ones in the room. Teachers, being human, tend to read that as smarter. The research has been finding for years that relatively older kids get better grades, score higher on tests, get flagged for gifted programs more, get held back less, and are more likely to land at selective colleges. Same effect, different field.</p>
+
+    <p>We probably cannot get a spreadsheet of every kid's grades by birthday, that data is locked up for good reasons. So this act is part reporting and part measuring. We lay out what the education research actually found, in plain language and clean visuals rather than academic hedging, and then we run the one version of it we can run ourselves.</p>
+
+    <p class="pull">Because the effect does not just get you into a good college. There is evidence it follows you all the way to the top of a company.</p>
+
+    <p>This is the thread we are most excited to pull. There is a striking finding floating around that chief executives are underrepresented among summer birthdays, the exact birthdays that would have made them the youngest, smallest kids in their grade. If that holds, it is the relative age effect showing up in the corner office, forty years after the youth soccer cutoff that started it. And it is measurable. CEO birthdays are public. We can take the same birth-month method we already built for hockey players and point it straight at the people running the biggest companies in America.</p>
+  </div>
+  <div class="measure">
+    <div class="tag">What we will measure</div>
+    <p>Birth months of S&amp;P 500 or Fortune 500 chief executives, run through the identical method we used on athletes, tested against an expected baseline. If the summer-birthday dip is real, the corner office has a relative age effect too. Alongside it, a clean visual retelling of the classroom research on grades, test scores, and college admission.</p>
+  </div>
+
+  <div class="prose">
+    <h3>The through line</h3>
+    <p>Put the three acts next to each other and you get one argument. A birthday you did not choose gives some kids an early edge. The edge is real enough that families have started manufacturing it on purpose. And the whole time, quietly, the same advantage may be compounding in classrooms and careers far away from any field. The kid who was a little older in first grade was a little better at soccer, got a little more praise, tried a little harder, got a little further, and the gap never fully closed. That is either a fascinating quirk of the calendar or a small unfairness we have baked into everything and stopped noticing. Probably both.</p>
+    <p>That is the piece. Next step is to go get the numbers that turn the questions above into answers, starting with the two we are least sure exist and most want to be true: the reclassification data and the CEO birthdays. Everything on this page marked as something we will measure is exactly that. A promise, not a result. Yet.</p>
+  </div>
+
+  <footer>
+    <p>Rough draft, subject to heavy revision once the data lands. Confirmed findings so far (hockey's birth-month skew, football's flat rookie age) come from the companion analysis at <a href="index.html">Where Pro Athletes Actually Come From</a>. Everything labeled "what we will measure" is planned, not final.</p>
+    <p>Method and code will live alongside the main project at <a href="https://github.com/stranger9977/hometown-effect">github.com/stranger9977/hometown-effect</a>.</p>
+  </footer>
+</main>
+</body>
+</html>
