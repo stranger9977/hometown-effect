@@ -74,6 +74,10 @@
   .pill.open  { background:#ece1f6; color:#6b46a8; }
   .card .row { font-size: 14px; line-height: 1.55; margin: 3px 0; color: var(--ink-2); }
   .card .row .lab { font-weight: 700; color: var(--ink); }
+  .card .row.found .lab { color: var(--accent); }
+  .card figure { margin: 12px 0 4px; background: #ffffff; border: 1px solid var(--line); border-radius: 8px; padding: 6px; overflow: hidden; }
+  .card figure img { width: 100%; height: auto; display: block; border-radius: 4px; }
+  .card figcaption { font-size: 12px; color: var(--ink-3); padding: 8px 4px 2px; line-height: 1.5; }
   .card .xref { font-size: 12.5px; color: var(--ink-3); margin-top: 8px; }
   .card .xref a { color: var(--ink-3); text-decoration: underline; text-underline-offset: 2px; }
   @media (prefers-color-scheme: dark) {
@@ -257,25 +261,30 @@
       <p class="grouphint">This companion piece is mostly here already. These are the fixes and additions Michael asked for on top of it.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">Birth-month bar chart for each sport</span><span class="pill work">Needs work</span></div>
-      <p class="row"><span class="lab">Michael:</span> bar charts are easier to read than the calendar heatmap. Give me a clean month-by-month bar with a trend line for each sport, like the NHL one I sent.</p>
-      <p class="row"><span class="lab">Where it stands:</span> we have the quarter panel and a hockey month chart. We do not have a simple four-up "month bars plus trend line" the way he drew it.</p>
-      <p class="row"><span class="lab">Next:</span> render NHL, NFL, MLB, NBA month bars with a trend line and percent labels, one clean panel.</p>
-      <p class="xref">Feeds: Act One.</p>
+      <div class="card-head"><span class="t">Birth-month bar chart for each sport</span><span class="pill ship">Chart built</span></div>
+      <p class="row"><span class="lab">Michael:</span> bar charts are easier to read than the calendar heatmap. Give me a clean month-by-month bar for each sport, like the NHL one I sent.</p>
+      <p class="row found"><span class="lab">Found:</span> four leagues, one panel each, bars for the share of players born in each month. Instead of a plain trend line we drew the real US birth curve on top (the dashed line), so you can see who is over the line. Hockey towers over it in January to March and drops under it in October to December. The other three sit right on it.</p>
+      <figure>
+        <img src="figures/ba_month_bars_bysport.png" alt="Four bar charts, one per league, of the share of players born in each month with the real US birth distribution drawn as a dashed line. Hockey bars rise well above the line in the early months and fall below it late in the year; the other three leagues hug the line.">
+        <figcaption>Share of players by birth month (bars) vs the actual US birth distribution (dashed). Only hockey pulls away from the line.</figcaption>
+      </figure>
+      <p class="xref">Feeds: Act One. Built by R/27.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">Quarter method, raw share per quarter</span><span class="pill work">Needs work</span></div>
+      <div class="card-head"><span class="t">Quarter method, raw share per quarter</span><span class="pill ship">Chart built</span></div>
       <p class="row"><span class="lab">Michael:</span> the original NHL study plotted the percent of players in each quarter, Q1 through Q4. Match that exact look, for every sport.</p>
-      <p class="row"><span class="lab">Where it stands:</span> our quarter chart shows observed-over-expected ratios, not the raw percent-of-players line from the 1982 figure he sent.</p>
-      <p class="row"><span class="lab">Next:</span> add a raw-share version, four dots Q1 to Q4 per league, so it reads like the classic figure people already know.</p>
-      <p class="xref">Pairs with: the month bars above.</p>
+      <p class="row found"><span class="lab">Found:</span> percent of players per quarter, one line per league, the same shape as the 1982 figure he sent. Hockey slides 32, 28, 22, 19 percent from Q1 to Q4. The other three stay flat near 25. The dashed line is the real birth share for comparison.</p>
+      <figure>
+        <img src="figures/ba_quarter_share.png" alt="Four small line charts, one per league, of the percent of players born in each birth quarter Q1 to Q4. Hockey slopes steeply down from 32 percent to 19 percent; football, baseball, and basketball stay near 25 percent across all quarters.">
+        <figcaption>Percent of players per birth quarter, in the style of the original 1982 NHL relative-age figure. Dashed line is the real US birth share.</figcaption>
+      </figure>
+      <p class="xref">Pairs with: the month bars above. Built by R/27.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">Weight the baseline by actual births, not the calendar</span><span class="pill work">Needs work, high value</span></div>
+      <div class="card-head"><span class="t">Weight the baseline by actual births, not the calendar</span><span class="pill ship">Done, and it matters</span></div>
       <p class="row"><span class="lab">Michael:</span> did you weight by real births at all? Late summer months have the most babies.</p>
-      <p class="row"><span class="lab">Where it stands:</span> right now every baseline is a days-in-month uniform line. He is correct that real US births peak in late summer. That cuts in our favor: if more babies are actually born in summer and we still see fewer summer-born athletes and CEOs, the effect is bigger than a flat baseline shows.</p>
-      <p class="row"><span class="lab">Next:</span> pull monthly US birth counts (CDC NVSS), re-baseline every chart, and note how much each one moves. Strengthens the CEO summer dip especially.</p>
-      <p class="xref">Touches: all of Act One and the CEO chart.</p>
+      <p class="row found"><span class="lab">Found:</span> he was right. The baseline is now the real US birth distribution (CDC counts, 1994 to 2003), which peaks in August and bottoms out in February, not a flat line. Switching to it sharpens hockey a little (Q1 goes from 1.30 to 1.33 times expected) and deepens the CEO summer dip (July goes from 0.69 to 0.67). It cuts in our favor: summer-born people are rarer among these players than even a flat baseline would suggest. The dashed line on both charts above is this real curve.</p>
+      <p class="xref">Touches: all of Act One and the CEO chart. Built by R/27.</p>
     </div>
     <div class="card">
       <div class="card-head"><span class="t">The Underdog reversal, the opposite effect</span><span class="pill open">Open, strong legs</span></div>
@@ -313,11 +322,10 @@
       <p class="xref">Feeds: Act Three CEO chart. Related: birth order, August hold-back.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">The August hold-back wrinkle</span><span class="pill open">Open question</span></div>
+      <div class="card-head"><span class="t">The August hold-back wrinkle</span><span class="pill data">Have a lead</span></div>
       <p class="row"><span class="lab">Michael:</span> does the August pattern hold, or is it muddied because so many August babies get held back a year? Very common for August birthdays.</p>
-      <p class="row"><span class="lab">Where it stands:</span> real point. Under a September cutoff, August kids are youngest, and they are the most likely to be redshirted into oldest. So a raw August number mixes two opposite groups.</p>
-      <p class="row"><span class="lab">Next:</span> check exactly where August lands in the CEO and sports data, and connect it to the manufactured-age section rather than reading it flat.</p>
-      <p class="xref">Bridges: Act Two (hold-backs) and Act Three (CEOs).</p>
+      <p class="row found"><span class="lab">Found:</span> a real fingerprint of his hunch. Real US births peak in August, yet CEOs are rarest in July (0.67 of expected) and overrepresented in August (1.33). Under a September school cutoff, August babies are the youngest in the grade and the most likely to be held back a year into being the oldest. That July-low, August-high split is exactly what the hold-back move would leave behind. The CEO sample is small, so it is a lead, not a lock.</p>
+      <p class="xref">Bridges: Act Two (hold-backs) and Act Three (CEOs). From R/27.</p>
     </div>
     <div class="card">
       <div class="card-head"><span class="t">Has the birth-month skew changed over time?</span><span class="pill open">Open question</span></div>
@@ -332,11 +340,14 @@
       <p class="grouphint">Most of this already lives on the main site. Michael wants it pushed further, and controlled so it is "fair."</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">Four quadrants of the country, made fair</span><span class="pill work">Needs work</span></div>
+      <div class="card-head"><span class="t">Four quadrants of the country, made fair</span><span class="pill ship">Chart built</span></div>
       <p class="row"><span class="lab">Michael:</span> what share of the NFL comes from the South, West, Midwest, Northeast? Control by population so it is fair. Then control by race.</p>
-      <p class="row"><span class="lab">Where it stands:</span> we have the county per-capita map but not a clean region-share-vs-population-share index.</p>
-      <p class="row"><span class="lab">Next:</span> compute each region's share of players against its share of the US population, a per-capita index by region, then hold race for the race card.</p>
-      <p class="xref">Uses: main-site map. Race handled below.</p>
+      <p class="row found"><span class="lab">Found:</span> per million residents, the South makes 60 NFL players, the Midwest 39, the West 34, the Northeast 23. Put another way, the South is 54 percent of all players on 39 percent of the population, about 1.4 times its fair share, while the Northeast is 9 percent of players on 17 percent of people, about half. Race is the next card.</p>
+      <figure>
+        <img src="figures/ba_region_percapita.png" alt="Horizontal bar chart of NFL players per million residents by region: South 60, Midwest 39, West 34, Northeast 23, with a dashed line at the US average of 43.">
+        <figcaption>NFL players per million residents by region, already divided by population. The South makes them at more than double the Northeast's rate.</figcaption>
+      </figure>
+      <p class="xref">Uses: main-site map. Race handled below. Built by R/28.</p>
     </div>
     <div class="card">
       <div class="card-head"><span class="t">States most and least per capita</span><span class="pill data">Have data</span></div>
@@ -372,11 +383,16 @@
       <p class="grouphint">The most sensitive and, for Michael, the most interesting. Race is the headline ask, and the hardest to get right.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">Control the "where" by race</span><span class="pill block">Blocked on data, workaround exists</span></div>
+      <div class="card-head"><span class="t">Control the "where" by race</span><span class="pill data">Draft, place-level only</span></div>
       <p class="row"><span class="lab">Michael:</span> the South has most of the country's Black population, roughly two-thirds. So how much more likely is a Black kid from the South to make the NFL than one from the Northeast or the Pacific Northwest? Same for white kids and for Samoans.</p>
-      <p class="row"><span class="lab">Where it stands:</span> nflverse has no race field, so we cannot tag players by race one by one. The honest route is ecological: model the per-capita rate against each county's racial makeup, or compute players per million Black residents by region, and label it as a place-level estimate, not a per-player claim.</p>
-      <p class="row"><span class="lab">Next:</span> decide ecological vs sourcing race for a subset, then build a region-by-race per-capita index. This is the one to get carefully right.</p>
-      <p class="xref">Depends on: the quadrant index above. Highest interest.</p>
+      <p class="row"><span class="lab">The honest limit:</span> the player data has no race, so we cannot follow any individual and cannot answer "a Black kid's odds, South vs Northeast" without making it up. So this describes counties, never people, and says nothing about anyone's odds or any group's ability.</p>
+      <p class="row found"><span class="lab">Found:</span> two place-level facts. First, the South is home to about 57 percent of the US Black population, close to Michael's guess. Second, NFL production rises steadily with a county's Black share of population, from 20 players per million in counties under 5 percent Black to 128 in counties over 50 percent. That climb holds both inside the South and outside it, so it is not only a Southern-culture story. It tracks where football investment and Black communities both concentrate.</p>
+      <figure>
+        <img src="figures/ba_where_by_black_share.png" alt="Grouped bar chart of NFL players per million residents, counties grouped by their Black share of population, split into South and rest of the country. Both groups climb steadily as the Black population share rises, from about 20 per million in the lowest group to over 100 in the highest.">
+        <figcaption>NFL players per million residents by a county's Black share of population, South vs rest. Describes counties, not individuals; the data carries no player race.</figcaption>
+      </figure>
+      <p class="row"><span class="lab">Still open:</span> the Samoan and Pacific Islander angle. American Samoa is a territory, not a county, and Pacific Islander counts per county are tiny, so a clean per-capita read is not there yet. It needs its own source.</p>
+      <p class="xref">Depends on: the quadrant index above. Highest interest. Built by R/28.</p>
     </div>
     <div class="card">
       <div class="card-head"><span class="t">Income as the engine</span><span class="pill ship">Mostly shipped</span></div>
