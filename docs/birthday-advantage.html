@@ -327,18 +327,24 @@
       <p class="xref">Extends the Underdog reversal above with a draft-capital control and error bars.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">One visual of the effect fading across a life</span><span class="pill work">Needs work</span></div>
+      <div class="card-head"><span class="t">One visual of the effect fading across a life</span><span class="pill ship">Chart built</span></div>
       <p class="row"><span class="lab">Michael:</span> the Florida NBER paper looks at kindergarten, elementary, high school, and after. I want one visual anyone can read that shows the effect waning over time but still there.</p>
-      <p class="row"><span class="lab">Where it stands:</span> we cite these findings in prose but do not have the single "effect size across life stages" chart he is describing.</p>
-      <p class="row"><span class="lab">Next:</span> put kindergarten, elementary, high school, and adult estimates on one normalized axis so the decay is a single line the eye can follow.</p>
-      <p class="xref">Sources: NBER w23660 (Florida), Bedard and Dhuey. Feeds: Act Three.</p>
+      <p class="row found"><span class="lab">Found:</span> the oldest-in-class edge runs from a 10-point head start on kindergarten readiness, to a 4-to-12 and then 2-to-9 percentile test gap in grades 4 and 8, to a 1.3-point bump in the odds of attending college. It shrinks toward zero but stays above it. Honest caveat on the chart: the stages use different units, so read the trajectory, not the exact steps.</p>
+      <figure>
+        <img src="figures/ba_effect_fades.png" alt="A dot chart across four life stages, kindergarten to college entry, showing the oldest-versus-youngest gap declining from 10 points to about 1.3, with the two middle test-score points carrying their country ranges as error bars.">
+        <figcaption>The oldest-in-cohort advantage at four life stages, from published research (Bedard and Dhuey 2006; Dhuey, Figlio, Karbownik and Roth 2017), not our data.</figcaption>
+      </figure>
+      <p class="xref">Feeds: Act Three. Built by R/38.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">Income and earnings, and when they evaporate</span><span class="pill data">Have sources</span></div>
+      <div class="card-head"><span class="t">Income and earnings, and when they evaporate</span><span class="pill ship">Chart built, with a twist</span></div>
       <p class="row"><span class="lab">Michael:</span> income and earnings differences basically disappear by the mid-to-late 20s. Norway study, Norway follow-up, two American papers.</p>
-      <p class="row"><span class="lab">Where it stands:</span> we mention it; not charted. This is the honest "it fades" counterweight to the CEO chart, and it belongs on the same page.</p>
-      <p class="row"><span class="lab">Next:</span> chart the earnings gap shrinking toward zero with age from the Norway and US papers, labeled as published research.</p>
-      <p class="xref">Pairs with: the fading-across-a-life visual.</p>
+      <p class="row found"><span class="lab">Found:</span> mostly right, and gone a touch later than he guessed, by the early 30s. The twist is the direction. In the cleanest study, starting school older actually costs you early (about 9 percent lower earnings at 24), because you have less work experience at a given age, and that gap closes by 30. So the birthday barely touches adult pay, which is the honest counterweight to the CEO chart.</p>
+      <figure>
+        <img src="figures/ba_income_fades.png" alt="A line chart of the earnings effect of starting school a year older, from about minus 9 percent at age 24 rising to zero by the early 30s, with a shaded confidence band that crosses zero around age 30.">
+        <figcaption>Earnings effect of school starting age by adult age, from Black, Devereux and Salvanes (2008), NBER 13969. Published research, not our data.</figcaption>
+      </figure>
+      <p class="xref">Pairs with: the fading-across-a-life visual. Built by R/39.</p>
     </div>
     <div class="card">
       <div class="card-head"><span class="t">Matthew principle, name the compounding</span><span class="pill ship">Named + diagram built</span></div>
@@ -351,24 +357,30 @@
       <p class="xref">Ties together: the whole piece. Pairs with the Underdog reversal. Built by R/31.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">Expand the CEO sample</span><span class="pill work">Needs work</span></div>
+      <div class="card-head"><span class="t">Expand the CEO sample</span><span class="pill ship">Tried, hit a ceiling</span></div>
       <p class="row"><span class="lab">Michael:</span> only 187 CEOs, can we get more? Past CEOs are fine.</p>
-      <p class="row"><span class="lab">Where it stands:</span> current pull is current CEOs of public companies. n is small enough that one month can be noise, which is our biggest weakness on this chart.</p>
-      <p class="row"><span class="lab">Next:</span> broaden the Wikidata query to former CEOs and a wider public-company net, and cross-check against a Fortune or Forbes list, then re-run after the real-births re-baseline.</p>
-      <p class="xref">Feeds: Act Three CEO chart. Related: birth order, August hold-back.</p>
+      <p class="row found"><span class="lab">Found:</span> not much more without wrecking it. Relaxing the birth-date rule from day-precision to month-precision only moved it from 187 to 196, so the clean pool of US public-company CEOs on Wikidata tops out near 200. The earlier no-filter pull (476) washed the effect out entirely, so we hold the line and lean on the published S&P 500 result for the big-sample version. The real upgrade below is the real-birth baseline plus the August story.</p>
+      <figure>
+        <img src="figures/ba_ceo_expanded.png" alt="Bar chart of CEO birth months against the real US birth distribution. July is low at 0.75 and August is high at 1.32, both highlighted; the other months hover near the expected line.">
+        <figcaption>CEO birth months vs the real US birth curve, n = 196. July scarce, August common, the hold-back fingerprint. Ours, small and noisy sample.</figcaption>
+      </figure>
+      <p class="xref">Feeds: Act Three CEO chart. Related: birth order, August hold-back. Built by R/41.</p>
     </div>
     <div class="card">
       <div class="card-head"><span class="t">The August hold-back wrinkle</span><span class="pill data">Have a lead</span></div>
       <p class="row"><span class="lab">Michael:</span> does the August pattern hold, or is it muddied because so many August babies get held back a year? Very common for August birthdays.</p>
-      <p class="row found"><span class="lab">Found:</span> a real fingerprint of his hunch. Real US births peak in August, yet CEOs are rarest in July (0.67 of expected) and overrepresented in August (1.33). Under a September school cutoff, August babies are the youngest in the grade and the most likely to be held back a year into being the oldest. That July-low, August-high split is exactly what the hold-back move would leave behind. The CEO sample is small, so it is a lead, not a lock.</p>
-      <p class="xref">Bridges: Act Two (hold-backs) and Act Three (CEOs). From R/27.</p>
+      <p class="row found"><span class="lab">Found:</span> a real fingerprint of his hunch, charted in the CEO card above. Real US births peak in August, yet chief executives are scarce in July (0.75 of expected) and common in August (1.32). Under a September cutoff, July and August babies are the youngest in the grade, but August is the month most tied to being held back a year into being the oldest. That July-low, August-high split is what the hold-back move would leave behind. Small, noisy sample, so a lead, not a lock.</p>
+      <p class="xref">See the CEO chart above. Bridges Act Two (hold-backs) and Act Three (CEOs).</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">Has the birth-month skew changed over time?</span><span class="pill open">Open question</span></div>
+      <div class="card-head"><span class="t">Has the birth-month skew changed over time?</span><span class="pill ship">Chart built</span></div>
       <p class="row"><span class="lab">Michael:</span> further question in the outline, has birth month shifted as parents get more deliberate about timing?</p>
-      <p class="row"><span class="lab">Where it stands:</span> we already split the NFL heatmap by era, so the machinery exists. Two different things live here though: the age-cutoff skew, and deliberate birth timing, which is its own story.</p>
-      <p class="row"><span class="lab">Next:</span> trend the size of the effect by decade per sport, and keep "timing selectivity" separate so we do not blur the two.</p>
-      <p class="xref">Extends: Act One.</p>
+      <p class="row found"><span class="lab">Found:</span> no real change. Hockey's early-birth skew has held between 12 and 15 points (Q1 share minus Q4 share) in every decade since the 1990s, no shrink and no growth. Football, baseball, and basketball never had a skew and still do not. So the age-cutoff effect is stubborn, and if deliberate birth timing is happening, it is not showing up as a trend here.</p>
+      <figure>
+        <img src="figures/ba_skew_over_time.png" alt="A line chart of relative-age-effect strength by decade for four leagues. The NHL line stays high, between 12 and 15 points, across all eras; the NFL, MLB, and NBA lines stay flat near zero.">
+        <figcaption>Relative age effect strength (Q1 minus Q4 birth share) by decade cohort. Hockey stays high and flat; the other three never move off the line.</figcaption>
+      </figure>
+      <p class="xref">Extends: Act One. Built by R/34.</p>
     </div>
 
     <div class="tgroup">
@@ -386,25 +398,34 @@
       <p class="xref">Uses: main-site map. Built by R/28.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">States most and least per capita</span><span class="pill data">Have data</span></div>
+      <div class="card-head"><span class="t">States most and least per capita</span><span class="pill ship">Chart built</span></div>
       <p class="row"><span class="lab">Michael:</span> which states produce the most NFL players per capita, and the least?</p>
-      <p class="row"><span class="lab">Where it stands:</span> the county map has this underneath; we have not rolled it to a clean state ranking.</p>
-      <p class="row"><span class="lab">Next:</span> a ranked state per-capita bar, top and bottom, easy to read.</p>
-      <p class="xref">Lives near: the main-site geography.</p>
+      <p class="row found"><span class="lab">Found:</span> Louisiana runs away with it at 135 players per million, about 3.1 times the national state rate, with Mississippi, Alabama, and Georgia close behind. The Deep South owns the top. At the bottom sit Vermont, Maine, and New Hampshire, all under 5 per million. Hawaii cracks the top with 60, the Polynesian football pipeline showing up.</p>
+      <figure>
+        <img src="figures/ba_states_percapita.png" alt="A ranked bar chart of NFL players per million residents by state, the 12 highest and 8 lowest. Louisiana leads at 134.8; Vermont trails at 3.1.">
+        <figcaption>NFL players per million residents by home state, the highest and lowest. Louisiana at 3.1 times the national state average.</figcaption>
+      </figure>
+      <p class="xref">Lives near: the main-site geography. Built by R/35.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">Per-capita "where" maps for the other sports</span><span class="pill work">Needs work</span></div>
+      <div class="card-head"><span class="t">Per-capita "where" maps for the other sports</span><span class="pill ship">Chart built</span></div>
       <p class="row"><span class="lab">Michael:</span> need a bit more on the "where" for the different sports, not just the NFL map.</p>
-      <p class="row"><span class="lab">Where it stands:</span> the Deep South per-capita map is NFL only.</p>
-      <p class="row"><span class="lab">Next:</span> render the same county per-capita map for MLB, NBA, and NHL so we can compare the geographies side by side.</p>
-      <p class="xref">Extends: the main-site map.</p>
+      <p class="row found"><span class="lab">Found:</span> each sport has its own map. Baseball leans on Pennsylvania and the Midwest, basketball on Mississippi and the Deep South, hockey almost entirely on Minnesota (55 per million, well clear of the field). The geographies barely overlap, which is the point: every sport grows in different soil. Birthplace-based and US-born, so read it against the NFL hometown map, not as identical.</p>
+      <figure>
+        <img src="figures/ba_sport_percapita.png" alt="Three ranked bar charts of US-born players per million residents by birth state for MLB, NBA, and NHL. Pennsylvania tops baseball, Mississippi tops basketball, and Minnesota tops hockey by a wide margin.">
+        <figcaption>Top states per capita for MLB, NBA, and NHL, US-born and birthplace-based. Three different maps. DC excluded as a non-state outlier, matching the NFL chart.</figcaption>
+      </figure>
+      <p class="xref">Extends: the main-site map. Built by R/36.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">Where positions come from, especially QB</span><span class="pill data">Have a start</span></div>
+      <div class="card-head"><span class="t">Where positions come from, especially QB</span><span class="pill ship">Chart built, surprise inside</span></div>
       <p class="row"><span class="lab">Michael:</span> can we look at where positions come from? QB for example.</p>
-      <p class="row"><span class="lab">Where it stands:</span> we already found QBs are born richest and move high schools the least, which killed the Mater Dei migration idea. No per-position map yet.</p>
-      <p class="row"><span class="lab">Next:</span> per-position hometown and income maps, QB first, then the skill and line groups.</p>
-      <p class="xref">Related: main-site QB income finding.</p>
+      <p class="row found"><span class="lab">Found:</span> QBs do come from richer hometowns than most, but they are not the richest. Median hometown income runs highest for kickers and punters (75k), then tight ends (74k), then quarterbacks (74k), all the finesse and specialist spots. The line and defensive positions come from less money, with defensive linemen lowest at 64k. So the "rich quarterback" story is really a "rich skill and special-teams player" story, and I had the ranking wrong before.</p>
+      <figure>
+        <img src="figures/ba_positions_qb.png" alt="A ranked bar chart of median hometown household income by NFL position group. Kickers and punters lead at 75k, tight ends and quarterbacks near 74k, and defensive linemen lowest at 64k. The quarterback bar is highlighted.">
+        <figcaption>Median hometown household income by NFL position group. Kickers and punters, not quarterbacks, come from the richest hometowns.</figcaption>
+      </figure>
+      <p class="xref">Corrects an earlier claim that QBs were the richest. Built by R/37.</p>
     </div>
     <div class="card">
       <div class="card-head"><span class="t">Cities and zip codes, urban share and the rich</span><span class="pill ship">Mostly shipped</span></div>
@@ -426,18 +447,20 @@
       <p class="xref">Same thread as: cities and zip codes.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">College-alumni child, the legacy angle</span><span class="pill open">Open question</span></div>
+      <div class="card-head"><span class="t">College-alumni child, the legacy angle</span><span class="pill block">Parked, no obtainable data</span></div>
       <p class="row"><span class="lab">Michael:</span> outline lists "College Alumni Child" under family.</p>
-      <p class="row"><span class="lab">Where it stands:</span> no clean data source yet on whether athletes' parents went to college, or the same school. Father-son pro pairs are a weak proxy.</p>
-      <p class="row"><span class="lab">Next:</span> scope whether any dataset supports this before committing, otherwise keep it as a narrative point.</p>
+      <p class="row found"><span class="lab">Where it landed:</span> no public dataset ties a pro athlete to whether a parent went to college, or to which one. The only thing we can measure is father-son pro pairs, which is a narrow and biased proxy for "legacy," not the family-education question he is after. So we are parking this one honestly rather than forcing a weak number. It stays a narrative point, carried by the income work, not its own chart.</p>
       <p class="xref">Part of: the family-resources argument.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">Kid A vs Kid B, the three big expenses</span><span class="pill data">Narrative device</span></div>
+      <div class="card-head"><span class="t">Kid A vs Kid B, the three big expenses</span><span class="pill ship">Explainer built</span></div>
       <p class="row"><span class="lab">Michael:</span> Kid A vs Kid B, the first three major expenses of adult life, help with college, help with a house, help with a wedding.</p>
-      <p class="row"><span class="lab">Where it stands:</span> this is an explainer device, not a dataset. It makes the money advantage concrete and human, which the piece could use.</p>
-      <p class="row"><span class="lab">Next:</span> build it as a simple side-by-side graphic once the income sections are set.</p>
-      <p class="xref">Illustrates: income as the engine.</p>
+      <p class="row found"><span class="lab">Found:</span> built it as a clean explainer. The same three bills, college, a first home, and a wedding, hit both kids, but Kid A's family absorbs them and Kid A starts the 30s with savings and equity, while Kid B funds them alone and starts behind. It is the income thread made human. Clearly labeled an illustration, not measured data.</p>
+      <figure>
+        <img src="figures/ba_kid_a_b.png" alt="A two-column explainer, Kid A versus Kid B, across three rows: paying for college, a first home, and a wedding. Kid A's family covers each; Kid B pays alone with debt. Kid A ends ahead, Kid B behind.">
+        <figcaption>The same three early-adult bills, two very different starts. An illustration of how family money compounds, not measured data.</figcaption>
+      </figure>
+      <p class="xref">Illustrates: income as the engine. Built by R/43.</p>
     </div>
 
     <div class="tgroup">
@@ -445,11 +468,14 @@
       <p class="grouphint">Michael asked about this twice, for both athletes and CEOs. Least developed, worth a scoping pass.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">What stands out among siblings</span><span class="pill open">Open question</span></div>
+      <div class="card-head"><span class="t">What stands out among siblings</span><span class="pill ship">Chart built (published)</span></div>
       <p class="row"><span class="lab">Michael:</span> have you looked at birth order for anything? And separately, are CEOs first-borns? Some are only children, so they would be overweighted either way.</p>
-      <p class="row"><span class="lab">Where it stands:</span> sibling data is hard to get at scale. Published work leans two ways: first-borns overrepresented in leadership, later-borns overrepresented in some risk-taking parts of sport. We have neither in-house yet.</p>
-      <p class="row"><span class="lab">Next:</span> find a usable source, then decide between citing published research and hand-collecting a small pro or CEO sample, labeled as a subsample.</p>
-      <p class="xref">Connects: CEO sample (Birthday) and the family cards.</p>
+      <p class="row found"><span class="lab">Found:</span> the first-born advantage is real but small. Two large Norwegian studies put first-borns about 2 to 3 IQ points ahead of second-borns, and the same edge shows up as roughly 2 percent higher adult earnings. On his specific "are CEOs first-borns" question, we could not find a rigorous, large-sample source, so we left that claim out rather than repeat a popular but unverified stat.</p>
+      <figure>
+        <img src="figures/ba_birth_order.png" alt="A bar chart of first-born versus second-born gaps: 2.3 IQ points from Kristensen and Bjerkedal, 3 IQ points from Black, Devereux and Salvanes, and 2 percent higher adult earnings.">
+        <figcaption>First-born versus second-born gaps, from published research (Kristensen and Bjerkedal 2007; Black, Devereux and Salvanes 2007), not our data.</figcaption>
+      </figure>
+      <p class="xref">Connects: CEO sample (Birthday) and the family cards. Built by R/40.</p>
     </div>
 
     <div class="tgroup">
