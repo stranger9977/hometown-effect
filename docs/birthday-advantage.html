@@ -56,6 +56,33 @@
   .measure p { font-size: 15.5px; margin: 6px 0 0; color: var(--ink-2); }
   .pull { max-width: 720px; margin: 30px auto; font-size: 25px; line-height: 1.35; color: var(--ink); font-weight: 600; letter-spacing: -0.01em; }
   footer { border-top: 1px solid var(--line); margin-top: 70px; padding-top: 22px; font-size: 14px; color: var(--ink-3); line-height: 1.7; max-width: 700px; margin-left: auto; margin-right: auto; }
+
+  /* Brainstorm board */
+  .board { max-width: 880px; margin: 0 auto; }
+  .board-intro { max-width: 720px; margin: 0 auto 8px; }
+  .tgroup { margin: 38px 0 6px; }
+  .tgroup > h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.11em; color: var(--accent); border-bottom: 1px solid var(--line); padding-bottom: 8px; margin: 0; }
+  .grouphint { font-size: 14px; color: var(--ink-3); margin: 8px 0 14px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 13px 16px 14px; margin: 0 0 11px; }
+  .card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 7px; }
+  .card-head .t { font-size: 16px; font-weight: 650; color: var(--ink); line-height: 1.3; }
+  .pill { font-size: 10px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; white-space: nowrap; flex-shrink: 0; }
+  .pill.ship  { background:#e0f2e7; color:#1c7a43; }
+  .pill.data  { background:#e1eef8; color:#1c6fa8; }
+  .pill.work  { background:#fbecd6; color:#a5620a; }
+  .pill.block { background:#f7e0e0; color:#b23a3a; }
+  .pill.open  { background:#ece1f6; color:#6b46a8; }
+  .card .row { font-size: 14px; line-height: 1.55; margin: 3px 0; color: var(--ink-2); }
+  .card .row .lab { font-weight: 700; color: var(--ink); }
+  .card .xref { font-size: 12.5px; color: var(--ink-3); margin-top: 8px; }
+  .card .xref a { color: var(--ink-3); text-decoration: underline; text-underline-offset: 2px; }
+  @media (prefers-color-scheme: dark) {
+    .pill.ship  { background:#153021; color:#6fce97; }
+    .pill.data  { background:#13293a; color:#78b8e2; }
+    .pill.work  { background:#2f2410; color:#e0a458; }
+    .pill.block { background:#331717; color:#e08a8a; }
+    .pill.open  { background:#241833; color:#b58ce0; }
+  }
 </style>
 </head>
 <body>
@@ -135,7 +162,7 @@
   </div>
 
   <div class="prose">
-    <p>Here is where it stops being an accident. Parents read the same studies we did. Travel coaches read them too. And the response, especially in youth basketball and football, has been to hold kids back a year on purpose. An eighth grader repeats a grade, shows up to high school a year older and a year bigger than the kids he is now ranked against, and the birthday advantage that used to be luck becomes a decision. It is legal, it is spreading, and it has a clean upside if the goal is a scholarship.</p>
+    <p>Now it stops being an accident. Parents read the same studies we did, and so do travel coaches, and the response, especially in youth basketball and football, has been to hold kids back a year on purpose. An eighth grader repeats a grade, shows up to high school a year older and a year bigger than the kids he is now ranked against, and the birthday advantage that used to be luck becomes a decision. It is legal, it is spreading, and it has a clean upside if the goal is a scholarship.</p>
     <p>How common is it? The honest answer is that nobody has measured it well. The best prevalence estimate we could find puts academic redshirting above <strong>20 percent</strong> of kids overall and near <strong>40 percent</strong> at private schools, but that is a single regional estimate with no year-over-year trend behind it. The tidy version everyone wants, the share of top-100 recruits who are old for their grade and whether it is climbing, does not exist in any public dataset. Recruiting sites publish rank, position, and height, but not birthdates. So this is the number we most want and cannot yet get, and we are saying so rather than drawing a line through data that is not there.</p>
     <p>There is even a wrinkle in the word itself. In recruiting, "reclassify" usually means a phenom jumping a grade forward to get to college sooner, which makes him younger, the opposite of the hold-back move. Cooper Flagg, born in December 2006, reclassified up. The manufactured-age story is real, but you have to keep the two directions straight, and the clean data to size it up is still locked behind paywalls and one-player-at-a-time lookups.</p>
   </div>
@@ -196,10 +223,207 @@
   <div class="prose">
     <h3>Which is why one fix is to hand out the advantage on purpose</h3>
     <p>All of this is having a real cultural moment, and the person at the center of it is Richard Reeves, whose book Of Boys and Men made the case that the male slide is real and measurable. He put numbers on the intuition that boys run a step behind. Girls are about 14 points more likely to be ready for school at age five, the widest gap of its kind, and the part of the brain that handles planning and self-control matures in girls roughly a year ahead of boys. The gap is widest in the mid-teens, right when grades start deciding what comes next.</p>
-    <p>His fix is blunt. Start boys in school a year later than girls, by default. Redshirt all of them. If being the oldest kid in the grade is an advantage, and the research keeps saying it is, then hand it to the kids who are a step behind instead of leaving it to the luck of a due date. It is the relative age effect turned from an accident into a policy. And the quiet part is that it is already happening at the top of the income ladder. Among summer-born boys with a college-educated parent, about one in five is already held back a year. The families who can afford to buy their kid an extra year of size and maturity are buying it. Everyone else takes the birthday they were given.</p>
+    <p>His fix is blunt. Start boys in school a year later than girls, by default. Redshirt all of them. If being the oldest kid in the grade is an advantage, and the research keeps saying it is, then hand it to the kids who are a step behind instead of leaving it to the luck of a due date. It is the relative age effect turned from an accident into a policy. And it is already happening at the top of the income ladder. Among summer-born boys with a college-educated parent, about one in five is already held back a year. The families who can afford to buy their kid an extra year of size and maturity are buying it. Everyone else takes the birthday they were given.</p>
 
     <h3>The through line</h3>
-    <p>Put the three acts next to each other and you get one argument. A birthday you did not choose gives some kids an early edge. The edge is real enough that families have started manufacturing it on purpose. And the whole time, quietly, the same advantage may be compounding in classrooms and careers far from any field. The kid who was a little older in first grade was a little better at soccer, got a little more praise, tried a little harder, got a little further, and the gap never fully closed. That is either a fascinating quirk of the calendar or a small unfairness we baked into everything and stopped noticing. Probably both.</p>
+    <p>Put the three acts next to each other and they make one argument. A birthday you did not choose gives some kids an early edge, the edge is real enough that families have started manufacturing it on purpose, and the same head start may keep compounding in classrooms and careers far from any field. The kid who was a little older in first grade was a little better at soccer, got a little more praise, tried a little harder, got a little further, and the gap never fully closed. It started with the month on a form, and for a lot of people it never went away.</p>
+  </div>
+
+  <hr class="actdivider">
+  <div class="actintro">
+    <div class="actnum">Working board</div>
+    <h2>The brainstorm list</h2>
+  </div>
+  <div class="board-intro prose">
+    <p>Everything below is Michael's running list of ideas for the full "Birth" video, pulled from his outline and our texts, grouped the way he framed it: Birthday, Birth Place, Birth Family, Birth Order. Each card says what he asked for, where it actually stands, and the next concrete move. We knock them out one at a time and promote the ones with legs up into the acts above. Nothing here is finished; it is the backlog.</p>
+  </div>
+
+  <div class="board">
+
+    <div class="tgroup">
+      <h3>Framing, the thing to solve first</h3>
+      <p class="grouphint">Michael's real question: the rich-get-richer story is intuitive, so where is the misconception or the little-known truth? Everything else serves this.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Find the counterintuitive hook</span><span class="pill open">Open, our pick</span></div>
+      <p class="row"><span class="lab">Michael:</span> a lot of this is intuitive, the system feeds itself. Where is the "the only reason I'm not in the NFL is I wasn't rich" gut-punch, and where is the twist people do not expect?</p>
+      <p class="row"><span class="lab">Where it stands:</span> the intuitive spine is the money feedback loop. The twist we like best is the Underdog reversal below: the few who beat a stacked age cutoff tend to be the best of all. That flips "older kids win" into "the system is quietly throwing away its best young talent."</p>
+      <p class="row"><span class="lab">Next:</span> test the reversal in our own data before we build the narrative around it.</p>
+      <p class="xref">Builds on: Underdog reversal, Manufactured age (Act Two).</p>
+    </div>
+
+    <div class="tgroup">
+      <h3>1 &nbsp;Birthday, the relative age effect</h3>
+      <p class="grouphint">This companion piece is mostly here already. These are the fixes and additions Michael asked for on top of it.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Birth-month bar chart for each sport</span><span class="pill work">Needs work</span></div>
+      <p class="row"><span class="lab">Michael:</span> bar charts are easier to read than the calendar heatmap. Give me a clean month-by-month bar with a trend line for each sport, like the NHL one I sent.</p>
+      <p class="row"><span class="lab">Where it stands:</span> we have the quarter panel and a hockey month chart. We do not have a simple four-up "month bars plus trend line" the way he drew it.</p>
+      <p class="row"><span class="lab">Next:</span> render NHL, NFL, MLB, NBA month bars with a trend line and percent labels, one clean panel.</p>
+      <p class="xref">Feeds: Act One.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Quarter method, raw share per quarter</span><span class="pill work">Needs work</span></div>
+      <p class="row"><span class="lab">Michael:</span> the original NHL study plotted the percent of players in each quarter, Q1 through Q4. Match that exact look, for every sport.</p>
+      <p class="row"><span class="lab">Where it stands:</span> our quarter chart shows observed-over-expected ratios, not the raw percent-of-players line from the 1982 figure he sent.</p>
+      <p class="row"><span class="lab">Next:</span> add a raw-share version, four dots Q1 to Q4 per league, so it reads like the classic figure people already know.</p>
+      <p class="xref">Pairs with: the month bars above.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Weight the baseline by actual births, not the calendar</span><span class="pill work">Needs work, high value</span></div>
+      <p class="row"><span class="lab">Michael:</span> did you weight by real births at all? Late summer months have the most babies.</p>
+      <p class="row"><span class="lab">Where it stands:</span> right now every baseline is a days-in-month uniform line. He is correct that real US births peak in late summer. That cuts in our favor: if more babies are actually born in summer and we still see fewer summer-born athletes and CEOs, the effect is bigger than a flat baseline shows.</p>
+      <p class="row"><span class="lab">Next:</span> pull monthly US birth counts (CDC NVSS), re-baseline every chart, and note how much each one moves. Strengthens the CEO summer dip especially.</p>
+      <p class="xref">Touches: all of Act One and the CEO chart.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">The Underdog reversal, the opposite effect</span><span class="pill open">Open, strong legs</span></div>
+      <p class="row"><span class="lab">Michael:</span> outline literally lists "Underdog (opposite)" under Birthday.</p>
+      <p class="row"><span class="lab">Where it stands:</span> published work finds the late-born who survive the funnel often outperform: drafted higher, longer careers, more elite. They had to be genuinely great to get through a system tilted against them. This is our best candidate for the counterintuitive hook.</p>
+      <p class="row"><span class="lab">Next:</span> in our data, compare outcomes of Q4-born vs Q1-born who made it (draft slot, games played, all-star nods) in NHL and soccer. If the late-born do better, we have the twist.</p>
+      <p class="xref">Answers: the Framing card. Related: Matthew principle.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">One visual of the effect fading across a life</span><span class="pill work">Needs work</span></div>
+      <p class="row"><span class="lab">Michael:</span> the Florida NBER paper looks at kindergarten, elementary, high school, and after. I want one visual anyone can read that shows the effect waning over time but still there.</p>
+      <p class="row"><span class="lab">Where it stands:</span> we cite these findings in prose but do not have the single "effect size across life stages" chart he is describing.</p>
+      <p class="row"><span class="lab">Next:</span> put kindergarten, elementary, high school, and adult estimates on one normalized axis so the decay is a single line the eye can follow.</p>
+      <p class="xref">Sources: NBER w23660 (Florida), Bedard and Dhuey. Feeds: Act Three.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Income and earnings, and when they evaporate</span><span class="pill data">Have sources</span></div>
+      <p class="row"><span class="lab">Michael:</span> income and earnings differences basically disappear by the mid-to-late 20s. Norway study, Norway follow-up, two American papers.</p>
+      <p class="row"><span class="lab">Where it stands:</span> we mention it; not charted. This is the honest "it fades" counterweight to the CEO chart, and it belongs on the same page.</p>
+      <p class="row"><span class="lab">Next:</span> chart the earnings gap shrinking toward zero with age from the Norway and US papers, labeled as published research.</p>
+      <p class="xref">Pairs with: the fading-across-a-life visual.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Matthew principle, name the compounding</span><span class="pill data">Concept ready</span></div>
+      <p class="row"><span class="lab">Michael:</span> outline lists "Matthew Principal" under Birthday.</p>
+      <p class="row"><span class="lab">Where it stands:</span> this is exactly our "through line," the small early edge that compounds. We just have not named it. Naming it gives the piece its spine.</p>
+      <p class="row"><span class="lab">Next:</span> name the Matthew effect in the through-line, maybe a small compounding diagram, early nudge to career gap.</p>
+      <p class="xref">Ties together: the whole piece.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Expand the CEO sample</span><span class="pill work">Needs work</span></div>
+      <p class="row"><span class="lab">Michael:</span> only 187 CEOs, can we get more? Past CEOs are fine.</p>
+      <p class="row"><span class="lab">Where it stands:</span> current pull is current CEOs of public companies. n is small enough that one month can be noise, which is our biggest weakness on this chart.</p>
+      <p class="row"><span class="lab">Next:</span> broaden the Wikidata query to former CEOs and a wider public-company net, and cross-check against a Fortune or Forbes list, then re-run after the real-births re-baseline.</p>
+      <p class="xref">Feeds: Act Three CEO chart. Related: birth order, August hold-back.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">The August hold-back wrinkle</span><span class="pill open">Open question</span></div>
+      <p class="row"><span class="lab">Michael:</span> does the August pattern hold, or is it muddied because so many August babies get held back a year? Very common for August birthdays.</p>
+      <p class="row"><span class="lab">Where it stands:</span> real point. Under a September cutoff, August kids are youngest, and they are the most likely to be redshirted into oldest. So a raw August number mixes two opposite groups.</p>
+      <p class="row"><span class="lab">Next:</span> check exactly where August lands in the CEO and sports data, and connect it to the manufactured-age section rather than reading it flat.</p>
+      <p class="xref">Bridges: Act Two (hold-backs) and Act Three (CEOs).</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Has the birth-month skew changed over time?</span><span class="pill open">Open question</span></div>
+      <p class="row"><span class="lab">Michael:</span> further question in the outline, has birth month shifted as parents get more deliberate about timing?</p>
+      <p class="row"><span class="lab">Where it stands:</span> we already split the NFL heatmap by era, so the machinery exists. Two different things live here though: the age-cutoff skew, and deliberate birth timing, which is its own story.</p>
+      <p class="row"><span class="lab">Next:</span> trend the size of the effect by decade per sport, and keep "timing selectivity" separate so we do not blur the two.</p>
+      <p class="xref">Extends: Act One.</p>
+    </div>
+
+    <div class="tgroup">
+      <h3>2 &nbsp;Birth Place, the where</h3>
+      <p class="grouphint">Most of this already lives on the main site. Michael wants it pushed further, and controlled so it is "fair."</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Four quadrants of the country, made fair</span><span class="pill work">Needs work</span></div>
+      <p class="row"><span class="lab">Michael:</span> what share of the NFL comes from the South, West, Midwest, Northeast? Control by population so it is fair. Then control by race.</p>
+      <p class="row"><span class="lab">Where it stands:</span> we have the county per-capita map but not a clean region-share-vs-population-share index.</p>
+      <p class="row"><span class="lab">Next:</span> compute each region's share of players against its share of the US population, a per-capita index by region, then hold race for the race card.</p>
+      <p class="xref">Uses: main-site map. Race handled below.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">States most and least per capita</span><span class="pill data">Have data</span></div>
+      <p class="row"><span class="lab">Michael:</span> which states produce the most NFL players per capita, and the least?</p>
+      <p class="row"><span class="lab">Where it stands:</span> the county map has this underneath; we have not rolled it to a clean state ranking.</p>
+      <p class="row"><span class="lab">Next:</span> a ranked state per-capita bar, top and bottom, easy to read.</p>
+      <p class="xref">Lives near: the main-site geography.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Per-capita "where" maps for the other sports</span><span class="pill work">Needs work</span></div>
+      <p class="row"><span class="lab">Michael:</span> need a bit more on the "where" for the different sports, not just the NFL map.</p>
+      <p class="row"><span class="lab">Where it stands:</span> the Deep South per-capita map is NFL only.</p>
+      <p class="row"><span class="lab">Next:</span> render the same county per-capita map for MLB, NBA, and NHL so we can compare the geographies side by side.</p>
+      <p class="xref">Extends: the main-site map.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Where positions come from, especially QB</span><span class="pill data">Have a start</span></div>
+      <p class="row"><span class="lab">Michael:</span> can we look at where positions come from? QB for example.</p>
+      <p class="row"><span class="lab">Where it stands:</span> we already found QBs are born richest and move high schools the least, which killed the Mater Dei migration idea. No per-position map yet.</p>
+      <p class="row"><span class="lab">Next:</span> per-position hometown and income maps, QB first, then the skill and line groups.</p>
+      <p class="xref">Related: main-site QB income finding.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Cities and zip codes, urban share and the rich</span><span class="pill ship">Mostly shipped</span></div>
+      <p class="row"><span class="lab">Michael:</span> outline notes urban share is shrinking and the rich are getting richer, then transition that into "family."</p>
+      <p class="row"><span class="lab">Where it stands:</span> the main site already carries the shrinking-urban and income-ladder findings. This is the natural handoff from "where" to "family."</p>
+      <p class="row"><span class="lab">Next:</span> write the transition, place to family, rather than build new charts.</p>
+      <p class="xref">Hands off to: Birth Family.</p>
+    </div>
+
+    <div class="tgroup">
+      <h3>3 &nbsp;Birth Family, the who-you-were-born-to</h3>
+      <p class="grouphint">The most sensitive and, for Michael, the most interesting. Race is the headline ask, and the hardest to get right.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Control the "where" by race</span><span class="pill block">Blocked on data, workaround exists</span></div>
+      <p class="row"><span class="lab">Michael:</span> the South has most of the country's Black population, roughly two-thirds. So how much more likely is a Black kid from the South to make the NFL than one from the Northeast or the Pacific Northwest? Same for white kids and for Samoans.</p>
+      <p class="row"><span class="lab">Where it stands:</span> nflverse has no race field, so we cannot tag players by race one by one. The honest route is ecological: model the per-capita rate against each county's racial makeup, or compute players per million Black residents by region, and label it as a place-level estimate, not a per-player claim.</p>
+      <p class="row"><span class="lab">Next:</span> decide ecological vs sourcing race for a subset, then build a region-by-race per-capita index. This is the one to get carefully right.</p>
+      <p class="xref">Depends on: the quadrant index above. Highest interest.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Income as the engine</span><span class="pill ship">Mostly shipped</span></div>
+      <p class="row"><span class="lab">Michael:</span> income, via zip code, which is kind of a "where."</p>
+      <p class="row"><span class="lab">Where it stands:</span> the main site already has the income ladder and the SuperZips work. This is the bridge from place to family.</p>
+      <p class="row"><span class="lab">Next:</span> reuse, do not rebuild. Frame it as the family's resources, not the town's.</p>
+      <p class="xref">Same thread as: cities and zip codes.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">College-alumni child, the legacy angle</span><span class="pill open">Open question</span></div>
+      <p class="row"><span class="lab">Michael:</span> outline lists "College Alumni Child" under family.</p>
+      <p class="row"><span class="lab">Where it stands:</span> no clean data source yet on whether athletes' parents went to college, or the same school. Father-son pro pairs are a weak proxy.</p>
+      <p class="row"><span class="lab">Next:</span> scope whether any dataset supports this before committing, otherwise keep it as a narrative point.</p>
+      <p class="xref">Part of: the family-resources argument.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Kid A vs Kid B, the three big expenses</span><span class="pill data">Narrative device</span></div>
+      <p class="row"><span class="lab">Michael:</span> Kid A vs Kid B, the first three major expenses of adult life, help with college, help with a house, help with a wedding.</p>
+      <p class="row"><span class="lab">Where it stands:</span> this is an explainer device, not a dataset. It makes the money advantage concrete and human, which the piece could use.</p>
+      <p class="row"><span class="lab">Next:</span> build it as a simple side-by-side graphic once the income sections are set.</p>
+      <p class="xref">Illustrates: income as the engine.</p>
+    </div>
+
+    <div class="tgroup">
+      <h3>4 &nbsp;Birth Order, the sibling question</h3>
+      <p class="grouphint">Michael asked about this twice, for both athletes and CEOs. Least developed, worth a scoping pass.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">What stands out among siblings</span><span class="pill open">Open question</span></div>
+      <p class="row"><span class="lab">Michael:</span> have you looked at birth order for anything? And separately, are CEOs first-borns? Some are only children, so they would be overweighted either way.</p>
+      <p class="row"><span class="lab">Where it stands:</span> sibling data is hard to get at scale. Published work leans two ways: first-borns overrepresented in leadership, later-borns overrepresented in some risk-taking parts of sport. We have neither in-house yet.</p>
+      <p class="row"><span class="lab">Next:</span> find a usable source, then decide between citing published research and hand-collecting a small pro or CEO sample, labeled as a subsample.</p>
+      <p class="xref">Connects: CEO sample (Birthday) and the family cards.</p>
+    </div>
+
+    <div class="tgroup">
+      <h3>Further questions</h3>
+      <p class="grouphint">Loose threads from the end of Michael's outline. Parked, not dropped.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Do we add politics?</span><span class="pill data">Have a start</span></div>
+      <p class="row"><span class="lab">Michael:</span> do we add "Politics"?</p>
+      <p class="row"><span class="lab">Where it stands:</span> the main site already has the political-geography finding, every league leans bluer-county than the country, the NFL least so. Room to fold in if it fits the "Birth" spine, risk of sprawl if it does not.</p>
+      <p class="row"><span class="lab">Next:</span> decide whether it earns a place or stays on the main site only.</p>
+      <p class="xref">Exists on: the main site.</p>
+    </div>
+
   </div>
 
   <footer>
