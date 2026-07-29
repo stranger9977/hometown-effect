@@ -415,6 +415,7 @@
         <img src="figures/ba_sport_percapita.png" alt="Three ranked bar charts of US-born players per million residents by birth state for MLB, NBA, and NHL. Pennsylvania tops baseball, Mississippi tops basketball, and Minnesota tops hockey by a wide margin.">
         <figcaption>Top states per capita for MLB, NBA, and NHL, US-born and birthplace-based. Three different maps. DC excluded as a non-state outlier, matching the NFL chart.</figcaption>
       </figure>
+      <p class="row"><span class="lab">Also on the main site:</span> the full county-level per-capita map for each of these sports (MLB, NBA, NHL), a finer-grained companion to the state view here.</p>
       <p class="xref">Extends: the main-site map. Built by R/36.</p>
     </div>
     <div class="card">
@@ -425,14 +426,22 @@
         <img src="figures/ba_positions_qb.png" alt="A ranked bar chart of median hometown household income by NFL position group. Kickers and punters lead at 75k, tight ends and quarterbacks near 74k, and defensive linemen lowest at 64k. The quarterback bar is highlighted.">
         <figcaption>Median hometown household income by NFL position group. Kickers and punters, not quarterbacks, come from the richest hometowns.</figcaption>
       </figure>
-      <p class="xref">Corrects an earlier claim that QBs were the richest. Built by R/37.</p>
+      <p class="row"><span class="lab">The main site agrees:</span> its kicker chart found the same thing over four eras. Kickers and punters come from richest-quartile hometowns at 43 percent in the 2020s, ahead of quarterbacks at 39 percent, and that gap is statistically solid (p = 0.0003).</p>
+      <figure>
+        <img src="figures/kicker_money.png" alt="Line chart of the share of players from richest-quartile hometowns by position group across four eras. The kicker and punter line reaches 43 percent in the 2020s, ahead of quarterbacks at 39 percent; defensive line and linebacker lowest at 20 percent.">
+        <figcaption>Richest-quartile hometown share by position over time, from the main site. Kickers and punters lead, quarterbacks next.</figcaption>
+      </figure>
+      <p class="xref">Corrects an earlier claim that QBs were the richest. Built by R/37; kicker chart from the main site.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">Cities and zip codes, urban share and the rich</span><span class="pill ship">Mostly shipped</span></div>
+      <div class="card-head"><span class="t">Cities and zip codes, urban share and the rich</span><span class="pill ship">Pulled in from the main site</span></div>
       <p class="row"><span class="lab">Michael:</span> outline notes urban share is shrinking and the rich are getting richer, then transition that into "family."</p>
-      <p class="row"><span class="lab">Where it stands:</span> the main site already carries the shrinking-urban and income-ladder findings. This is the natural handoff from "where" to "family."</p>
-      <p class="row"><span class="lab">Next:</span> write the transition, place to family, rather than build new charts.</p>
-      <p class="xref">Hands off to: Birth Family.</p>
+      <p class="row found"><span class="lab">From the main site:</span> he is right that the urban share is shrinking. The densest hometowns produced a big slice of players in the 1990s and have collapsed since, with production sliding into mid-density suburban places. Paired with the income ladder, that is the "where" handing off to "family."</p>
+      <figure>
+        <img src="figures/density_gradient.png" alt="Line chart of the share of NFL players by hometown population-density decile across eras. The 1990s line peaks at the densest decile; the 2020s line collapses there and rises in mid-density deciles.">
+        <figcaption>Share of NFL players by hometown density decile, by era, from the main site. The most-urban hometowns are fading and the suburbs are rising.</figcaption>
+      </figure>
+      <p class="xref">Hands off to: Birth Family. From the main-site density work.</p>
     </div>
 
     <div class="tgroup">
@@ -440,11 +449,14 @@
       <p class="grouphint">Who you were born to. Income, legacy, and the head start a family can buy.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">Income as the engine</span><span class="pill ship">Mostly shipped</span></div>
+      <div class="card-head"><span class="t">Income as the engine</span><span class="pill ship">Pulled in from the main site</span></div>
       <p class="row"><span class="lab">Michael:</span> income, via zip code, which is kind of a "where."</p>
-      <p class="row"><span class="lab">Where it stands:</span> the main site already has the income ladder and the SuperZips work. This is the bridge from place to family.</p>
-      <p class="row"><span class="lab">Next:</span> reuse, do not rebuild. Frame it as the family's resources, not the town's.</p>
-      <p class="xref">Same thread as: cities and zip codes.</p>
+      <p class="row found"><span class="lab">From the main site:</span> this is the spine of the whole project. The share of NFL players from the richest quarter of hometowns climbed from about 10 percent to 25 percent across the eras, while the poorest quarter fell from 43 to 33. The money edge is real and growing, and it is the same edge that pays for Kid A vs Kid B above.</p>
+      <figure>
+        <img src="figures/income_gradient.png" alt="Bar chart of the share of NFL players by hometown income quartile across four rookie eras. The richest-quartile share rises from about 10 to 25 percent; the poorest-quartile share falls from about 43 to 33 percent.">
+        <figcaption>Share of NFL players by hometown income quartile over time, from the main site. The rich are pulling away.</figcaption>
+      </figure>
+      <p class="xref">Same thread as: cities and zip codes. Feeds: Kid A vs Kid B.</p>
     </div>
     <div class="card">
       <div class="card-head"><span class="t">College-alumni child, the legacy angle</span><span class="pill block">Parked, no obtainable data</span></div>
@@ -483,10 +495,13 @@
       <p class="grouphint">Loose threads from the end of Michael's outline. Parked, not dropped.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">Do we add politics?</span><span class="pill data">Have a start</span></div>
+      <div class="card-head"><span class="t">Do we add politics?</span><span class="pill data">Pulled in from the main site</span></div>
       <p class="row"><span class="lab">Michael:</span> do we add "Politics"?</p>
-      <p class="row"><span class="lab">Where it stands:</span> the main site already has the political-geography finding, every league leans bluer-county than the country, the NFL least so. Room to fold in if it fits the "Birth" spine, risk of sprawl if it does not.</p>
-      <p class="row"><span class="lab">Next:</span> decide whether it earns a place or stays on the main site only.</p>
+      <p class="row found"><span class="lab">From the main site:</span> the finding already exists. In all four leagues, blue-leaning counties produce the most players per capita and red-leaning ones the fewest. The gradient is mildest for the NFL and steepest for hockey. It describes places, not players' politics. Worth folding in if it fits the "Birth" spine, though it risks sprawl.</p>
+      <figure>
+        <img src="figures/politics_leagues.png" alt="Small-multiple bar chart of players per million residents by hometown county political lean, one panel per league. Blue counties produce the most players per capita in every league; the gradient is mildest for the NFL and steepest for the NHL.">
+        <figcaption>Players per million by hometown county political lean, from the main site. County lean describes places, not players.</figcaption>
+      </figure>
       <p class="xref">Exists on: the main site.</p>
     </div>
 
