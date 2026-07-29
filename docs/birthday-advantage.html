@@ -307,6 +307,26 @@
       <p class="xref">Sibling of: the Underdog reversal above. Fantasy-relevant. Built by R/30.</p>
     </div>
     <div class="card">
+      <div class="card-head"><span class="t">The model: age and draft pick, three outcomes</span><span class="pill ship">Modeled with error bars</span></div>
+      <p class="row"><span class="lab">Nick:</span> model the interaction of age and draft pick, per position, and predict fantasy points, career value, and second-contract money. Which effect is strongest?</p>
+      <p class="row found"><span class="lab">Found:</span> holding draft pick and draft year fixed, being young for your class helps most reliably on career value. It is positive for all four positions and clears significance for WR and TE. The single biggest effect is a WR second contract, nearly a full standard deviation. Quarterback is the exception across all three outcomes, since young QBs sit and develop. The age-by-pick interaction is not significant, so youth helps at every draft slot, not only early picks.</p>
+      <figure>
+        <img src="figures/ba_draftage_compare.png" alt="A chart of the standardized young-versus-old draft effect for each position, split into three outcomes: fantasy points, career value, and second contract. Most points sit above the zero line; the receiver second-contract effect is the largest and quarterback effects hover around zero.">
+        <figcaption>Standardized young-vs-old effect for each outcome and position, with 95% CIs. Career value is the most consistent; receiver the strongest position; quarterback the exception. Built by R/32.</figcaption>
+      </figure>
+      <p class="xref">Also built as separate charts: fantasy points, career AV, and second contract, each faceted by position (R/32). Upgrades the card above with error bars and controls.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Does the reversal survive a draft-capital control? (NHL)</span><span class="pill ship">Yes, modeled</span></div>
+      <p class="row"><span class="lab">Nick:</span> does that exist for the NHL too, do age and draft capital predict it?</p>
+      <p class="row found"><span class="lab">Found:</span> yes. Holding draft pick fixed, the later-born (youngest in their draft class) still outproduce the earliest-born. Q1 sits lowest in both career games and points, with its confidence bars well clear of Q3 and Q4. The effect peaks at Q3 and dips a little at Q4, but the late-born clearly beat the early-born at the same draft slot. One hockey-specific twist: unlike the NFL, players drafted a year or two older, at 19 or 20, log more games at the same pick, because an overage draftee is a safer, more pro-ready bet.</p>
+      <figure>
+        <img src="figures/ba_nhl_draftage_model.png" alt="Two charts of model-adjusted NHL career games and points by birth quarter, holding draft pick fixed. Q1 is lowest, the line rises to a peak at Q3, and Q4 sits just below Q3, all with 95% confidence bars.">
+        <figcaption>Model-adjusted NHL career games and points by birth quarter, holding draft pick fixed. Q1 (oldest in class) is lowest; the late-born rise above it. n = 4,538. Built by R/33.</figcaption>
+      </figure>
+      <p class="xref">Extends the Underdog reversal above with a draft-capital control and error bars.</p>
+    </div>
+    <div class="card">
       <div class="card-head"><span class="t">One visual of the effect fading across a life</span><span class="pill work">Needs work</span></div>
       <p class="row"><span class="lab">Michael:</span> the Florida NBER paper looks at kindergarten, elementary, high school, and after. I want one visual anyone can read that shows the effect waning over time but still there.</p>
       <p class="row"><span class="lab">Where it stands:</span> we cite these findings in prose but do not have the single "effect size across life stages" chart he is describing.</p>
@@ -396,7 +416,7 @@
 
     <div class="tgroup">
       <h3>3 &nbsp;Birth Family, the who-you-were-born-to</h3>
-      <p class="grouphint">The most sensitive and, for Michael, the most interesting. Race is the headline ask, and the hardest to get right.</p>
+      <p class="grouphint">Who you were born to. Income, legacy, and the head start a family can buy.</p>
     </div>
     <div class="card">
       <div class="card-head"><span class="t">Income as the engine</span><span class="pill ship">Mostly shipped</span></div>

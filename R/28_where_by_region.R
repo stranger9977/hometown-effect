@@ -1,28 +1,11 @@
 # =============================================================================
-# 28_where_by_race.R -- Michael's "where, controlled" asks, handled carefully.
+# 28_where_by_region.R -- Michael's "four quadrants, made fair" ask: what share
+# of NFL players comes from each US region, and is a region over- or under-
+# represented once you divide by its population?
 #
-# WHAT WE CAN AND CANNOT SAY. The player data (nflverse + ESPN + Sleeper) has
-# NO race field. So this script makes NO claim about any individual's odds by
-# race, and none about any group being better or worse at football. That would
-# be both unsupported by the data and not the point. Everything here is
-# ECOLOGICAL: it describes COUNTIES and REGIONS (how many NFL players they
-# produce per resident, and who lives there), never people. Ecological patterns
-# cannot be read down to individuals (the ecological fallacy); the captions say
-# so out loud.
-#
-# The honest questions we CAN answer with county data:
-#   1. What share of NFL players comes from each region, and is a region over-
-#      or under-represented once you divide by its population? (Michael's "four
-#      quadrants, made fair.")
-#   2. The South produces the most players per capita. Michael's read: a lot of
-#      that may be because most Black Americans live in the South. We test the
-#      geography of that: the South's share of the US Black population, and
-#      whether counties with larger Black populations produce more NFL players
-#      per resident, shown WITHIN region so it is not just "the South."
-#
-# Race/population by county: Census Population Estimates county characteristics
-# (cc-est2024, keyless). Black = "Black or African American alone." Player
-# counts + county populations: data/processed/county_rates.csv (from R/09).
+# Region populations: Census Population Estimates county characteristics
+# (cc-est2024, keyless). Player counts + county populations join through
+# data/processed/county_rates.csv (from R/09).
 # =============================================================================
 
 suppressMessages({
@@ -30,7 +13,7 @@ suppressMessages({
 })
 source("R/lib/theme_hometown.R")
 
-# --- county race/population (keyless popest characteristics) ----------------
+# --- county population (keyless popest characteristics) ---------------------
 cc_path <- "data/raw/census/cc-est2024-alldata.csv"
 if (!file.exists(cc_path)) {
   dir.create(dirname(cc_path), showWarnings = FALSE, recursive = TRUE)
@@ -112,8 +95,5 @@ p_region <- ggplot(region_tbl, aes(reorder(region, per_million), per_million)) +
       "\nThis is production per resident, so it already controls for the fact that the South and West hold more people.")) +
   theme_hometown(grid = "none")
 save_fig("docs/figures/ba_region_percapita.png", p_region, w = 11, h = 4.6)
-
-# NOTE: an earlier county-level race analysis was intentionally removed. It is
-# not part of this project. Do not re-add it.
 
 cat("\ndone\n")
