@@ -23,7 +23,8 @@ KEY <- Sys.getenv("CENSUS_API_KEY"); stopifnot(nzchar(KEY))
 vars <- c("B19013_001E", "B01003_001E",
           "B15003_001E", "B15003_022E", "B15003_023E", "B15003_024E", "B15003_025E",
           "B25003_001E", "B25003_002E",
-          "B23025_001E", "B23025_004E")
+          "B23025_001E", "B23025_004E",
+          "B12001_001E", "B12001_004E", "B12001_013E")
 url <- sprintf("https://api.census.gov/data/2023/acs/acs5?get=%s&for=county:*&in=state:*&key=%s",
                paste(vars, collapse = ","), KEY)
 res <- curl_fetch_memory(url); stopifnot(res$status_code == 200)
@@ -43,7 +44,8 @@ co <- df |>
             pop25 = B15003_001E,
             baplus = B15003_022E + B15003_023E + B15003_024E + B15003_025E,
             hh = B25003_001E, owner = B25003_002E,
-            pop16 = B23025_001E, employed = B23025_004E) |>
+            pop16 = B23025_001E, employed = B23025_004E,
+            pop15 = B12001_001E, married = B12001_004E + B12001_013E) |>
   arrange(income) |>
   mutate(fifth = cut(cumsum(pop), breaks = c(0, seq(0.2, 1, 0.2) * sum(pop)),
                      labels = c("Poorest\n20%", "Lower\nmiddle", "Middle", "Upper\nmiddle", "Richest\n20%"),
@@ -55,10 +57,11 @@ grad <- co |>
             ba_rate = 100 * sum(baplus) / sum(pop25),
             emp_rate = 100 * sum(employed) / sum(pop16),
             own_rate = 100 * sum(owner) / sum(hh),
+            mar_rate = 100 * sum(married) / sum(pop15),
             life_exp = weighted.mean(life_exp, pop, na.rm = TRUE),
             .groups = "drop")
 cat("=== outcomes by county income fifth (equal population) ===\n")
-print(as.data.frame(grad |> mutate(income = round(income), across(c(ba_rate, emp_rate, own_rate), ~round(.x,1)), life_exp = round(life_exp,1))))
+print(as.data.frame(grad |> mutate(income = round(income), across(c(ba_rate, emp_rate, own_rate, mar_rate), ~round(.x,1)), life_exp = round(life_exp,1))))
 le_gap <- round(grad$life_exp[5] - grad$life_exp[1], 1)
 cat(sprintf("life-expectancy gap richest vs poorest fifth: %.1f years\n", le_gap))
 cat(sprintf("home ownership across fifths (the flat exception): %s\n", paste0(round(grad$own_rate,0), "%", collapse = " ")))
@@ -67,10 +70,13 @@ plot_df <- grad |>
   transmute(fifth,
             `Bachelor's degree or higher (%)` = ba_rate,
             `Working, age 16 and up (%)` = emp_rate,
+            `Now married, age 15 and up (%)` = mar_rate,
             `Life expectancy (years)` = life_exp) |>
   pivot_longer(-fifth, names_to = "outcome", values_to = "value") |>
   mutate(outcome = factor(outcome, levels = c("Bachelor's degree or higher (%)",
-                                             "Working, age 16 and up (%)", "Life expectancy (years)")),
+                                             "Working, age 16 and up (%)",
+                                             "Now married, age 15 and up (%)",
+                                             "Life expectancy (years)")),
          lab = ifelse(outcome == "Life expectancy (years)", sprintf("%.1f", value), sprintf("%.0f%%", value)))
 
 p <- ggplot(plot_df, aes(fifth, value, group = 1)) +
@@ -80,11 +86,11 @@ p <- ggplot(plot_df, aes(fifth, value, group = 1)) +
   facet_wrap(~outcome, scales = "free_y", nrow = 1) +
   scale_y_continuous(expand = expansion(mult = c(0.1, 0.2))) +
   labs(
-    title = "The wealth gradient: richer places have more degrees, more work, and years more life",
+    title = "The wealth gradient: richer places have more degrees, more work, more marriage, and years more life",
     subtitle = "US counties sorted into equal-population income fifths, from the poorest 20 percent of the country by local income to the richest.",
     x = NULL, y = NULL,
     caption = fig_caption(
-      "Census ACS 5-year 2023 (income, education, employment) + County Health Rankings 2024 (CDC small-area life expectancy), county level",
+      "Census ACS 5-year 2023 (income, education, employment, marriage) + County Health Rankings 2024 (CDC small-area life expectancy), county level",
       sprintf("\nEach fifth holds about a fifth of the US population (poorest places average $%dk median income, richest $%dk). Rates pooled, life expectancy population-weighted.",
               round(grad$income[1]/1000), round(grad$income[5]/1000)),
       sprintf("\nThe richest fifth of places lives about %.1f years longer than the poorest. The one outcome that does NOT follow wealth is home ownership (flat near\ntwo-thirds across every fifth, since expensive places have more renters). No sports anywhere here: this is the birthplace story for the whole population.", le_gap))) +
@@ -92,5 +98,5 @@ p <- ggplot(plot_df, aes(fifth, value, group = 1)) +
   theme(strip.text = element_text(hjust = 0.5, size = rel(0.88)),
         panel.spacing = unit(1.5, "lines"),
         axis.text.x = element_text(size = rel(0.72), lineheight = 0.9))
-save_fig("docs/figures/ba_wealth_gradient.png", p, w = 12, h = 5.0)
+save_fig("docs/figures/ba_wealth_gradient.png", p, w = 13.5, h = 5.0)
 cat("\ndone\n")

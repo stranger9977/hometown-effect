@@ -386,12 +386,12 @@
     <div class="card">
       <div class="card-head"><span class="t">Soccer, and the foreign leagues</span><span class="pill ship">Chart built</span></div>
       <p class="row"><span class="lab">Michael:</span> did you ever do soccer, Premier League or La Liga? And USA men versus women? I have heard the US is bad in La Liga.</p>
-      <p class="row found"><span class="lab">Found:</span> pulled the Premier League, 13,543 players from Wikidata, and it shows the same birthday edge as US hockey, just shifted. English youth football's cutoff is September 1, so the oldest kids in a group are born in autumn, and Premier League players pile up in September and October, not January. The effect follows the cutoff, not the calendar. US men and women soccer is already split by sex in Act One, and both lean early-year. La Liga is the same pull if we want it. The separate "US players struggle in La Liga" point is about quality abroad, a different question we cannot get from birthdays.</p>
+      <p class="row found"><span class="lab">Found:</span> pulled both, and together they are the cleanest proof of the whole idea. The Premier League (13,543 players) and La Liga (8,008) both show the same birthday edge as US hockey, but each peaks at its own country's cutoff. England's youth cutoff is September 1, so English players pile up in September and October. Spain's is January 1, so Spanish players pile up in January. Same effect, the peak just slides to wherever the age line is drawn. It is about the cutoff, not the calendar. US men and women soccer is already split by sex in Act One, both leaning early-year. The separate "US struggles in La Liga" point is about quality abroad, a different question birthdays cannot answer.</p>
       <figure>
-        <img src="figures/ba_epl_rae.png" alt="Bar chart of Premier League players' birth months. September and October are the tallest bars, highlighted, well above the flat baseline; June is the shortest.">
-        <figcaption>Premier League birth months, from Wikidata. The peak is September, aligned to English football's September 1 cutoff, not January. Built by R/46.</figcaption>
+        <img src="figures/ba_soccer_cutoffs.png" alt="Two bar charts of birth months. Premier League peaks in September, October, November (highlighted). La Liga peaks in January, February, March (highlighted). Each league's peak matches its youth cutoff.">
+        <figcaption>Premier League vs La Liga birth months, from Wikidata. England's peak is autumn (Sept 1 cutoff), Spain's is winter (Jan 1 cutoff). Same effect, different cutoff. Built by R/50.</figcaption>
       </figure>
-      <p class="xref">Extends: the soccer chart in Act One. La Liga is the next easy pull.</p>
+      <p class="xref">Extends: the soccer chart in Act One. Both foreign leagues now done.</p>
     </div>
 
     <div class="tgroup">
@@ -560,18 +560,18 @@
     <div class="card">
       <div class="card-head"><span class="t">The wealth gradient, by income band</span><span class="pill ship">Chart built</span></div>
       <p class="row"><span class="lab">Michael:</span> maybe look at it by wealth? By zip code?</p>
-      <p class="row found"><span class="lab">Found:</span> sort every US county into equal-population income fifths, from the poorest 20 percent of places to the richest, and the outcomes climb almost in lockstep. College degrees double from 24 to 48 percent, employment rises from 53 to 64 percent, and life expectancy climbs 6.9 years, from 74 in the poorest fifth to 81 in the richest. The one thing that does not follow wealth is home ownership, flat near two-thirds everywhere, because expensive places have more renters.</p>
+      <p class="row found"><span class="lab">Found:</span> sort every US county into equal-population income fifths, from the poorest 20 percent of places to the richest, and the outcomes climb almost in lockstep. College degrees double from 24 to 48 percent, employment rises from 53 to 64 percent, marriage from 46 to 53 percent, and life expectancy climbs 6.9 years, from 74 in the poorest fifth to 81 in the richest. The one thing that does not follow wealth is home ownership, flat near two-thirds everywhere, because expensive places have more renters.</p>
       <figure>
-        <img src="figures/ba_wealth_gradient.png" alt="Three rising line charts across county income fifths from poorest to richest: bachelor's degree or higher (24 to 48 percent), employment (53 to 64 percent), and life expectancy (74.1 to 81.0 years).">
-        <figcaption>College degrees, employment, and life expectancy by county income fifth. The richest places live nearly seven years longer than the poorest. Census ACS plus County Health Rankings. Built by R/48.</figcaption>
+        <img src="figures/ba_wealth_gradient.png" alt="Four rising line charts across county income fifths from poorest to richest: bachelor's degree or higher (24 to 48 percent), employment (53 to 64 percent), now married (46 to 53 percent), and life expectancy (74.1 to 81.0 years).">
+        <figcaption>College degrees, employment, marriage, and life expectancy by county income fifth. The richest places live nearly seven years longer than the poorest. Census ACS plus County Health Rankings. Built by R/48.</figcaption>
       </figure>
       <p class="xref">The "by wealth" cut Michael asked for. Zip-level is the same pull at finer grain.</p>
     </div>
     <div class="card">
       <div class="card-head"><span class="t">His full outcome list, and what each needs</span><span class="pill data">Scoped</span></div>
       <p class="row"><span class="lab">Michael's list:</span> median income, family wealth, education by degree level, employment rate, home ownership, marriage rate, life expectancy, sliced by region or zip or wealth, adjusted for inflation where it helps.</p>
-      <p class="row found"><span class="lab">What each needs, and what is done:</span> income, education, employment, home ownership, and life expectancy are all built now, in the two charts above (ACS for the first four, County Health Rankings for life expectancy). Marriage rate is the same one-line ACS pull whenever we want it, by region or zip. The one genuinely hard outcome is family net worth: there is no good small-area wealth data, since the Fed's wealth survey is national only, so that one we would proxy or leave national.</p>
-      <p class="xref">Most of the list is now charted. Marriage rate and a zip-level version are the easy next pulls.</p>
+      <p class="row found"><span class="lab">What is done, and what is left:</span> income, education, employment, home ownership, marriage, and life expectancy are all built now, in the charts above (ACS for the first five, County Health Rankings for life expectancy). That is essentially his whole list. The one genuinely hard outcome is family net worth: there is no good small-area wealth data, since the Fed's wealth survey is national only, so that one we would proxy or leave national. A zip-level version of any of these is the same pull at finer grain.</p>
+      <p class="xref">His outcome list is now charted, except family net worth. A zip-level cut is the natural next grain.</p>
     </div>
 
   </div>
