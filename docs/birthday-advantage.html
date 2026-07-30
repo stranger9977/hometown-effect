@@ -384,10 +384,14 @@
     </div>
 
     <div class="card">
-      <div class="card-head"><span class="t">Soccer, and the foreign leagues</span><span class="pill open">Partly done, foreign open</span></div>
+      <div class="card-head"><span class="t">Soccer, and the foreign leagues</span><span class="pill ship">Chart built</span></div>
       <p class="row"><span class="lab">Michael:</span> did you ever do soccer, Premier League or La Liga? And USA men versus women? I have heard the US is bad in La Liga.</p>
-      <p class="row found"><span class="lab">Where it stands:</span> US soccer is already in Act One, the birth-month skew from Wikidata, and it leans early-year like hockey, for men and women alike. What we have not touched is the foreign leagues, Premier League or La Liga, or a clean US-men-versus-women cut of actual rostered players. Those need a different pull, since Wikidata coverage gets thin and biased for lower-profile players abroad.</p>
-      <p class="xref">Extends: the soccer chart in Act One. Foreign-league rosters are the open piece.</p>
+      <p class="row found"><span class="lab">Found:</span> pulled the Premier League, 13,543 players from Wikidata, and it shows the same birthday edge as US hockey, just shifted. English youth football's cutoff is September 1, so the oldest kids in a group are born in autumn, and Premier League players pile up in September and October, not January. The effect follows the cutoff, not the calendar. US men and women soccer is already split by sex in Act One, and both lean early-year. La Liga is the same pull if we want it. The separate "US players struggle in La Liga" point is about quality abroad, a different question we cannot get from birthdays.</p>
+      <figure>
+        <img src="figures/ba_epl_rae.png" alt="Bar chart of Premier League players' birth months. September and October are the tallest bars, highlighted, well above the flat baseline; June is the shortest.">
+        <figcaption>Premier League birth months, from Wikidata. The peak is September, aligned to English football's September 1 cutoff, not January. Built by R/46.</figcaption>
+      </figure>
+      <p class="xref">Extends: the soccer chart in Act One. La Liga is the next easy pull.</p>
     </div>
 
     <div class="tgroup">
@@ -422,6 +426,7 @@
         <img src="figures/ba_sport_percapita.png" alt="Three ranked bar charts of US-born players per million residents by birth state for MLB, NBA, and NHL. Pennsylvania tops baseball, Mississippi tops basketball, and Minnesota tops hockey by a wide margin.">
         <figcaption>Top states per capita for MLB, NBA, and NHL, US-born and birthplace-based. Three different maps. DC excluded as a non-state outlier, matching the NFL chart.</figcaption>
       </figure>
+      <p class="row"><span class="lab">The least (he asked too):</span> baseball's lowest per capita are the Mountain West (Utah, Idaho, Nevada, all near 15 per million); basketball's are the small northern states (Vermont produces essentially none); and hockey's bottom is a wall of zeros across the warm-weather South, where Arkansas, Kentucky, and others produce no NHL players at all.</p>
       <p class="row"><span class="lab">Also on the main site:</span> the full county-level per-capita map for each of these sports (MLB, NBA, NHL), a finer-grained companion to the state view here.</p>
       <p class="xref">Extends: the main-site map. Built by R/36.</p>
     </div>
@@ -451,11 +456,14 @@
       <p class="xref">Answers Michael's regional version of the income shift. Built by R/44.</p>
     </div>
     <div class="card">
-      <div class="card-head"><span class="t">QBs and the richest hometowns over time</span><span class="pill open">Scoped, buildable</span></div>
+      <div class="card-head"><span class="t">QBs and the richest hometowns over time</span><span class="pill ship">Chart built</span></div>
       <p class="row"><span class="lab">Michael:</span> QBs keep rising from the richest quartile of hometowns. Is that partly a high-school-location thing? Bryce Young is the example.</p>
-      <p class="row found"><span class="lab">Where it stands:</span> the trend is real, the main site's kicker chart has quarterbacks near the top of richest-quartile hometowns and climbing. The open question is whether it partly reflects where a player went to high school rather than where he grew up, since we place players by high school when we know it. A recruit who transfers to a well-off powerhouse for his senior year gets tagged to that richer place. Bryce Young, at Mater Dei in a wealthy Southern California zip, is exactly that case.</p>
-      <p class="row"><span class="lab">Next:</span> split QB hometown income by whether we used the high school or the birthplace, to size how much of the rich-QB trend is a school-location artifact.</p>
-      <p class="xref">Related: the positions and income cards. Built on the high-school-location question.</p>
+      <p class="row found"><span class="lab">Found:</span> both halves are true. The share of QBs from the richest quarter of hometowns rose from 24 percent to 42 percent over the eras, so the trend is real. And part of it is the high school: QBs we place by high school come from hometowns about 7k richer than QBs we place by birthplace (78k vs 71k), so a recruit who moves to a well-off powerhouse, like Bryce Young at Mater Dei, gets tagged to that richer place. But even by birthplace alone, QBs still skew rich, so it is not only a school-location artifact.</p>
+      <figure>
+        <img src="figures/ba_qb_income.png" alt="Two charts. Left, the share of QBs from the richest quarter of hometowns rises from 24 to 42 percent across eras. Right, QB median hometown income is 71k when placed by birthplace and 78k when placed by high school.">
+        <figcaption>QB hometown wealth over time, and how high-school placement inflates it. NFL only. Built by R/45.</figcaption>
+      </figure>
+      <p class="xref">Related: the positions and income cards.</p>
     </div>
     <div class="card">
       <div class="card-head"><span class="t">Cities and zip codes, urban share and the rich</span><span class="pill ship">Pulled in from the main site</span></div>
@@ -511,7 +519,7 @@
         <img src="figures/ba_birth_order.png" alt="A bar chart of first-born versus second-born gaps: 2.3 IQ points from Kristensen and Bjerkedal, 3 IQ points from Black, Devereux and Salvanes, and 2 percent higher adult earnings.">
         <figcaption>First-born versus second-born gaps, from published research (Kristensen and Bjerkedal 2007; Black, Devereux and Salvanes 2007), not our data.</figcaption>
       </figure>
-      <p class="row"><span class="lab">Beyond IQ (his follow-up):</span> the 2 percent earnings gap above is the main non-IQ result we could verify. On sports specifically, the research points the other way, later-borns tend to be the risk-takers, overrepresented in the aggressive high-variance roles (the well-known example is younger brothers attempting far more stolen bases in baseball). Solid birth-order work past 2007 is thin, so we treat all of this as a small, careful literature rather than run our own study.</p>
+      <p class="row"><span class="lab">Beyond IQ, and besides 2007 (his follow-ups):</span> the 2 percent earnings gap above is the main non-IQ result we could verify. A larger 2015 study across the US, UK, and Germany (Rohrer and colleagues, more than 20,000 people) confirmed the small first-born IQ edge but found no birth-order effect on personality, which quietly kills the "first-borns are more responsible" stereotype. On sports the research flips, later-borns tend to be the risk-takers (the classic example is younger brothers attempting far more stolen bases). We are not running our own birth-order study; this is a careful read of what is out there.</p>
       <p class="xref">Connects: CEO sample (Birthday) and the family cards. Built by R/40.</p>
     </div>
 
