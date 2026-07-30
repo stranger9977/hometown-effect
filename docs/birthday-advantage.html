@@ -538,6 +538,27 @@
       <p class="xref">Exists on: the main site.</p>
     </div>
 
+    <div class="tgroup">
+      <h3>Beyond sports, the final piece</h3>
+      <p class="grouphint">Michael's last idea: point the whole where-and-when-you-are-born thesis at general life outcomes, nothing to do with sports. By region, by zip, by wealth.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">Life outcomes by region, the proof of concept</span><span class="pill ship">Chart built</span></div>
+      <p class="row"><span class="lab">Michael:</span> expand the sections for more general purposes than sports. Look at zip codes, or wealth, or regionally, at things like income, education, home ownership. This part has nothing to do with sports.</p>
+      <p class="row found"><span class="lab">Found:</span> the direction works, and the Census makes it easy. Straight from ACS 2023: the Northeast and West lead on income (88k and 90k) and the Northeast on college degrees (40 percent), while the South trails on both (73k, 33 percent). Home ownership flips, highest in the Midwest (69 percent), lowest in the West (61 percent). The same geography that sorts athletes sorts everyday life, long before any sport.</p>
+      <figure>
+        <img src="figures/ba_beyond_sports_region.png" alt="Three bar charts by US region: median household income (Northeast 88k, West 90k, Midwest 75k, South 73k), bachelor's degree or higher (Northeast 40 percent, West 36, Midwest and South 33), and home ownership (Midwest 69 percent, South 66, Northeast 62, West 61).">
+        <figcaption>Income, college degrees, and home ownership by US region, from Census ACS 2023. The general-population version of the birthplace story. Built by R/47.</figcaption>
+      </figure>
+      <p class="xref">The general-population extension. Michael calls it the final piece.</p>
+    </div>
+    <div class="card">
+      <div class="card-head"><span class="t">His full outcome list, and what each needs</span><span class="pill data">Scoped</span></div>
+      <p class="row"><span class="lab">Michael's list:</span> median income, family wealth, education by degree level, employment rate, home ownership, marriage rate, life expectancy, sliced by region or zip or wealth, adjusted for inflation where it helps.</p>
+      <p class="row found"><span class="lab">What each needs:</span> most are one Census ACS pull away and can be cut by region, state, or zip. Median income, education, employment, home ownership, and marriage rate all sit in ACS tables, and three of them are in the chart above. Life expectancy needs a different but public source, the CDC's small-area life-expectancy project by census tract. The hard one is family net worth: there is no good small-area wealth data, since the Fed's wealth survey is national only, so that one we would have to proxy or leave national.</p>
+      <p class="xref">Next: pick the outcomes worth charting by zip and by wealth, then pull them together.</p>
+    </div>
+
   </div>
 
   <footer>
