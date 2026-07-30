@@ -553,10 +553,20 @@
       <p class="xref">The general-population extension. Michael calls it the final piece.</p>
     </div>
     <div class="card">
+      <div class="card-head"><span class="t">The wealth gradient, by income band</span><span class="pill ship">Chart built</span></div>
+      <p class="row"><span class="lab">Michael:</span> maybe look at it by wealth? By zip code?</p>
+      <p class="row found"><span class="lab">Found:</span> sort every US county into equal-population income fifths, from the poorest 20 percent of places to the richest, and the outcomes climb almost in lockstep. College degrees double from 24 to 48 percent, employment rises from 53 to 64 percent, and life expectancy climbs 6.9 years, from 74 in the poorest fifth to 81 in the richest. The one thing that does not follow wealth is home ownership, flat near two-thirds everywhere, because expensive places have more renters.</p>
+      <figure>
+        <img src="figures/ba_wealth_gradient.png" alt="Three rising line charts across county income fifths from poorest to richest: bachelor's degree or higher (24 to 48 percent), employment (53 to 64 percent), and life expectancy (74.1 to 81.0 years).">
+        <figcaption>College degrees, employment, and life expectancy by county income fifth. The richest places live nearly seven years longer than the poorest. Census ACS plus County Health Rankings. Built by R/48.</figcaption>
+      </figure>
+      <p class="xref">The "by wealth" cut Michael asked for. Zip-level is the same pull at finer grain.</p>
+    </div>
+    <div class="card">
       <div class="card-head"><span class="t">His full outcome list, and what each needs</span><span class="pill data">Scoped</span></div>
       <p class="row"><span class="lab">Michael's list:</span> median income, family wealth, education by degree level, employment rate, home ownership, marriage rate, life expectancy, sliced by region or zip or wealth, adjusted for inflation where it helps.</p>
-      <p class="row found"><span class="lab">What each needs:</span> most are one Census ACS pull away and can be cut by region, state, or zip. Median income, education, employment, home ownership, and marriage rate all sit in ACS tables, and three of them are in the chart above. Life expectancy needs a different but public source, the CDC's small-area life-expectancy project by census tract. The hard one is family net worth: there is no good small-area wealth data, since the Fed's wealth survey is national only, so that one we would have to proxy or leave national.</p>
-      <p class="xref">Next: pick the outcomes worth charting by zip and by wealth, then pull them together.</p>
+      <p class="row found"><span class="lab">What each needs, and what is done:</span> income, education, employment, home ownership, and life expectancy are all built now, in the two charts above (ACS for the first four, County Health Rankings for life expectancy). Marriage rate is the same one-line ACS pull whenever we want it, by region or zip. The one genuinely hard outcome is family net worth: there is no good small-area wealth data, since the Fed's wealth survey is national only, so that one we would proxy or leave national.</p>
+      <p class="xref">Most of the list is now charted. Marriage rate and a zip-level version are the easy next pulls.</p>
     </div>
 
   </div>
