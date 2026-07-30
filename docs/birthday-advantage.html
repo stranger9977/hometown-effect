@@ -568,10 +568,20 @@
       <p class="xref">The "by wealth" cut Michael asked for. Zip-level is the same pull at finer grain.</p>
     </div>
     <div class="card">
+      <div class="card-head"><span class="t">Family wealth, the closest the map allows</span><span class="pill ship">Chart built (proxy)</span></div>
+      <p class="row"><span class="lab">Michael:</span> family wealth, net worth, adjusted for inflation.</p>
+      <p class="row found"><span class="lab">Found, with a caveat:</span> true household net worth does not exist at the county or zip level, since the Fed's wealth survey is national only. But the biggest slice of most families' wealth is home equity, and home value we can map. Median home value runs from 170k in the poorest fifth of places to 603k in the richest, a 3.5 times gap, the same steep climb as the rest of the outcomes. It is a proxy, labeled as one, not true net worth.</p>
+      <figure>
+        <img src="figures/ba_family_wealth.png" alt="Bar chart of median home value by county income fifth, rising from 170k in the poorest fifth to 603k in the richest, a 3.5 times gap.">
+        <figcaption>Median home value by county income fifth, the best place-level proxy for family wealth. A proxy, not true net worth. Census ACS 2023. Built by R/51.</figcaption>
+      </figure>
+      <p class="xref">Answers the "family wealth" item as far as small-area data allows.</p>
+    </div>
+    <div class="card">
       <div class="card-head"><span class="t">His full outcome list, and what each needs</span><span class="pill data">Scoped</span></div>
       <p class="row"><span class="lab">Michael's list:</span> median income, family wealth, education by degree level, employment rate, home ownership, marriage rate, life expectancy, sliced by region or zip or wealth, adjusted for inflation where it helps.</p>
-      <p class="row found"><span class="lab">What is done, and what is left:</span> income, education, employment, home ownership, marriage, and life expectancy are all built now, in the charts above (ACS for the first five, County Health Rankings for life expectancy). That is essentially his whole list. The one genuinely hard outcome is family net worth: there is no good small-area wealth data, since the Fed's wealth survey is national only, so that one we would proxy or leave national. A zip-level version of any of these is the same pull at finer grain.</p>
-      <p class="xref">His outcome list is now charted, except family net worth. A zip-level cut is the natural next grain.</p>
+      <p class="row found"><span class="lab">What is done:</span> income, education, employment, home ownership, marriage, and life expectancy are all built now (ACS plus County Health Rankings). Family net worth, the one with no true small-area data, is now proxied by home value in the card above, which is most of a typical family's wealth. So his whole list is covered, each item either measured directly or proxied honestly. A zip-level cut of any of these is the same pull at finer grain.</p>
+      <p class="xref">His outcome list is now fully covered. A zip-level cut is the natural next grain.</p>
     </div>
 
   </div>
