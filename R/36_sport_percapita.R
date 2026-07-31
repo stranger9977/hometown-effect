@@ -48,6 +48,17 @@ rate_tbl <- expand_grid(sport = levels(players$sport), state = pop_by_state$stat
   left_join(pop_by_state, by = "state") |>
   mutate(per_million = 1e6 * n / pop)
 
+# National average per sport (all US-born players over the whole US population),
+# same method as the state rates. This is Michael's "natty average" question.
+total_pop <- sum(pop_by_state$pop)
+natl <- rate_tbl |>
+  group_by(sport) |>
+  summarise(avg = 1e6 * sum(n) / total_pop, .groups = "drop") |>
+  mutate(sport = factor(sport, levels = c("MLB", "NBA", "NHL")))
+cat("national averages (players per million):\n")
+print(setNames(round(natl$avg, 1), as.character(natl$sport)))
+avg_of <- setNames(natl$avg, as.character(natl$sport))
+
 # DC is a dense city, not a state, and its rate isn't comparable to whole
 # states (it would top both MLB and NBA here). Our NFL states chart excludes
 # it for the same reason, so pull its numbers for the caption, then drop it
@@ -80,6 +91,8 @@ for (s in levels(players$sport)) {
 # Chart: top 8 states per sport, players per million residents
 # ============================================================================
 p <- ggplot(top8, aes(state_facet, per_million, fill = sport)) +
+  geom_hline(data = natl, aes(yintercept = avg), linetype = "dashed",
+             colour = ink_baseline, linewidth = 0.4) +
   geom_col(width = 0.72) +
   geom_text(aes(label = sprintf("%.0f", per_million)), hjust = -0.2,
             size = 3.2, fontface = "bold", colour = ink_body) +
@@ -95,9 +108,10 @@ p <- ggplot(top8, aes(state_facet, per_million, fill = sport)) +
     caption = fig_caption(
       "MLB/NBA/NHL league sources + US Census population estimates (2024)",
       "\nUS-born players only, placed by birthplace (not hometown or high school); state population is 2024 residents, not births.",
-      paste0("\nWashington D.C. is excluded as a non-state outlier (a dense city, not comparable to whole states); it would ",
-             "otherwise top MLB at 148 and NBA at 111 per million, matching the treatment in our NFL states chart.\n",
-             "Small states with few players (e.g. North Dakota, Alaska in hockey) can post high rates off modest counts; see printed n's."))) +
+      sprintf(paste0("\nThe dashed line in each panel is that sport's national average: MLB %.0f, NBA %.0f, NHL %.0f players per million, so Minnesota's 55 is about twelve times the hockey average.\n",
+             "Washington D.C. is excluded from the ranking as a non-state outlier (it would otherwise top MLB at 148 and NBA at 111), matching our NFL states chart.\n",
+             "Small states with few players (e.g. North Dakota, Alaska in hockey) can post high rates off modest counts; see printed n's."),
+             avg_of["MLB"], avg_of["NBA"], avg_of["NHL"]))) +
   theme_hometown(grid = "none")
 
 save_fig("docs/figures/ba_sport_percapita.png", p, w = 12, h = 5.4)
