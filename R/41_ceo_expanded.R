@@ -21,7 +21,8 @@ suppressMessages({
 })
 source("R/lib/theme_hometown.R")
 
-ceo <- read_csv("data/processed/ceo_birthdates_expanded.csv", show_col_types = FALSE) |>
+ceo <- read_csv("data/processed/ceo_birthdates_v2.csv", show_col_types = FALSE) |>
+  rename(person = 1) |>
   distinct(person, .keep_all = TRUE) |>
   mutate(month = as.integer(substr(dob, 6, 7))) |>
   filter(!is.na(month))
@@ -62,12 +63,12 @@ p <- ggplot(ceo_m, aes(month_lab, ratio, fill = grp)) +
   scale_fill_manual(values = fill_vals, guide = "none") +
   scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
   labs(
-    title = "A hint of the hold-back effect: chief executives are scarce in July but common in August",
-    subtitle = "CEO birth-month share divided by the real US birth distribution, US CEOs of publicly traded companies. Small, noisy sample.",
+    title = "A faint summer dip and an August spike among chief executives, the hold-back fingerprint",
+    subtitle = "CEO birth-month share divided by the real US birth distribution, US CEOs of public companies and large private employers. Small, noisy sample.",
     x = NULL, y = "Observed / expected",
     caption = fig_caption(
-      "Wikidata SPARQL (query.wikidata.org): US-citizen CEOs (P169) of stock-exchange-listed companies (P414), month-or-better birth dates",
-      sprintf("\nOurs, not published research. n = %d (relaxing day-precision to month-precision only moved it from 187 to %d, so the clean public-company pool tops out near 200).", n_ceo, n_ceo),
+      "Wikidata SPARQL (query.wikidata.org): US-citizen CEOs (P169) of stock-exchange-listed companies (P414) or large private employers (1000-plus staff), month-or-better birth dates",
+      sprintf("\nOurs, not published research. n = %d. Michael asked for more, so we added large private employers to the public companies (187 to 196 to %d).\nThe dip persists but softens as the sample grows, and the fully broad any-CEO pull (549) washes it out, so the clean signal caps around here.", n_ceo, n_ceo),
       sprintf("\nBaseline is the real US birth curve (CDC 1994-2003). July sits at %.2f, August at %.2f. Under a September school cutoff, July and August babies are the\nyoungest in the grade, but August is the month most tied to being held back a year into becoming the oldest, which is the hold-back fingerprint.\nRead single months with caution: with 13 to 23 people per month the swings are large (April is also low, likely noise). The July-to-August contrast is\nthe part that fits the school-cutoff story. The published S&P 500 studies find a sharper version (about 6%% June and July each vs 12.5%% March).",
               jul, aug))) +
   theme_hometown(grid = "y")
