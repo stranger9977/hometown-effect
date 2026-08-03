@@ -37,36 +37,40 @@ nfl <- pal_sport[["NFL"]]
 # 2022, reproducing Reardon 2011), rising to 1.25 SD for cohorts born ~2000.
 # The rise begins with cohorts born in the mid-1970s (Reardon 2011 text).
 # ---------------------------------------------------------------------------
+# Reardon's own reported anchor levels, so the shape is his three-phase trend
+# (rise across the 1940s, plateau, steady climb from the mid-1970s), not a
+# two-point interpolation. early-1940s 0.73 is derived from his statement that
+# the 2001 gap is "roughly 75 percent larger than the early 1940s" (1.27/1.75).
+# 0.88 (1974) and 1.27 (2001) are his Model 4 regression estimates; the ~0.9
+# plateau is his stated level for the 1950s-early1970s cohorts.
 gap_line <- tribble(
   ~cohort, ~sd,
-  1955,    0.90,   # "about 0.9 SD ... children born in the 1950s, 1960s, and
-  1965,    0.90,   #  early 1970s" (Conwell 2022)
-  1972,    0.90,
-  1975,    0.90,   # "gap began to widen ... cohorts born in the mid-1970s"
-  2001,    1.25    # "roughly 1.25 standard deviations" for cohorts born ~2000
+  1943,    0.73,   # early-1940s: 1.27 / 1.75 (Reardon: 2001 gap ~75% larger)
+  1953,    0.90,   # plateau begins in the 1950s at about 0.9
+  1974,    0.88,   # NELS cohort, Reardon Model 4 (exact)
+  2001,    1.27    # ECLS-B cohort, Reardon Model 4 (exact)
 )
 gap_pts <- tribble(
   ~cohort, ~sd,  ~lab,
-  1955,    0.90, NA,
-  1965,    0.90, "about 0.9 SD",
-  1972,    0.90, NA,
-  2001,    1.25, "about 1.25 SD"
+  1943,    0.73, "about 0.73",
+  1953,    0.90, "about 0.9",
+  1974,    0.88, "0.88",
+  2001,    1.27, "1.27"
 )
 
 cat("=== CHART 1: 90/10 income achievement gap in reading, SD, by birth cohort ===\n")
-cat("verified plateau (1950s to early 1970s cohorts): 0.90 SD\n")
-cat("verified recent level (cohorts born ~2000):       1.25 SD  (about 40% larger)\n")
-cat("shape: flat 1950s to mid-1970s, then rising (Reardon 2011); early-1940s gap even smaller\n")
-cat("       (2001 gap about 75% larger than early-1940s gap, Reardon 2011 text)\n\n")
+cat("early-1940s cohort: about 0.73 (1.27/1.75; Reardon: 2001 gap ~75% larger than early 1940s)\n")
+cat("plateau 1950s-early1970s: about 0.90; 1974 cohort 0.88 (Model 4)\n")
+cat("2001 cohort: 1.27 (Model 4). Shape: rise across 1940s, flat to mid-1970s, steady climb after.\n\n")
 
 p1 <- ggplot() +
   geom_line(data = gap_line, aes(cohort, sd), colour = nfl, linewidth = 1.0) +
   geom_point(data = gap_pts, aes(cohort, sd), colour = nfl, size = 2.8) +
-  geom_text(data = filter(gap_pts, !is.na(lab)), aes(cohort, sd, label = lab),
-            vjust = -1.15, size = 3.4, fontface = "bold", colour = ink_body) +
-  annotate("text", x = 1976.5, y = 1.03, hjust = 0, size = 3.0, colour = ink_baseline,
-           label = "Widening begins with\ncohorts born in the mid-1970s") +
-  scale_x_continuous(breaks = seq(1950, 2000, 10), limits = c(1951, 2006)) +
+  geom_text(data = gap_pts, aes(cohort, sd, label = lab),
+            vjust = -1.15, size = 3.3, fontface = "bold", colour = ink_body) +
+  annotate("text", x = 1955, y = 0.66, hjust = 0, size = 3.0, colour = ink_baseline,
+           label = "Flat through the early 1970s,\nthen a steady climb to 2001") +
+  scale_x_continuous(breaks = seq(1940, 2000, 10), limits = c(1940, 2006)) +
   scale_y_continuous(limits = c(0.6, 1.4), breaks = seq(0.6, 1.4, 0.2),
                      expand = expansion(mult = c(0.02, 0.06))) +
   labs(
@@ -74,9 +78,9 @@ p1 <- ggplot() +
     subtitle = "The reading-score gap between children from the richest and poorest tenth of families, in standard deviations, by birth cohort.",
     x = "Child birth cohort", y = "Rich-poor test-score gap (standard deviations)",
     caption = fig_caption(
-      "Reardon (2011), 90/10 income achievement gap in reading (Figure 5.1), as reported in Conwell (2022), from 12 nationally representative studies",
-      "\nFrom published research, not this project's data. The gap is in standard deviations of test score, so 1.0 means the average child from a top-income\nfamily scores a full standard deviation above the average child from a bottom-income family.",
-      "\nVerified levels only: about 0.9 SD for cohorts of the 1950s to early 1970s, rising to about 1.25 SD for cohorts born around 2000, roughly 40 percent\nlarger. The rise starts with cohorts born in the mid-1970s. Intermediate cohorts are drawn as that stated plateau and rise, not as separate estimates.")) +
+      "Reardon (2011), 90/10 income achievement gap in reading, from 13 nationally representative studies (Figure 5.1; summary in Reardon, FRBSF Community Investments 2012)",
+      "\nFrom published research, not this project's data. The gap is in standard deviations, so 1.0 means the average child from a top-tenth-income family scores\na full standard deviation above one from a bottom-tenth family. The real underlying data is a scatter of individual study estimates, not a smooth line.",
+      "\nThe points are Reardon's reported levels: about 0.73 for the early-1940s cohort (his '2001 gap is ~75 percent larger than the early 1940s'), the about-0.9\nplateau for 1950s to early-1970s cohorts, and his regression estimates of 0.88 for the 1974 cohort and 1.27 for 2001. The line traces his described trend\n(a rise across the 1940s, a plateau, then a steady climb from the mid-1970s), not invented per-year values.")) +
   theme_hometown(grid = "y")
 save_fig("docs/figures/ba_testscore_income_overtime.png", p1, w = 12, h = 6.0)
 
