@@ -126,8 +126,8 @@ p2 <- ggplot(mob, aes(cohort, pct)) +
     x = "Child birth cohort", y = "Share who out-earn their parents",
     caption = fig_caption(
       "Chetty, Grusky, Hell, Hendren, Manduca & Narang (2017), Science 356(6336); Opportunity Insights Online Data Table 1, national mean by cohort",
-      "\nFrom published research, not this project's data. Full annual series, birth cohorts 1940 to 1984. Incomes compared at age 30 in real\ninflation-adjusted dollars; children whose parents had zero income are included.",
-      "\nThe share fell from 91.5 percent for the 1940 cohort to 50.3 percent for 1984, with the steepest drop for cohorts born between 1940 and the mid-\n1960s. Labeled points mark the decade cohorts. No sports here: this is the general fading of the American dream, over time.")) +
+      "\nFrom published research, not this project's data. Each child's income is compared to their parents' at age 30, in real inflation-adjusted dollars\n(children whose parents had zero income are included). 1984 is the last cohort because you can only see who out-earns their parents once they turn 30,\nand the study's tax data ran through 2014 (1984 plus 30). Extending it would need newer data that has not been published as this series.",
+      "\nThe share fell from 91.5 percent for the 1940 cohort to 50.3 percent for 1984, with the steepest drop for cohorts born between 1940 and the mid-1960s.\nLabeled points mark the decade cohorts. No sports here: this is the general fading of the American dream, over time.")) +
   theme_hometown(grid = "y")
 save_fig("docs/figures/ba_mobility_overtime.png", p2, w = 12, h = 6.0)
 
