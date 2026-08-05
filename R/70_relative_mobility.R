@@ -1,65 +1,68 @@
 # =============================================================================
-# 70_relative_mobility.R -- Michael's ask: get at RELATIVE mobility, not just
-# absolute. His point: a conservative can wave off the absolute-mobility chart
-# ("of course 1940s kids out-earned their Depression-era parents"), because
-# absolute mobility rides on overall economic growth. RELATIVE mobility strips
-# that out: it asks how much your parents' RANK predicts your rank, which in a
-# perfect meritocracy would be zero (where you end up would not depend on where
-# you started). This is the rank-rank relationship, the standard measure.
+# 70_relative_mobility.R -- Michael's ask: get at RELATIVE mobility, and his
+# framing is "your ability to leave the bottom, which in a utopia would be equal."
+# (First version used the rank-rank line; Michael found it confusing -- "a kid
+# born at 0 moves up to 33?" -- so this is the intuitive version: where kids
+# actually LAND, by where they were born, against a flat 20% "fair world" line.)
 #
-# SOURCE (the line): Chetty, Hendren, Kline & Saez (2014), "Where is the Land of
-# Opportunity?", Quarterly Journal of Economics 129(4). The US intergenerational
-# rank-rank slope is 0.341: a child's expected adult income rank rises 0.341
-# ranks for each rank of parent income. Anchored so a mid-rank child averages
-# mid-rank (child rank = 0.341 * parent rank + 32.95). The same paper's quintile
-# transition matrix gives the concrete version we already chart: a bottom-fifth
-# child has a 7.5% shot at the top fifth versus 36.5% for a top-fifth child.
+# This answers the conservative pushback on the absolute-mobility chart ("1940s
+# kids out-earned Depression-era parents easily"): relative mobility ignores
+# whether everyone got richer and only asks whether your birth rank still decides
+# your rank. In a perfect meritocracy a kid born in any fifth would have an equal
+# 20% chance of landing in each adult fifth. They do not.
 #
-# SOURCE (the trend): Chetty, Dobbie, Goldman, Porter & Yang (2024, rev. 2025),
-# "Changing Opportunity", NBER WP 32697. Between the 1978 and 1992 birth cohorts
-# the class gap in economic mobility GREW about 30%, so relative mobility has
-# been worsening, not improving. Numbers typed from the paper (pdftotext).
-# PUBLISHED RESEARCH, NOT THIS PROJECT'S DATA. No race/ethnicity on the chart.
+# SOURCE: quintile transition matrix computed from Chetty et al. (2017) "Fading
+# American Dream" released copula (Harvard Dataverse doi:10.7910/DVN/B9TEWM,
+# copula_base_adjusted.tab), aggregated to income fifths. It reproduces the
+# published corners of Chetty, Hendren, Kline & Saez (2014), QJE 129(4) exactly
+# (Q1->Q1 33.7, Q1->Q5 7.5, Q5->Q1 10.9, Q5->Q5 36.5). Recent trend from Chetty,
+# Dobbie, Goldman, Porter & Yang (2024), NBER WP 32697: the class gap in mobility
+# grew about 30% between the 1978 and 1992 cohorts. PUBLISHED RESEARCH, NOT OURS.
+# No race/ethnicity on the chart.
 # =============================================================================
 
-suppressMessages({library(dplyr); library(ggplot2); library(tibble)})
+suppressMessages({library(dplyr); library(ggplot2); library(tibble); library(tidyr)})
 source("R/lib/theme_hometown.R")
-nfl <- pal_sport[["NFL"]]; fair_col <- ink_baseline
 
-slope <- 0.341; intercept <- 50 - slope*50   # anchor: parent rank 50 -> child rank 50
-line <- tibble(parent = 0:100, child = intercept + slope*parent)
-pts  <- tibble(parent = c(0, 25, 75, 100),
-               child  = intercept + slope*c(0, 25, 75, 100),
-               lab    = sprintf("%.0f", intercept + slope*c(0, 25, 75, 100)))
+# parent Q1 (poorest-born) and Q5 (richest-born) rows, child fifths Q1..Q5
+d <- tribble(
+  ~origin,             ~fifth,            ~pct,  ~fo,
+  "Born poorest fifth","Poorest\nfifth",  33.7,  1,
+  "Born poorest fifth","2nd",             28.0,  1,
+  "Born poorest fifth","Middle",          18.4,  1,
+  "Born poorest fifth","4th",             12.3,  1,
+  "Born poorest fifth","Richest\nfifth",   7.5,  1,
+  "Born richest fifth","Poorest\nfifth",  10.9,  2,
+  "Born richest fifth","2nd",             11.9,  2,
+  "Born richest fifth","Middle",          17.0,  2,
+  "Born richest fifth","4th",             23.6,  2,
+  "Born richest fifth","Richest\nfifth",  36.5,  2
+) |>
+  mutate(fifth  = factor(fifth, levels = c("Poorest\nfifth","2nd","Middle","4th","Richest\nfifth")),
+         origin = factor(origin, levels = c("Born poorest fifth","Born richest fifth")))
 
-cat("=== US rank-rank line (child expected adult income rank by parent rank) ===\n")
-cat(sprintf("parent 0 -> child %.1f | parent 100 -> child %.1f | spread = %.0f ranks (the slope x 100)\n",
-            intercept, intercept+slope*100, slope*100))
+pal_o <- c(`Born poorest fifth` = "#D55E00", `Born richest fifth` = "#0072B2")
 
-p <- ggplot() +
-  # perfect meritocracy: flat at 50
-  geom_hline(yintercept = 50, linetype = "dashed", colour = fair_col, linewidth = 0.5) +
-  # the actual US relationship
-  geom_line(data = line, aes(parent, child), colour = nfl, linewidth = 1.1) +
-  geom_point(data = pts, aes(parent, child), colour = nfl, size = 2.8) +
-  geom_text(data = pts[c(1,4),], aes(parent, child, label = sprintf("%sth", lab)),
-            vjust = c(1.9, -1.0), hjust = c(0, 1), size = 3.3, fontface = "bold", colour = ink_body) +
-  annotate("text", x = 2, y = 53.5, hjust = 0, size = 3.1, colour = fair_col,
-           label = "A perfect meritocracy: where you end up\ndoes not depend on where you started") +
-  annotate("text", x = 74, y = 40, hjust = 1, size = 3.1, colour = nfl, fontface = "bold",
-           label = "The US: your parents' rank\nstill predicts yours") +
-  scale_x_continuous(limits = c(0, 100), breaks = seq(0, 100, 25),
-                     labels = function(x) paste0(x, "th")) +
-  scale_y_continuous(limits = c(28, 72), breaks = seq(30, 70, 10),
-                     labels = function(x) paste0(x, "th")) +
+p <- ggplot(d, aes(fifth, pct, fill = origin)) +
+  geom_col(position = position_dodge(width = 0.74), width = 0.68) +
+  geom_hline(yintercept = 20, linetype = "dashed", colour = ink_baseline, linewidth = 0.5) +
+  geom_text(aes(label = sprintf("%.0f%%", pct)), position = position_dodge(width = 0.74),
+            vjust = -0.5, size = 3.0, fontface = "bold", colour = ink_body) +
+  annotate("text", x = 5.42, y = 22.4, hjust = 1, size = 3.0, colour = ink_baseline,
+           label = "A fair world: 20% each") +
+  scale_fill_manual(values = pal_o, name = NULL) +
+  scale_y_continuous(limits = c(0, 40), breaks = seq(0, 40, 10),
+                     labels = function(x) paste0(x, "%"), expand = expansion(mult = c(0, 0.04))) +
   labs(
-    title = "Where you end up still tracks where you started: born at the bottom you average the 33rd percentile, at the top the 67th",
-    subtitle = "A child's expected adult income rank, by their parents' income rank. In a perfect meritocracy the line would be flat at the 50th.",
-    x = "Parents' income rank", y = "Child's expected adult income rank",
+    title = "Born in the poorest fifth, you usually stay near the bottom; born in the richest, near the top",
+    subtitle = "Where US children land in the adult income distribution, by the fifth they were born into. In a fair world every bar would be 20 percent.",
+    x = "Where the child ends up as an adult", y = "Chance of landing there",
     caption = fig_caption(
-      "Rank-rank slope 0.34 from Chetty, Hendren, Kline & Saez (2014), QJE 129(4); recent trend from Chetty, Dobbie, Goldman, Porter & Yang (2024), NBER WP 32697",
-      "\nFrom published research, not this project's data. Relative mobility compares a child's income RANK to their parents' rank, so unlike the out-earn-your-\nparents measure it strips out overall economic growth. The line's slope of 0.34 means a full jump from the bottom to the top of the parent distribution\nlifts a child's expected adult rank by 34 places; a flat line would mean birth rank does not matter at all.",
-      "\nThe concrete version: a child born in the poorest fifth has about a 7.5 percent shot at the richest fifth, versus 36.5 percent for a child born at the top.\nAnd it is not improving: the class gap in mobility grew about 30 percent between the 1978 and 1992 birth cohorts, so the ladder has gotten a little steeper,\nnot flatter. This is the answer to 'the 1940s just had an easy baseline': relative mobility nets out growth, and by this measure the US has not become fairer.")) +
-  theme_hometown(grid = "y")
-save_fig("docs/figures/ba_relative_mobility.png", p, w = 12, h = 6.6)
-cat("\ndone\n")
+      "Income-fifth transition matrix from Chetty et al. (2017) released copula (reproduces Chetty, Hendren, Kline & Saez 2014 exactly); trend from Chetty et al. (2024), NBER 32697",
+      "\nFrom published research, not this project's data. Relative mobility compares a child's income rank to their parents', so unlike the out-earn-your-parents\nmeasure it ignores whether everyone got richer. A child born in the poorest fifth has only a 7.5 percent shot at the richest fifth and a 34 percent chance of\nstaying at the bottom; a child born in the richest fifth has a 36.5 percent chance of staying on top. A perfect meritocracy would be a flat 20 percent for both.",
+      "\nAnd it is not improving: the class gap in mobility grew about 30 percent between the 1978 and 1992 birth cohorts (Chetty et al. 2024), so the ladder tilted\na little more toward the top, not less. This is the answer to 'the 1940s just had an easy baseline': relative mobility nets out growth, and by it the US has\nnot become fairer.")) +
+  theme_hometown(grid = "y") +
+  theme(legend.position = "top", legend.justification = "left",
+        legend.key.size = unit(11, "pt"), legend.text = element_text(size = rel(0.85)))
+save_fig("docs/figures/ba_relative_mobility.png", p, w = 11, h = 6.0)
+cat("done\n")
